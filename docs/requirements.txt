@@ -1,5 +1,0 @@
-# The docs toolchain, separate from the benchmarks' own requirements: building
-# the site needs neither yani nor any nuclear data, because tools/build_site.py
-# reads the JSON the sweeps already wrote.
-mkdocs
-mkdocs-material

@@ -1,0 +1,12 @@
+# The docs toolchain. Kept out of docs/, because anything inside docs_dir is
+# copied into the published site, and a requirements file is not a page.
+#
+# Building the site needs neither yani nor any nuclear data: tools/build_site.py
+# reads the JSON the sweeps already wrote, so CI can make the pages from the
+# repository alone.
+mkdocs
+mkdocs-material
+
+# What build_site.py needs to turn the result JSON into figures and tables.
+matplotlib
+numpy

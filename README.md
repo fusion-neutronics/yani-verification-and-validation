@@ -49,6 +49,60 @@ record of how that JSON was derived. Nuclear data is downloaded and cached by
 yani on first use, and no ENDF processing or NJOY is involved, because every
 library these benchmarks use is a keyword yani resolves to converted data.
 
+## Running all of it
+
+```bash
+python tools/run_all.py --plan      # what would run, and roughly how long
+python tools/run_all.py             # run it
+```
+
+`--plan` prints the exact commands and an estimate, and checks the things worth
+knowing before starting rather than three hours in: whether yani is installed,
+whether the benchmark data is there, and whether the disk can hold the nuclear
+data a full run caches. It runs nothing.
+
+**Every stage resumes.** Sweeps write after each solve, through a temporary file
+and a rename, and skip what is already in their output. So Ctrl-C is safe, a run
+can be split across days, and re-running after a crash costs only the solve that
+was in flight. Nothing needs to be finished in one sitting.
+
+Useful shapes for a long run:
+
+```bash
+# just the comparison against FISPACT-II, all 132 experiments
+python tools/run_all.py --stage fns --combination tendl-2017
+
+# every combination, but only the campaign that covers all 73 foils
+python tools/run_all.py --experiment 2000exp_5min
+
+# a machine with cores to spare
+python tools/run_all.py --workers 8
+
+# rebuild the pages from results already on disk, solving nothing
+python tools/run_all.py --stage site
+```
+
+A solve is single-threaded and takes a couple of minutes, most of it spent
+reducing a 2800-nuclide network down to what one foil can reach, so `--workers`
+is close to a linear speed-up. It costs about 1.6 GB of memory per worker, which
+is what sets the sensible ceiling rather than the core count.
+
+The OpenMC comparison is a stage of its own and stays off unless you point it at
+a depletion chain, since it needs an OpenMC install and an HDF5 cross-section
+library the rest does not:
+
+```bash
+python benchmarks/fns_decay_heat/run_openmc.py --list-chains
+python tools/run_all.py --stage openmc --openmc-chain chain_endfb81_fast.xml
+```
+
+### Disk
+
+yani caches nuclear data under `~/.cache/yamc`, fetching what a calculation
+needs on first use. TENDL-2017 comes to about 13 GB. The ten combinations name
+five libraries between them, so a full run is tens of gigabytes in that cache.
+`--plan` checks for headroom and says so if there is not any.
+
 ## Layout
 
 ```

@@ -34,6 +34,67 @@ GENERATED = (
     "     overwritten the next time the site is built. -->\n"
 )
 
+# What a complete run covers, so a partial page can say so. Read from the
+# committed benchmark data rather than written down, since writing it down is
+# how it comes to disagree with the data.
+def _total(path, key):
+    document = json.loads(path.read_text())
+    if key == "fns":
+        return sum(len(entries) for entries in document["cases"].values())
+    return len(document["reactions"])
+
+
+TOTAL_FNS_EXPERIMENTS = _total(
+    ROOT / "benchmarks" / "fns_decay_heat" / "data" / "fns_data.json", "fns")
+TOTAL_ECS_REACTIONS = _total(
+    ROOT / "benchmarks" / "effective_cross_sections" / "data" / "rr_data.json", "ecs")
+
+
+def coverage_note(documents, expected_cases, unit, command):
+    """A banner naming what has not been run yet, or nothing when it all has.
+
+    A page built from a partial sweep looks exactly like a page built from a
+    complete one, except that some rows are missing, and a reader has no way to
+    tell an unrun combination from one that failed. So the page says which it
+    is, and how to finish it.
+    """
+    missing = []
+    for combination in libraries.COMBINATIONS:
+        document = documents.get(combination.name)
+        if document is None:
+            missing.append((combination.name, 0))
+        else:
+            count = len(document["results"])
+            if count < expected_cases:
+                missing.append((combination.name, count))
+    if not missing:
+        return []
+
+    lines = ['!!! warning "Draft: this page is built from a partial run"', ""]
+    lines += [f"    {len(libraries.COMBINATIONS) - len(missing)} of "
+              f"{len(libraries.COMBINATIONS)} nuclear-data combinations are "
+              f"complete, out of {expected_cases} {unit} each.", ""]
+    for name, count in missing:
+        state = "not run" if count == 0 else f"{count} of {expected_cases}"
+        lines += [f"    * `{name}` -- {state}"]
+    lines += ["", f"    To finish it: `{command}`", ""]
+    return lines
+
+
+def over_measured(values, measured):
+    """`values / measured`, with a gap wherever there is no measurement.
+
+    A few experiments carry rows whose measured heat is exactly zero. Those are
+    not measurements of zero; they are places the benchmark has no value, and
+    the scoring already excludes them. Dividing by them would put an infinity on
+    the C/E panel and stretch its axis until every real point is a flat line, so
+    they come through as NaN and matplotlib leaves a gap.
+    """
+    values = np.asarray(values, dtype=float)
+    measured = np.asarray(measured, dtype=float)
+    return np.divide(values, measured, out=np.full(values.shape, np.nan),
+                     where=measured > 0)
+
 
 def load_results(benchmark):
     """{combination name: document} for one benchmark, newest run wins."""
@@ -164,17 +225,17 @@ def fns_case_figure(key, documents, destination):
         plotting.style(top, palette)
 
         bottom.axhline(1.0, color=palette["muted"], linewidth=1)
-        bottom.fill_between(times, 1 - uncertainty / measured,
-                            1 + uncertainty / measured,
+        fraction = over_measured(uncertainty, measured)
+        bottom.fill_between(times, 1 - fraction, 1 + fraction,
                             color=palette["measurement"], alpha=0.12,
                             label="measurement uncertainty")
         if entry.get("fispact_uW_per_g"):
-            bottom.plot(times, np.array(entry["fispact_uW_per_g"]) / measured,
+            bottom.plot(times, over_measured(entry["fispact_uW_per_g"], measured),
                         "o-", color=palette["fispact"], markersize=4, linewidth=1.5)
-        bottom.plot(times, np.array(entry["yani_uW_per_g"]) / measured, "o-",
+        bottom.plot(times, over_measured(entry["yani_uW_per_g"], measured), "o-",
                     color=palette["yani"], markersize=4, linewidth=1.5)
         if best is not None:
-            bottom.plot(times, np.array(best[1]["yani_uW_per_g"]) / measured,
+            bottom.plot(times, over_measured(best[1]["yani_uW_per_g"], measured),
                         "o--", color=palette["yani_best"], markersize=4, linewidth=1.5)
         bottom.set_xscale("log")
         bottom.set_ylabel("C / E")
@@ -205,6 +266,8 @@ def fns_page(documents):
         documents, FIGURES / "fns-summary.png")
 
     lines = [GENERATED, "# FNS decay heat", "", PROSE["fns_decay_heat"], ""]
+    lines += coverage_note(documents, TOTAL_FNS_EXPERIMENTS, "experiments",
+                           "python tools/run_all.py")
 
     # --- headline -----------------------------------------------------------
     lines += ["## yani against FISPACT-II, same library", ""]
@@ -356,6 +419,8 @@ def ecs_page(documents):
 
     lines = [GENERATED, "# Effective cross sections", "",
              PROSE["effective_cross_sections"], ""]
+    lines += coverage_note(documents, TOTAL_ECS_REACTIONS, "reactions",
+                           "python tools/run_all.py")
 
     lines += ["## yani against FISPACT-II, same library", ""]
     if summary_path:

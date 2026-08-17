@@ -27,10 +27,9 @@ jobs:
       - name: Install the docs toolchain
         run: |
           python -m pip install --upgrade pip
-          pip install -r docs/requirements.txt
-          # numpy only: build_site.py reads the committed result JSON and needs
-          # neither yani nor any nuclear data to turn it into pages.
-          pip install numpy matplotlib
+          # numpy and matplotlib only: build_site.py reads the committed result
+          # JSON and needs neither yani nor any nuclear data to make the pages.
+          pip install -r requirements-docs.txt
 
       - name: Generate the benchmark pages and figures
         run: python tools/build_site.py
@@ -38,12 +37,14 @@ jobs:
       - name: Build
         run: mkdocs build --strict
 
-      - name: Every benchmark page must carry results
+      - name: The site must carry results
         shell: bash
         run: |
           # A page whose sweep never ran builds and deploys exactly as happily
-          # as one that did, and reads as a benchmark yani simply has no
-          # numbers for. Fail instead.
+          # as one that did. That is tolerable while a benchmark is still being
+          # filled in -- the pages carry a draft banner saying which
+          # combinations have not run -- but a site where *nothing* has results
+          # is a broken publish rather than a draft, so that one fails.
           python - <<'EOF'
           import pathlib, sys
 
@@ -54,9 +55,11 @@ jobs:
 
           empty = [p for p in pages if "no results" in p.read_text().lower()]
           for page in empty:
-              print(f"::error::{page} has no results in it")
+              print(f"::warning::{page.parent.name} has no results yet")
           print(f"{len(pages)} benchmark pages, {len(empty)} without results")
-          sys.exit(1 if empty else 0)
+          if len(empty) == len(pages):
+              print("::error::no benchmark page has any results")
+              sys.exit(1)
           EOF
 
       - uses: actions/upload-artifact@v7
