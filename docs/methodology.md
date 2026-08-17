@@ -102,6 +102,33 @@ truncated chain shows up as heat that is systematically low at long cooling
 times, and the 7.6-hour FNS campaign, which follows foils out to 400 days, is
 where that would appear.
 
+## What is not covered
+
+Two gaps, stated here rather than left to be inferred from an absence.
+
+**Fission yields are configured on every run and read by nothing.** None of the
+73 FNS foils is fissionable, and no effective cross-section reaction has a
+fissionable target, so `transmutation_fission_yields` is set on every
+combination and never exercised. Nothing on this site is evidence about it.
+Closing that needs a fission benchmark, which is
+[issue #2](https://github.com/fusion-neutronics/yani-verification-and-validation/issues/2).
+
+**Not every combination runs on every campaign.** `tendl-2017` and
+`tendl-2025` cover all 132 FNS experiments; the other eight combinations cover
+only `2000exp_5min`, the campaign that includes all 73 foils. That keeps the
+sweep to about half a day and costs nothing on the comparison against
+FISPACT-II, which is `tendl-2017` and is complete. What it does cost is the
+long-cooling behaviour of the other eight, since `1996exp_7hour` is the only
+campaign that follows a foil out to 400 days. Tracked as
+[issue #1](https://github.com/fusion-neutronics/yani-verification-and-validation/issues/1).
+
+**Every benchmark here is 14 MeV.** JAEA-FNS, FNG and TUD are all DT
+assemblies, so a cross section that folds correctly against a 14 MeV field and
+badly against a fission spectrum is a failure this site cannot currently see.
+[Issue #3](https://github.com/fusion-neutronics/yani-verification-and-validation/issues/3)
+tracks adding IRDFF-II, whose reference fields include Cf-252 and U-235 fission
+spectra.
+
 ## Scoring
 
 The headline number for a decay-heat curve is the **mean deviation**, the
