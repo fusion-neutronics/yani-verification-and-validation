@@ -1,0 +1,41 @@
+{
+ "benchmark": "effective_cross_sections",
+ "combination": {
+  "branching": "tendl-2017",
+  "cross_sections": "tendl-2017",
+  "decay": "endf-b8.1",
+  "fission_yields": "endf-b8.1",
+  "name": "tendl-2017",
+  "note": "The library FISPACT-II was run with for the published CoNDERC results. This is the apples-to-apples comparison: same cross sections, same reaction topology, same branching, different code.",
+  "reactions": "tendl-2017"
+ },
+ "failures": {},
+ "pulse_flux": 1e+21,
+ "pulse_seconds": 0.0001,
+ "results": [
+  {
+   "channel": "p",
+   "fispact_barns": 0.0929,
+   "fispact_ce": 0.97,
+   "measured_barns": 0.0958,
+   "mt": 103,
+   "product_element": "Mn",
+   "product_mass": 56,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Mn56",
+    "Mn56_m1",
+    "Mn56_m2"
+   ],
+   "reaction": "Fe-56(n,p)Mn-56",
+   "spectrum": "FNG-SiC",
+   "target": "Fe56",
+   "uncertainty_barns": 0.00479,
+   "yani_barns": 0.09265679468450533,
+   "yani_ce": 0.9671899236378427
+  }
+ ],
+ "wall_seconds": 181.5320291519165,
+ "yani_version": "0.4.0"
+}
