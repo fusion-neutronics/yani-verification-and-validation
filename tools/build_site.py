@@ -107,6 +107,22 @@ def load_results(benchmark):
     return documents
 
 
+def load_openmc(benchmark):
+    """{chain label: document} for any OpenMC runs of this benchmark.
+
+    Kept separate from the yani combinations rather than folded in beside them:
+    an OpenMC run is named by its chain file, not by one of the five-way
+    combinations, and there is no chain published that would let it stand on the
+    apples-to-apples line at all.
+    """
+    directory = ROOT / "benchmarks" / benchmark / "results"
+    documents = {}
+    for path in sorted(directory.glob("openmc-*.json")):
+        document = json.loads(path.read_text())
+        documents[document.get("chain_label", path.stem)] = document
+    return documents
+
+
 def ordered(documents):
     """Combinations in the order they are declared, apples-to-apples first."""
     return [(c.name, documents[c.name]) for c in libraries.COMBINATIONS
@@ -169,7 +185,7 @@ def fns_summary_figure(documents, destination):
     return destination, yani_wins, len(pairs)
 
 
-def fns_case_figure(key, documents, destination):
+def fns_case_figure(key, documents, destination, openmc=None):
     """One experiment: the measurement, FISPACT-II, and every yani combination.
 
     The top panel is the decay-heat curve and the bottom is C/E against the
@@ -213,6 +229,11 @@ def fns_case_figure(key, documents, destination):
             top.plot(times, best[1]["yani_uW_per_g"], "--",
                      color=palette["yani_best"], linewidth=plotting.LINE_WIDTH,
                      label=f"yani, {best[0]}", zorder=4)
+        for label, entries in (openmc or {}).items():
+            if key in entries:
+                top.plot(times, entries[key]["openmc_uW_per_g"], ":",
+                         color=palette["openmc"], linewidth=plotting.LINE_WIDTH,
+                         label=f"OpenMC, {label}", zorder=3)
 
         top.set_yscale("log")
         top.set_ylabel("specific decay heat [µW/g]")
@@ -237,6 +258,12 @@ def fns_case_figure(key, documents, destination):
         if best is not None:
             bottom.plot(times, over_measured(best[1]["yani_uW_per_g"], measured),
                         "o--", color=palette["yani_best"], markersize=4, linewidth=1.5)
+        for entries in (openmc or {}).values():
+            if key in entries:
+                bottom.plot(times,
+                            over_measured(entries[key]["openmc_uW_per_g"], measured),
+                            "o:", color=palette["openmc"], markersize=4,
+                            linewidth=1.5)
         bottom.set_xscale("log")
         bottom.set_ylabel("C / E")
         bottom.set_xlabel(f"time after shutdown [{entry['time_unit']}]")
@@ -322,6 +349,31 @@ def fns_page(documents):
     for name, document in ordered(documents):
         lines += [f"**`{name}`** -- {libraries.BY_NAME[name].note}", ""]
 
+    # --- openmc -------------------------------------------------------------
+    openmc = {label: document["results"]
+              for label, document in load_openmc("fns_decay_heat").items()}
+    if openmc:
+        lines += ["## OpenMC on the same experiments", "", PROSE["openmc"], ""]
+        lines += ["| code | experiments | median mean deviation |",
+                  "| --- | ---: | ---: |"]
+        for label, entries in openmc.items():
+            shared = [k for k in entries if k in apples["results"]]
+            values = np.array([entries[k]["metrics"]["mean_deviation_percent"]
+                               for k in shared])
+            against = np.array(
+                [apples["results"][k]["metrics"]["mean_deviation_percent"]
+                 for k in shared])
+            lines += [f"| OpenMC, `{label}` | {len(values)} | "
+                      f"{np.median(values):.1f}% |"]
+            lines += [f"| yani, `{apples_name}`, same experiments | "
+                      f"{len(against)} | {np.median(against):.1f}% |"]
+        document = list(load_openmc("fns_decay_heat").values())[0]
+        lines += ["", f"OpenMC {document.get('openmc_version', '?')}, chain "
+                      f"`{pathlib.Path(document.get('chain_file', '?')).name}`, "
+                      f"cross sections "
+                      f"`{pathlib.Path(document.get('cross_sections', '?')).name}`.",
+                  ""]
+
     # --- per experiment -----------------------------------------------------
     lines += ["## Every experiment", "",
               f"One figure per experiment, {len(rows)} of them. The solid orange "
@@ -330,7 +382,7 @@ def fns_page(documents):
 
     for key, entry in rows:
         figure_name = f"fns-{entry['case']}-{entry['experiment']}.png"
-        best = fns_case_figure(key, documents, FIGURES / figure_name)
+        best = fns_case_figure(key, documents, FIGURES / figure_name, openmc)
         metrics = entry["metrics"]
         lines += [f"### {entry['case']}, {entry['experiment']}", ""]
         lines += [plotting.image_markup(FIGURES / figure_name,
@@ -496,6 +548,35 @@ def ecs_page(documents):
 
 
 PROSE = {
+    "openmc": """
+OpenMC solves the same problem here -- a known multigroup flux, a known
+schedule, decay heat afterwards -- through `openmc.deplete.IndependentOperator`,
+so there is no transport in its run either. What differs is where the network
+comes from, and that difference is not a detail.
+
+**OpenMC cannot stand on the apples-to-apples line at all.** It reads a
+pre-built depletion chain rather than assembling the network from evaluations,
+and no TENDL chain is published. FISPACT-II's results here are TENDL-2017, so
+there is no configuration in which all three codes read the same data.
+
+**Its chains carry capture branching ratios and nothing else.** Every
+pre-generated chain on openmc.org comes in two forms, with branching ratios
+averaged over a thermal or a fast flux spectrum; neither is a 14 MeV DT
+spectrum, and each ratio is a fixed number in the XML rather than a function of
+incident energy. `tools/openmc_chain_report.py` derives the consequence from the
+chain file itself: in the ENDF/B-VIII.1 fast chain, `(n,gamma)` is the only
+reaction type that can produce a metastable state, and of the 89 isomeric
+measurements in the [effective cross-section
+benchmark](effective-cross-sections.md), seven are representable and 82 would
+come out as exactly zero -- 44 of them `(n,2n)`, which is the dominant channel
+at 14 MeV.
+
+So the comparison below is fair to OpenMC only where the heat runs through a
+ground state. On a foil whose heat comes from an isomer, the difference is the
+chain rather than the code, and no amount of work on OpenMC's solver would move
+it.
+""".strip(),
+
     "fns_decay_heat": """
 The JAEA Fusion Neutronics Source held a 1 g foil in a 14 MeV field of about
 1.1e10 n/cm2/s, withdrew it, and measured the heat its activation products gave
