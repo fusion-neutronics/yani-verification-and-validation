@@ -128,6 +128,8 @@ def main():
     parser.add_argument("--output", type=pathlib.Path, default=HERE / "results")
     parser.add_argument("--check-linearity", action="store_true",
                         help="re-run at a tenth of the fluence and report the drift")
+    parser.add_argument("--redo", action="store_true",
+                        help="re-solve reactions already in the output file")
     args = parser.parse_args()
 
     combination = libraries.resolve([args.combination])[0]
@@ -138,20 +140,54 @@ def main():
     if not rows:
         raise SystemExit("no reactions matched --spectrum/--reaction")
 
+    args.output.mkdir(parents=True, exist_ok=True)
+    destination = args.output / f"{combination.name}.json"
+
+    # A full run is 365 solves and takes hours, so it resumes rather than
+    # starting over, the same way the decay-heat sweep does.
+    results, failures = [], {}
+    if destination.is_file() and not args.redo:
+        try:
+            previous = json.loads(destination.read_text())
+            results = previous.get("results", [])
+            failures = previous.get("failures", {})
+        except json.JSONDecodeError:
+            pass
+    done = {(row["reaction"], row["spectrum"]) for row in results}
+
     libraries.apply(combination, yani)
     print(f"combination: {combination.name} (xs {combination.cross_sections}, "
-          f"branching {combination.branching})")
+          f"branching {combination.branching})", flush=True)
     print(f"{len(rows)} reactions across "
-          f"{len({row['spectrum'] for row in rows})} spectra\n")
+          f"{len({row['spectrum'] for row in rows})} spectra"
+          + (f", {len(done)} already done" if done else ""), flush=True)
 
     # One source per field, built once: the rows are grouped by spectrum so that
     # a field's collapse is not rebuilt for each of its reactions.
     sources = {}
-    results, failures = [], {}
     drift = 0.0
     started = time.time()
 
-    for index, row in enumerate(sorted(rows, key=lambda r: r["spectrum"]), start=1):
+    def save():
+        # Written aside and moved, so a run killed mid-write leaves a whole file
+        # rather than a truncated one.
+        scratch = destination.with_suffix(".json.part")
+        scratch.write_text(json.dumps({
+            "benchmark": "effective_cross_sections",
+            "combination": libraries.as_dict(combination),
+            "yani_version": getattr(yani, "__version__", "unknown"),
+            "pulse_seconds": PULSE_SECONDS,
+            "pulse_flux": PULSE_FLUX,
+            "wall_seconds": time.time() - started,
+            "results": results,
+            "failures": failures,
+        }, indent=1, sort_keys=True))
+        scratch.replace(destination)
+
+    todo = [row for row in sorted(rows, key=lambda r: r["spectrum"])
+            if (row["reaction"], row["spectrum"]) not in done]
+
+    for index, row in enumerate(todo, start=1):
         name = row["spectrum"]
         if name not in sources:
             sources[name] = source_for(document["spectra"][name])
@@ -166,17 +202,21 @@ def main():
                     drift = max(drift, abs(tenth / calculated - 1.0))
         except Exception as exc:
             failures[row["reaction"] + " @ " + name] = str(exc)
-            print(f"[{index}/{len(rows)}] {row['reaction']:26s} {name:16s} FAILED: {exc}")
+            print(f"[{index}/{len(todo)}] {row['reaction']:26s} {name:16s} "
+                  f"FAILED: {exc}", flush=True)
+            save()
             continue
 
         ratio = calculated / row["measured_barns"] if row["measured_barns"] else None
         results.append({**row, "yani_barns": calculated, "yani_ce": ratio})
         fispact = (f"  FISPACT C/E {row['fispact_ce']:5.2f}"
                    if row["fispact_ce"] is not None else "")
-        print(f"[{index}/{len(rows)}] {row['reaction']:26s} {name:16s} "
+        print(f"[{index}/{len(todo)}] {row['reaction']:26s} {name:16s} "
               f"yani {calculated:9.3e} b  measured {row['measured_barns']:9.3e} b  "
-              f"C/E {ratio:5.2f}{fispact}")
+              f"C/E {ratio:5.2f}{fispact}", flush=True)
+        save()
 
+    save()
     elapsed = time.time() - started
     scored = [row for row in results if row["yani_ce"]]
     yani_ce = np.array([row["yani_ce"] for row in scored])
@@ -201,18 +241,6 @@ def main():
     if args.check_linearity:
         print(f"linearity: largest change at a tenth of the fluence {drift * 100:.4f}%")
 
-    args.output.mkdir(parents=True, exist_ok=True)
-    destination = args.output / f"{combination.name}.json"
-    destination.write_text(json.dumps({
-        "benchmark": "effective_cross_sections",
-        "combination": libraries.as_dict(combination),
-        "yani_version": getattr(yani, "__version__", "unknown"),
-        "pulse_seconds": PULSE_SECONDS,
-        "pulse_flux": PULSE_FLUX,
-        "wall_seconds": elapsed,
-        "results": results,
-        "failures": failures,
-    }, indent=1, sort_keys=True))
     print(f"\nwrote {destination}")
 
 
