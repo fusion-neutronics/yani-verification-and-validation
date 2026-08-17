@@ -3,18 +3,28 @@
 
     sweep.py                                  # 132 experiments x every combination
     sweep.py --combination tendl-2017         # just the apples-to-apples one
-    sweep.py --experiment 2000exp_5min        # just the campaign covering all 73 foils
+    sweep.py --experiment 2000exp_5min        # the campaign covering all 73 foils
     sweep.py --case Fe --case W --case Nb     # a few foils, all combinations
+    sweep.py --workers 3
 
 Writes one JSON per combination into `results/`, holding every foil's calculated
 curve, the measurement, FISPACT-II's published curve where the archive has one,
 and the scores. That is what the site's pages and plots are generated from.
 
-Each combination runs in its own process. The parsed nuclear data for a library
-stays resident once loaded, which is what makes the second foil fast, but it
-also means holding two libraries at once for no reason; a fresh process per
-combination gives the memory back. Restarting is cheap: `--resume` skips a
-combination whose output is already complete.
+## Why it is shaped like this
+
+A solve is single-threaded and takes a couple of minutes, most of it spent
+reducing a 2800-nuclide network down to what one foil can reach, so 132 of them
+in series is a long afternoon. They are independent, so they run in a pool.
+
+Each worker loads the library once and keeps it, which is the whole reason for
+a pool of long-lived processes rather than a process per case: the parse is
+paid `--workers` times instead of 132 times. It also sets the memory bill, at
+something like 1.6 GB resident per worker, so `--workers` defaults to leaving a
+core and its share of memory alone rather than to the core count.
+
+Results are written as they arrive rather than at the end. A sweep that dies on
+case 130 used to lose 129 good answers.
 """
 
 import argparse
@@ -33,77 +43,94 @@ import case as fns_case  # noqa: E402
 
 HERE = pathlib.Path(__file__).resolve().parent
 
+# Set once per worker process, so the library is parsed on the first case that
+# worker handles and reused for every case after it.
+_STATE = {}
 
-def _run_combination(combination_name, selection, data_path, output_dir, queue):
-    """One combination over the selected experiments, in a process of its own."""
+
+def _init(combination_name, data_path):
     import yani
 
     import run as fns_run
 
     combination = libraries.BY_NAME[combination_name]
-    results, failures = {}, {}
-    started = time.time()
-
-    for index, (name, experiment) in enumerate(selection, start=1):
-        key = f"{name}/{experiment}"
-        try:
-            case = fns_case.load(name, experiment, data_path)
-            calculated, breakdown, elapsed = fns_run.run(case, combination)
-            metrics = fns_case.score(calculated, case)
-            entry = {
-                "case": name,
-                "experiment": experiment,
-                "time_unit": case.time_unit,
-                "times": case.times.tolist(),
-                "measured_uW_per_g": case.measured.tolist(),
-                "measured_uncertainty_uW_per_g": case.uncertainty.tolist(),
-                "yani_uW_per_g": calculated.tolist(),
-                "metrics": metrics,
-                "solve_seconds": elapsed,
-                "leaders": fns_run.leaders(breakdown),
-                "composition_mass_fraction": case.composition,
-            }
-            if case.fispact is not None:
-                entry["fispact_uW_per_g"] = case.fispact.tolist()
-                entry["fispact_library"] = case.fispact_library
-                entry["fispact_metrics"] = fns_case.score(case.fispact, case)
-            results[key] = entry
-            queue.put(("progress", combination_name, index, len(selection), key,
-                       metrics["mean_deviation_percent"]))
-        except Exception:
-            # One foil that will not solve must not cost the other 131. The
-            # traceback is kept in the output so a failure is visible on the
-            # site rather than only absent from it.
-            failures[key] = traceback.format_exc()
-            queue.put(("failed", combination_name, index, len(selection), key, None))
-
-    document = {
-        "benchmark": "fns_decay_heat",
-        "combination": libraries.as_dict(combination),
-        "yani_version": getattr(yani, "__version__", "unknown"),
-        "experiments": len(selection),
-        "solved": len(results),
-        "failed": len(failures),
-        "wall_seconds": time.time() - started,
-        "results": results,
-        "failures": failures,
-    }
-    output_dir.mkdir(parents=True, exist_ok=True)
-    destination = output_dir / f"{combination_name}.json"
-    destination.write_text(json.dumps(document, indent=1, sort_keys=True))
-    queue.put(("done", combination_name, len(results), len(failures),
-               str(destination), time.time() - started))
+    libraries.apply(combination, yani)
+    _STATE["combination"] = combination
+    _STATE["data_path"] = data_path
+    _STATE["run"] = fns_run
+    _STATE["yani"] = yani
 
 
-def complete(path, expected):
-    """Is this combination's output already there and covering everything asked?"""
+def _solve(selection_entry):
+    """One experiment, in whichever worker picks it up."""
+    name, experiment = selection_entry
+    key = f"{name}/{experiment}"
+    try:
+        case = fns_case.load(name, experiment, _STATE["data_path"])
+        calculated, breakdown, elapsed = _STATE["run"].run(
+            case, _STATE["combination"])
+        entry = {
+            "case": name,
+            "experiment": experiment,
+            "time_unit": case.time_unit,
+            "times": case.times.tolist(),
+            "measured_uW_per_g": case.measured.tolist(),
+            "measured_uncertainty_uW_per_g": case.uncertainty.tolist(),
+            "yani_uW_per_g": calculated.tolist(),
+            "metrics": fns_case.score(calculated, case),
+            "solve_seconds": elapsed,
+            "leaders": _STATE["run"].leaders(breakdown),
+            "composition_mass_fraction": case.composition,
+        }
+        if case.fispact is not None:
+            entry["fispact_uW_per_g"] = case.fispact.tolist()
+            entry["fispact_library"] = case.fispact_library
+            entry["fispact_metrics"] = fns_case.score(case.fispact, case)
+        return key, entry, None
+    except Exception:
+        # One foil that will not solve must not cost the other 131. The
+        # traceback is kept in the output so a failure is visible on the site
+        # rather than only absent from it.
+        return key, None, traceback.format_exc()
+
+
+def existing(path):
+    """What a previous run of this combination already got through."""
     if not path.is_file():
-        return False
+        return {}, {}
     try:
         document = json.loads(path.read_text())
     except json.JSONDecodeError:
-        return False
-    return set(document.get("results", {})) >= expected
+        return {}, {}
+    return document.get("results", {}), document.get("failures", {})
+
+
+def write(path, combination, results, failures, selection, seconds, version):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "benchmark": "fns_decay_heat",
+        "combination": libraries.as_dict(combination),
+        "yani_version": version,
+        "experiments": len(selection),
+        "solved": len(results),
+        "failed": len(failures),
+        "wall_seconds": seconds,
+        "results": results,
+        "failures": failures,
+    }
+    # Written aside and moved, so a sweep killed mid-write does not leave a
+    # truncated file that the site generator would happily read.
+    scratch = path.with_suffix(".json.part")
+    scratch.write_text(json.dumps(payload, indent=1, sort_keys=True))
+    scratch.replace(path)
+
+
+def yani_version():
+    try:
+        import yani
+        return getattr(yani, "__version__", "unknown")
+    except ImportError:
+        return "unknown"
 
 
 def main():
@@ -117,8 +144,10 @@ def main():
                         help="repeatable; default is all three campaigns")
     parser.add_argument("--data", type=pathlib.Path, help="benchmark JSON")
     parser.add_argument("--output", type=pathlib.Path, default=HERE / "results")
-    parser.add_argument("--resume", action="store_true",
-                        help="skip combinations already written in full")
+    parser.add_argument("--workers", type=int, default=0,
+                        help="parallel solves; 0 picks one fewer than the cores")
+    parser.add_argument("--redo", action="store_true",
+                        help="re-solve cases already in the output file")
     args = parser.parse_args()
 
     combinations = libraries.resolve(args.combination)
@@ -130,45 +159,57 @@ def main():
     if not selection:
         raise SystemExit("no experiments matched --case/--experiment")
 
+    workers = args.workers or max(1, (multiprocessing.cpu_count() or 2) - 1)
     print(f"{len(selection)} experiments x {len(combinations)} combinations "
-          f"= {len(selection) * len(combinations)} solves")
-    expected = {f"{name}/{experiment}" for name, experiment in selection}
+          f"= {len(selection) * len(combinations)} solves, {workers} workers")
 
-    # 'spawn' rather than fork: yani's data cache is process-wide state in a
-    # compiled extension, and inheriting a half-loaded copy of it is not
+    version = yani_version()
+    # 'spawn' rather than fork: yani's nuclear-data cache is process-wide state
+    # in a compiled extension, and inheriting a half-loaded copy of it is not
     # something to rely on.
     context = multiprocessing.get_context("spawn")
     summary = []
 
     for combination in combinations:
         destination = args.output / f"{combination.name}.json"
-        if args.resume and complete(destination, expected):
-            print(f"\n{combination.name}: already complete, skipping")
-            continue
+        results, failures = ({}, {}) if args.redo else existing(destination)
+        todo = [entry for entry in selection
+                if f"{entry[0]}/{entry[1]}" not in results]
 
         print(f"\n{combination.name}: xs {combination.cross_sections}, "
               f"reactions {combination.reactions}, "
               f"branching {combination.branching}, decay {combination.decay}")
-        queue = context.Queue()
-        worker = context.Process(
-            target=_run_combination,
-            args=(combination.name, selection, args.data, args.output, queue))
-        worker.start()
+        if not todo:
+            print(f"  already complete ({len(results)} experiments)")
+            summary.append((combination.name, len(results), len(failures)))
+            continue
+        if len(todo) < len(selection):
+            print(f"  resuming: {len(selection) - len(todo)} already done")
 
-        while True:
-            message = queue.get()
-            if message[0] == "done":
-                _, name, solved, failed, path, seconds = message
-                print(f"  {name}: {solved} solved, {failed} failed, "
-                      f"{seconds / 60:.1f} min -> {path}")
-                summary.append((name, solved, failed))
-                break
-            _, name, index, total, key, deviation = message
-            if message[0] == "failed":
-                print(f"  [{index}/{total}] {key}: FAILED")
-            else:
-                print(f"  [{index}/{total}] {key}: {deviation:.1f}%")
-        worker.join()
+        started = time.time()
+        done = 0
+        with context.Pool(processes=min(workers, len(todo)), initializer=_init,
+                          initargs=(combination.name, args.data)) as pool:
+            for key, entry, failure in pool.imap_unordered(_solve, todo):
+                done += 1
+                if entry is None:
+                    failures[key] = failure
+                    print(f"  [{done}/{len(todo)}] {key}: FAILED")
+                else:
+                    results.pop(key, None)
+                    failures.pop(key, None)
+                    results[key] = entry
+                    print(f"  [{done}/{len(todo)}] {key}: "
+                          f"{entry['metrics']['mean_deviation_percent']:.1f}%",
+                          flush=True)
+                # Written every time: a solve costs minutes and a write costs
+                # milliseconds, so there is nothing to batch for.
+                write(destination, combination, results, failures, selection,
+                      time.time() - started, version)
+
+        print(f"  {combination.name}: {len(results)} solved, {len(failures)} "
+              f"failed, {(time.time() - started) / 60:.1f} min -> {destination}")
+        summary.append((combination.name, len(results), len(failures)))
 
     print("\nsummary")
     for name, solved, failed in summary:
