@@ -1,10 +1,8 @@
-# yani verification and validation
+# YANI verification and validation
 
-Every open benchmark we have found that tests a transmutation, activation or
-inventory code, run against [yani][yani], with the scripts that produced the
-numbers.
+This repository hosts simulation results and repository scripts for running YANI and compare the results with open benchmarks
 
-**The site is at
+**The site showing the results is at
 <https://fusion-neutronics.github.io/yani-verification-and-validation/>.**
 
 [yani]: https://github.com/fusion-neutronics/yani
@@ -13,25 +11,31 @@ numbers.
 
 | benchmark | what is measured | cases | another code's results |
 | --- | --- | ---: | --- |
-| [FNS decay heat](benchmarks/fns_decay_heat) | specific decay heat after a 14 MeV irradiation | 132 | FISPACT-II, TENDL-2017 |
-| [Effective cross sections](benchmarks/effective_cross_sections) | spectrum-averaged cross sections in 23 fields | 365 | FISPACT-II, TENDL-2017 |
+| [FNS decay heat](benchmarks/fns_decay_heat) | specific decay heat after a 14 MeV irradiation | 132 | yes, TENDL-2017 |
+| [Effective cross sections](benchmarks/effective_cross_sections) | spectrum-averaged cross sections in 23 fields | 365 | yes, TENDL-2017 |
 
-Both are published by the IAEA through [CoNDERC][conderc], and both archives
-carry FISPACT-II's own calculated results next to the measurements. That is
-what makes the comparison a statement about codes rather than about libraries:
-FISPACT-II was run with TENDL-2017, so yani is run with TENDL-2017 too, and on
-that line the two codes are reading the same evaluations.
+Both are published by the IAEA through [CoNDERC][conderc]. What makes these
+archives worth building on is that each one carries three things, not one:
 
-Everything else -- other libraries, other combinations of the five nuclear-data
-subsections, OpenMC -- answers a different question and is labelled as such.
+* **The measurement.** Decay heat measured at FNS after a 14 MeV irradiation,
+  and effective cross sections measured by foil activation, each with its
+  experimental uncertainty. This is the part that makes a run validation rather
+  than a code comparison.
+* **The conditions needed to reproduce it.** The neutron field as group fluxes,
+  and for the decay-heat cases the foil composition and mass and the irradiation
+  and cooling schedule. So a case is defined by the archive itself rather than by
+  our reading of a paper.
+* **Another code's calculated results for the same cases**, produced with
+  FISPACT-II. So every plot here shows the measurement, yani, and an independent
+  inventory code, and a disagreement can be attributed rather than just noted.
+
+Those published calculations used TENDL-2017, so TENDL-2017 is also the default
+library for the yani runs, which keeps the comparison like for like.
 
 [conderc]: https://nds.iaea.org/conderc/
 
 **If you know of an open benchmark that is not here,
-[raise an issue](../../issues) and we will add it.** The list is the one we have
-found, not the one that exists. See [docs/contributing.md](docs/contributing.md)
-for what makes a benchmark usable on a site whose whole claim is that you can
-re-run it.
+[raise an issue](../../issues) and we will add it.**
 
 ## Running one
 
@@ -43,11 +47,6 @@ python benchmarks/fns_decay_heat/run.py --case Fe
 python benchmarks/fns_decay_heat/run.py --list
 ```
 
-Nothing is fetched from the IAEA to reproduce a run: each benchmark's data is
-distilled into a committed JSON by its own `build_data.py`, which is kept as the
-record of how that JSON was derived. Nuclear data is downloaded and cached by
-yani on first use, and no ENDF processing or NJOY is involved, because every
-library these benchmarks use is a keyword yani resolves to converted data.
 
 ## Running all of it
 
@@ -69,7 +68,7 @@ was in flight. Nothing needs to be finished in one sitting.
 Useful shapes for a long run:
 
 ```bash
-# just the comparison against FISPACT-II, all 132 experiments
+# just the like-for-like library, all 132 decay-heat experiments
 python tools/run_all.py --stage fns --combination tendl-2017
 
 # every combination, but only the campaign that covers all 73 foils
@@ -114,7 +113,3 @@ benchmarks/<name>/results/         what the sweeps wrote; the site reads these
 benchmarks/common/libraries.py     the nuclear-data combinations, shared
 tools/build_site.py                results -> docs pages and figures
 ```
-
-`tools/build_site.py` imports neither yani nor any nuclear data, so the site
-builds in CI from the repository alone and a page can never quietly disagree
-with the result file it displays.
