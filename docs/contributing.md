@@ -10,6 +10,39 @@ one we have.
 
 [issues]: https://github.com/fusion-neutronics/yani-verification-and-validation/issues
 
+## Why everything here is CoNDERC so far
+
+Not a convenience choice. For fusion inventory validation specifically, the
+IAEA's [CoNDERC][conderc] collection is very close to the whole of what is
+openly redistributable, and the reason is worth knowing before you go looking.
+
+The experimental campaigns that produced this field's validation data were run
+at JAEA's FNS and at AWE's ASP. A [2023 review][gilbert] by the author of the
+FNS decay-heat benchmark notes in passing that **neither facility is available
+any more**. The corpus is closed: no new measurements of this kind are coming,
+and what exists is what was published at the time.
+
+Of that, only the FNS decay-heat set was packaged for public redistribution,
+which is what CoNDERC hosts. The rest is in the literature rather than in a
+repository:
+
+* the ASP gamma-spectroscopy campaigns, published as results rather than data,
+* `UKAEA-FUS-390`, described in its own citation as available on request from
+  UKAEA,
+* the FNG decay-heat experiments at Frascati, distributed through SINBAD, which
+  needs registration.
+
+[conderc]: https://nds.iaea.org/conderc/
+[gilbert]: https://doi.org/10.1088/2515-7655/acbeaf
+
+So "we have two benchmarks" is not a stopping point we settled for. It is the
+count of the ones that meet the standard below. Outside fusion inventory
+specifically there is more -- IRDFF-II, EXFOR, and the fission-product
+decay-heat measurements -- and those are tracked as issues.
+
+If you know of something in the second category that has since been published
+as data, that is exactly the issue worth raising.
+
 ## What makes one usable here
 
 Every benchmark on this site is reproducible by anyone from a clean checkout,
