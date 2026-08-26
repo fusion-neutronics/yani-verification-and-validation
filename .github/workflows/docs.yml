@@ -1,0 +1,87 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# One deploy at a time; queued rather than cancelled so a merge is never
+# published over by an older run.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build the site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install the docs toolchain
+        run: |
+          python -m pip install --upgrade pip
+          # numpy and matplotlib only: build_site.py reads the committed result
+          # JSON and needs neither yani nor any nuclear data to make the pages.
+          pip install -r requirements-docs.txt
+
+      - name: Generate the benchmark pages and figures
+        run: python tools/build_site.py
+
+      - name: Build
+        run: mkdocs build --strict
+
+      - name: The site must carry results
+        shell: bash
+        run: |
+          # A page whose sweep never ran builds and deploys exactly as happily
+          # as one that did. That is tolerable while a benchmark is still being
+          # filled in -- the pages carry a draft banner saying which
+          # combinations have not run -- but a site where *nothing* has results
+          # is a broken publish rather than a draft, so that one fails.
+          python - <<'EOF'
+          import pathlib, sys
+
+          pages = sorted(pathlib.Path("site/benchmarks").glob("*/index.html"))
+          if not pages:
+              print("::error::no benchmark pages were generated")
+              sys.exit(1)
+
+          empty = [p for p in pages if "no results" in p.read_text().lower()]
+          for page in empty:
+              print(f"::warning::{page.parent.name} has no results yet")
+          print(f"{len(pages)} benchmark pages, {len(empty)} without results")
+          if len(empty) == len(pages):
+              print("::error::no benchmark page has any results")
+              sys.exit(1)
+          EOF
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: site
+          path: site
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

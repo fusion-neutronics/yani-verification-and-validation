@@ -1,0 +1,341 @@
+{
+ "benchmark": "effective_cross_sections",
+ "combination": {
+  "branching": "tendl-2017",
+  "cross_sections": "tendl-2017",
+  "decay": "endf-b8.1",
+  "fission_yields": "endf-b8.1",
+  "name": "tendl-2017",
+  "note": "The library FISPACT-II was run with for the published CoNDERC results. This is the apples-to-apples comparison: same cross sections, same reaction topology, same branching, different code.",
+  "reactions": "tendl-2017"
+ },
+ "failures": {},
+ "pulse_flux": 1e+21,
+ "pulse_seconds": 0.0001,
+ "results": [
+  {
+   "channel": "p",
+   "fispact_barns": 0.0929,
+   "fispact_ce": 0.97,
+   "measured_barns": 0.0958,
+   "mt": 103,
+   "product_element": "Mn",
+   "product_mass": 56,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Mn56",
+    "Mn56_m1",
+    "Mn56_m2"
+   ],
+   "reaction": "Fe-56(n,p)Mn-56",
+   "spectrum": "FNG-SiC",
+   "target": "Fe56",
+   "uncertainty_barns": 0.00479,
+   "yani_barns": 0.09265679468450533,
+   "yani_ce": 0.9671899236378427
+  },
+  {
+   "channel": "2n",
+   "fispact_barns": 0.417,
+   "fispact_ce": 1.06,
+   "measured_barns": 0.393,
+   "mt": 16,
+   "product_element": "Nb",
+   "product_mass": 92,
+   "product_note": "first metastable state",
+   "product_state": "m",
+   "products": [
+    "Nb92_m1"
+   ],
+   "reaction": "Nb-93(n,2n)Nb-92m",
+   "spectrum": "FNG-SiC",
+   "target": "Nb93",
+   "uncertainty_barns": 0.0118,
+   "yani_barns": 0.404807264238771,
+   "yani_ce": 1.0300439293607404
+  },
+  {
+   "channel": "a",
+   "fispact_barns": 0.0972,
+   "fispact_ce": 1.46,
+   "measured_barns": 0.0666,
+   "mt": 107,
+   "product_element": "Na",
+   "product_mass": 24,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Na24",
+    "Na24_m1",
+    "Na24_m2"
+   ],
+   "reaction": "Al-27(n,a)Na-24",
+   "spectrum": "FNG-f82h",
+   "target": "Al27",
+   "uncertainty_barns": 0.00686,
+   "yani_barns": 0.0971652139891409,
+   "yani_ce": 1.4589371469840973
+  },
+  {
+   "channel": "p",
+   "fispact_barns": 0.0922,
+   "fispact_ce": 0.99,
+   "measured_barns": 0.0931,
+   "mt": 103,
+   "product_element": "Mn",
+   "product_mass": 56,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Mn56",
+    "Mn56_m1",
+    "Mn56_m2"
+   ],
+   "reaction": "Fe-56(n,p)Mn-56",
+   "spectrum": "FNG-f82h",
+   "target": "Fe56",
+   "uncertainty_barns": 0.00658,
+   "yani_barns": 0.09212509162722692,
+   "yani_ce": 0.9895283740840699
+  },
+  {
+   "channel": "a",
+   "fispact_barns": 0.102,
+   "fispact_ce": 1.02,
+   "measured_barns": 0.1,
+   "mt": 107,
+   "product_element": "Na",
+   "product_mass": 24,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Na24",
+    "Na24_m1",
+    "Na24_m2"
+   ],
+   "reaction": "Al-27(n,a)Na-24",
+   "spectrum": "FNG-heat",
+   "target": "Al27",
+   "uncertainty_barns": 0.0021,
+   "yani_barns": 0.10217726320736753,
+   "yani_ce": 1.0217726320736753
+  },
+  {
+   "channel": "2n",
+   "fispact_barns": 0.435,
+   "fispact_ce": 0.84,
+   "measured_barns": 0.518,
+   "mt": 16,
+   "product_element": "Nb",
+   "product_mass": 92,
+   "product_note": "first metastable state",
+   "product_state": "m",
+   "products": [
+    "Nb92_m1"
+   ],
+   "reaction": "Nb-93(n,2n)Nb-92m",
+   "spectrum": "FNG-heat",
+   "target": "Nb93",
+   "uncertainty_barns": 0.0652,
+   "yani_barns": 0.4241946331768845,
+   "yani_ce": 0.8189085582565337
+  },
+  {
+   "channel": "a",
+   "fispact_barns": 0.0814,
+   "fispact_ce": 0.86,
+   "measured_barns": 0.0946,
+   "mt": 107,
+   "product_element": "Na",
+   "product_mass": 24,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Na24",
+    "Na24_m1",
+    "Na24_m2"
+   ],
+   "reaction": "Al-27(n,a)Na-24",
+   "spectrum": "FNG-vanad",
+   "target": "Al27",
+   "uncertainty_barns": 0.00892,
+   "yani_barns": 0.08146486916967943,
+   "yani_ce": 0.8611508368887889
+  },
+  {
+   "channel": "p",
+   "fispact_barns": 0.172,
+   "fispact_ce": 1.67,
+   "measured_barns": 0.103,
+   "mt": 103,
+   "product_element": "Sc",
+   "product_mass": 46,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Sc46",
+    "Sc46_m1",
+    "Sc46_m2"
+   ],
+   "reaction": "Ti-46(n,p)Sc-46",
+   "spectrum": "FNG-vanad",
+   "target": "Ti46",
+   "uncertainty_barns": 0.00629,
+   "yani_barns": 0.17239248904537127,
+   "yani_ce": 1.673713485877391
+  },
+  {
+   "channel": "p",
+   "fispact_barns": 0.0769,
+   "fispact_ce": 0.84,
+   "measured_barns": 0.0916,
+   "mt": 103,
+   "product_element": "Mn",
+   "product_mass": 56,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Mn56",
+    "Mn56_m1",
+    "Mn56_m2"
+   ],
+   "reaction": "Fe-56(n,p)Mn-56",
+   "spectrum": "FNG-vanad",
+   "target": "Fe56",
+   "uncertainty_barns": 0.0145,
+   "yani_barns": 0.07728083478865402,
+   "yani_ce": 0.8436772356839959
+  },
+  {
+   "channel": "2n",
+   "fispact_barns": 0.346,
+   "fispact_ce": 0.72,
+   "measured_barns": 0.481,
+   "mt": 16,
+   "product_element": "Nb",
+   "product_mass": 92,
+   "product_note": "first metastable state",
+   "product_state": "m",
+   "products": [
+    "Nb92_m1"
+   ],
+   "reaction": "Nb-93(n,2n)Nb-92m",
+   "spectrum": "FNG-vanad",
+   "target": "Nb93",
+   "uncertainty_barns": 0.0659,
+   "yani_barns": 0.33579537509296314,
+   "yani_ce": 0.6981192829375533
+  },
+  {
+   "channel": "p",
+   "fispact_barns": 0.0947,
+   "fispact_ce": 1.09,
+   "measured_barns": 0.0869,
+   "mt": 103,
+   "product_element": "Mn",
+   "product_mass": 56,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Mn56",
+    "Mn56_m1",
+    "Mn56_m2"
+   ],
+   "reaction": "Fe-56(n,p)Mn-56",
+   "spectrum": "JAEA-FNS-pos3",
+   "target": "Fe56",
+   "uncertainty_barns": 0.00434,
+   "yani_barns": 0.0944522692670296,
+   "yani_ce": 1.0869075865020668
+  },
+  {
+   "channel": "a",
+   "fispact_barns": 0.109,
+   "fispact_ce": 0.92,
+   "measured_barns": 0.119,
+   "mt": 107,
+   "product_element": "Na",
+   "product_mass": 24,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Na24",
+    "Na24_m1",
+    "Na24_m2"
+   ],
+   "reaction": "Al-27(n,a)Na-24",
+   "spectrum": "JAEA-FNS-pos7",
+   "target": "Al27",
+   "uncertainty_barns": 0.0142,
+   "yani_barns": 0.10883283721738861,
+   "yani_ce": 0.91456165728898
+  },
+  {
+   "channel": "p",
+   "fispact_barns": 0.228,
+   "fispact_ce": 0.96,
+   "measured_barns": 0.237,
+   "mt": 103,
+   "product_element": "Sc",
+   "product_mass": 46,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Sc46",
+    "Sc46_m1",
+    "Sc46_m2"
+   ],
+   "reaction": "Ti-46(n,p)Sc-46",
+   "spectrum": "JAEA-FNS-pos7",
+   "target": "Ti46",
+   "uncertainty_barns": 0.0142,
+   "yani_barns": 0.22772807872289152,
+   "yani_ce": 0.960877969294901
+  },
+  {
+   "channel": "p",
+   "fispact_barns": 0.103,
+   "fispact_ce": 0.85,
+   "measured_barns": 0.121,
+   "mt": 103,
+   "product_element": "Mn",
+   "product_mass": 56,
+   "product_note": "total over ground and isomeric states",
+   "product_state": "",
+   "products": [
+    "Mn56",
+    "Mn56_m1",
+    "Mn56_m2"
+   ],
+   "reaction": "Fe-56(n,p)Mn-56",
+   "spectrum": "JAEA-FNS-pos7",
+   "target": "Fe56",
+   "uncertainty_barns": 0.00603,
+   "yani_barns": 0.10303912645679875,
+   "yani_ce": 0.8515630285685847
+  },
+  {
+   "channel": "2n",
+   "fispact_barns": 0.449,
+   "fispact_ce": 0.96,
+   "measured_barns": 0.468,
+   "mt": 16,
+   "product_element": "Nb",
+   "product_mass": 92,
+   "product_note": "first metastable state",
+   "product_state": "m",
+   "products": [
+    "Nb92_m1"
+   ],
+   "reaction": "Nb-93(n,2n)Nb-92m",
+   "spectrum": "JAEA-FNS-pos7",
+   "target": "Nb93",
+   "uncertainty_barns": 0.0234,
+   "yani_barns": 0.43709119360378856,
+   "yani_ce": 0.9339555418884371
+  }
+ ],
+ "wall_seconds": 2313.898630619049,
+ "yani_version": "0.4.0"
+}
