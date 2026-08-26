@@ -25,6 +25,15 @@ and running them by hand does the same thing.
 OpenMC install, a depletion chain and an HDF5 cross-section library that the
 other stages do not. See `benchmarks/fns_decay_heat/run_openmc.py --list-chains`.
 
+## Error bars
+
+`--uncertainty` turns on nuclear-data uncertainty in the `fns` and `ecs`
+stages, which resamples the activation cross sections from their covariance and
+re-solves per replica. It multiplies the solve count by `--samples`, so it is
+off by default and `--plan` folds it into the estimate rather than letting a
+reader discover it. A short run with `--samples 32` on one combination is the
+sensible way to start.
+
 ## What it will download
 
 Nuclear data, once, into `~/.cache/yamc`. yani fetches the sections it needs on
@@ -58,6 +67,16 @@ def python():
     return sys.executable or "python3"
 
 
+def uncertainty_flags(args):
+    """The covariance flags a sweep stage inherits from this driver."""
+    if not args.uncertainty:
+        return []
+    flags = ["--uncertainty", "--seed", str(args.seed)]
+    if args.samples:
+        flags += ["--samples", str(args.samples)]
+    return flags
+
+
 def stages(args):
     """(name, description, command) for everything that would run."""
     plan = []
@@ -70,6 +89,7 @@ def stages(args):
                 command += ["--experiment", experiment]
         for name in args.combination:
             command += ["--combination", name]
+        command += uncertainty_flags(args)
         plan.append(("fns", "FNS decay heat, every combination", command))
 
     if "ecs" in args.stage:
@@ -77,6 +97,7 @@ def stages(args):
             command = [python(),
                        str(ROOT / "benchmarks" / "effective_cross_sections" / "run.py"),
                        "--combination", combination.name]
+            command += uncertainty_flags(args)
             plan.append((f"ecs:{combination.name}",
                          f"effective cross sections, {combination.name}", command))
 
@@ -100,8 +121,16 @@ def estimate(args):
     """Rough wall-clock minutes, so --plan can say whether this is a coffee or a day."""
     combinations = len(libraries.resolve(args.combination))
     experiments = 132 if not args.experiment else 73 * len(args.experiment)
-    fns = experiments * combinations * FNS_MINUTES_PER_SOLVE / max(1, args.workers)
-    ecs = 365 * combinations * ECS_MINUTES_PER_SOLVE / max(1, args.workers)
+    # One solve per replica rather than one per case, so the replica count
+    # multiplies straight through. Adaptive sampling has no number to use, so
+    # 100 stands in for it, which is the point of saying so in --plan.
+    replicas = 1
+    if args.uncertainty:
+        replicas = args.samples or 100
+    fns = (experiments * combinations * replicas
+           * FNS_MINUTES_PER_SOLVE / max(1, args.workers))
+    ecs = (365 * combinations * replicas
+           * ECS_MINUTES_PER_SOLVE / max(1, args.workers))
     total = 0.0
     if "fns" in args.stage:
         total += fns
@@ -158,6 +187,12 @@ def main():
                         help="print the commands and the estimate, run nothing")
     parser.add_argument("--keep-going", action="store_true",
                         help="carry on to the next stage when one fails")
+    parser.add_argument("--uncertainty", action="store_true",
+                        help="propagate cross-section covariance in the fns/ecs stages")
+    parser.add_argument("--samples", type=int,
+                        help="replica count for --uncertainty (recommended)")
+    parser.add_argument("--seed", type=int, default=42,
+                        help="covariance sampling seed (default: 42)")
     args = parser.parse_args()
 
     if not args.stage:
@@ -170,6 +205,12 @@ def main():
     minutes = estimate(args)
 
     print(f"{len(plan)} stage(s), {args.workers} workers")
+    if args.uncertainty:
+        print(f"uncertainty on: {args.samples or 'adaptive'} replicas per solve, "
+              f"seed {args.seed}")
+        if not args.samples:
+            print("  no --samples, so each case picks its own replica count and "
+                  "the estimate below assumes 100")
     if minutes:
         print(f"rough estimate {minutes / 60:.1f} h of solving, resumable "
               f"throughout\n")

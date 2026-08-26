@@ -6,6 +6,7 @@
     sweep.py --experiment 2000exp_5min        # the campaign covering all 73 foils
     sweep.py --case Fe --case W --case Nb     # a few foils, all combinations
     sweep.py --workers 3
+    sweep.py --uncertainty --samples 32       # with nuclear-data error bars
 
 Writes one JSON per combination into `results/`, holding every foil's calculated
 curve, the measurement, FISPACT-II's published curve where the archive has one,
@@ -25,6 +26,11 @@ core and its share of memory alone rather than to the core count.
 
 Results are written as they arrive rather than at the end. A sweep that dies on
 case 130 used to lose 129 good answers.
+
+`--uncertainty` costs one solve per replica instead of one per case, so it
+multiplies the wall time by the replica count. Give `--samples` a number when
+sweeping: left adaptive, each case chooses its own replica count and the sweep
+stops being able to say how long it will take.
 """
 
 import argparse
@@ -37,7 +43,7 @@ import traceback
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
-from common import libraries  # noqa: E402
+from common import libraries, uncertainty as unc  # noqa: E402
 
 import case as fns_case  # noqa: E402
 
@@ -48,7 +54,7 @@ HERE = pathlib.Path(__file__).resolve().parent
 _STATE = {}
 
 
-def _init(combination_name, data_path):
+def _init(combination_name, data_path, uncertainty):
     import yani
 
     import run as fns_run
@@ -59,6 +65,12 @@ def _init(combination_name, data_path):
     _STATE["data_path"] = data_path
     _STATE["run"] = fns_run
     _STATE["yani"] = yani
+    # Built inside the worker: a DataUncertainty is a compiled object and the
+    # pool is spawned, so the seed and the replica count travel instead of it.
+    _STATE["uncertainty"] = (
+        yani.DataUncertainty(seed=uncertainty["seed"],
+                             samples=uncertainty["samples"])
+        if uncertainty else None)
 
 
 def _solve(selection_entry):
@@ -67,8 +79,9 @@ def _solve(selection_entry):
     key = f"{name}/{experiment}"
     try:
         case = fns_case.load(name, experiment, _STATE["data_path"])
-        calculated, breakdown, elapsed = _STATE["run"].run(
-            case, _STATE["combination"])
+        solved = _STATE["run"].run(
+            case, _STATE["combination"], _STATE["uncertainty"])
+        calculated = solved.heat
         entry = {
             "case": name,
             "experiment": experiment,
@@ -77,9 +90,13 @@ def _solve(selection_entry):
             "measured_uW_per_g": case.measured.tolist(),
             "measured_uncertainty_uW_per_g": case.uncertainty.tolist(),
             "yani_uW_per_g": calculated.tolist(),
-            "metrics": fns_case.score(calculated, case),
-            "solve_seconds": elapsed,
-            "leaders": _STATE["run"].leaders(breakdown),
+            "yani_sigma_uW_per_g": (solved.sigma.tolist()
+                                    if solved.sigma is not None else None),
+            "data_uncertainty_info": unc.summarise(solved.uncertainty_info),
+            "uncertainty_replicas": solved.replicas,
+            "metrics": fns_case.score(calculated, case, solved.sigma),
+            "solve_seconds": solved.elapsed,
+            "leaders": _STATE["run"].leaders(solved.breakdown),
             "composition_mass_fraction": case.composition,
         }
         if case.fispact is not None:
@@ -105,12 +122,14 @@ def existing(path):
     return document.get("results", {}), document.get("failures", {})
 
 
-def write(path, combination, results, failures, selection, seconds, version):
+def write(path, combination, results, failures, selection, seconds, version,
+          uncertainty=None):
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "benchmark": "fns_decay_heat",
         "combination": libraries.as_dict(combination),
         "yani_version": version,
+        "uncertainty": uncertainty,
         "experiments": len(selection),
         "solved": len(results),
         "failed": len(failures),
@@ -148,6 +167,12 @@ def main():
                         help="parallel solves; 0 picks one fewer than the cores")
     parser.add_argument("--redo", action="store_true",
                         help="re-solve cases already in the output file")
+    parser.add_argument("--uncertainty", action="store_true",
+                        help="propagate cross-section covariance onto the curves")
+    parser.add_argument("--samples", type=int,
+                        help="fixed replica count (recommended with --uncertainty)")
+    parser.add_argument("--seed", type=int, default=42,
+                        help="covariance sampling seed (default: 42)")
     args = parser.parse_args()
 
     combinations = libraries.resolve(args.combination)
@@ -160,8 +185,14 @@ def main():
         raise SystemExit("no experiments matched --case/--experiment")
 
     workers = args.workers or max(1, (multiprocessing.cpu_count() or 2) - 1)
+    uncertainty = ({"seed": args.seed, "samples": args.samples}
+                   if args.uncertainty else None)
     print(f"{len(selection)} experiments x {len(combinations)} combinations "
           f"= {len(selection) * len(combinations)} solves, {workers} workers")
+    if uncertainty:
+        print(f"  uncertainty on, seed {args.seed}, "
+              f"{args.samples or 'adaptive'} replicas per solve: expect the "
+              f"wall time to scale with that")
 
     version = yani_version()
     # 'spawn' rather than fork: yani's nuclear-data cache is process-wide state
@@ -189,7 +220,8 @@ def main():
         started = time.time()
         done = 0
         with context.Pool(processes=min(workers, len(todo)), initializer=_init,
-                          initargs=(combination.name, args.data)) as pool:
+                          initargs=(combination.name, args.data,
+                                    uncertainty)) as pool:
             for key, entry, failure in pool.imap_unordered(_solve, todo):
                 done += 1
                 if entry is None:
@@ -205,7 +237,7 @@ def main():
                 # Written every time: a solve costs minutes and a write costs
                 # milliseconds, so there is nothing to batch for.
                 write(destination, combination, results, failures, selection,
-                      time.time() - started, version)
+                      time.time() - started, version, uncertainty)
 
         print(f"  {combination.name}: {len(results)} solved, {len(failures)} "
               f"failed, {(time.time() - started) / 60:.1f} min -> {destination}")

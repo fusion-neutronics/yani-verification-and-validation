@@ -47,6 +47,31 @@ python benchmarks/fns_decay_heat/run.py --case Fe
 python benchmarks/fns_decay_heat/run.py --list
 ```
 
+## Error bars on the calculated side
+
+yani can propagate nuclear-data uncertainty, so both benchmarks take
+`--uncertainty`: the activation cross sections are resampled from their ENDF
+MF=33 covariance, folded against the benchmark's own spectrum, and the schedule
+re-solved per replica.
+
+```bash
+python benchmarks/fns_decay_heat/run.py --case Fe --uncertainty --samples 32
+```
+
+It is off by default because it costs one solve per replica rather than one in
+total. **Every sigma it reports today is zero**, because the published libraries
+do not yet carry a covariance section, and a run says so explicitly rather than
+letting a zero read as "well known":
+
+```
+covariance:  0 nuclide(s) perturbed, 462 with none published
+```
+
+So what is in the repository is the machinery and its coverage report, not yet a
+result. [The methodology page](docs/methodology.md) says what it covers, why the
+band is an ensemble spread rather than a quadrature sum, and what is still held
+at its evaluated value.
+
 
 ## Running all of it
 
@@ -76,6 +101,9 @@ python tools/run_all.py --experiment 2000exp_5min
 
 # a machine with cores to spare
 python tools/run_all.py --workers 8
+
+# with nuclear-data error bars; --plan folds the replica count into the estimate
+python tools/run_all.py --plan --uncertainty --samples 32
 
 # rebuild the pages from results already on disk, solving nothing
 python tools/run_all.py --stage site

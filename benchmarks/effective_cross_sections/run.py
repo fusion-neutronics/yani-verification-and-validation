@@ -5,6 +5,7 @@
     run.py --spectrum JAEA-FNS-pos3
     run.py --reaction "Fe-56(n,p)Mn-56"
     run.py --combination tendl-2025
+    run.py --uncertainty                     # with a nuclear-data error bar
 
 ## What is being computed
 
@@ -39,6 +40,16 @@ than for realism.
 `--check-linearity` re-runs each reaction at a tenth of the fluence and reports
 the largest change, which is how the choice above is kept honest rather than
 merely asserted.
+
+## The error bar
+
+`--uncertainty` resamples the activation cross sections from their ENDF MF=33
+covariance and re-solves each pulse per replica, so the reported sigma is the
+spread of the effective cross section itself. This benchmark is where that
+number is easiest to read: an effective cross section is one fold of one
+evaluated cross section against one spectrum, so its sigma is close to a direct
+statement about how well that evaluation is known in this field, with none of
+the chain effects that a decay-heat curve mixes in.
 """
 
 import argparse
@@ -52,7 +63,7 @@ import numpy as np
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
 import yani  # noqa: E402
-from common import libraries  # noqa: E402
+from common import libraries, uncertainty as unc  # noqa: E402
 
 HERE = pathlib.Path(__file__).resolve().parent
 DEFAULT_DATA = HERE / "data" / "rr_data.json"
@@ -89,13 +100,29 @@ def source_for(spectrum):
     )
 
 
+def _extract(atoms, target, products, fluence):
+    """One inventory -> one effective cross section [barns]."""
+    target_atoms = atoms.get(target)
+    if not target_atoms:
+        raise ValueError(f"no {target} left in the inventory, which cannot be right")
+    produced = sum(atoms.get(product, 0.0) for product in products)
+    return produced / target_atoms / fluence / BARN
+
+
 def effective_cross_section(target, products, source, seconds=PULSE_SECONDS,
-                            flux=PULSE_FLUX):
+                            flux=PULSE_FLUX, uncertainty=None):
     """Spectrum-averaged cross section [barns] for making `products` from `target`.
 
-    Returns the total over the listed products, which is what the measurement
-    covers: a bare product name in the benchmark means the sum over the ground
-    and isomeric states, and a named state means just that one.
+    Returns `(value, sigma)`, where sigma is None unless `uncertainty` is a
+    `yani.DataUncertainty`. The value is the total over the listed products,
+    which is what the measurement covers: a bare product name in the benchmark
+    means the sum over the ground and isomeric states, and a named state means
+    just that one.
+
+    The sigma is the spread of the ratio over the ensemble, taken by extracting
+    a cross section from each replica's whole inventory rather than by
+    combining a sigma on the product with a sigma on the target. Both come out
+    of the same perturbed solve and move together.
     """
     material = yani.Material(
         composition={target: 1.0},
@@ -107,15 +134,25 @@ def effective_cross_section(target, products, source, seconds=PULSE_SECONDS,
     )
     schedule = yani.PulseSchedule(
         [yani.Pulse(duration=(seconds, "s"), rate=flux, source=source)])
-    final = material.transmute(schedule)[-1]
+    results = material.transmute(schedule, data_uncertainty=uncertainty)
 
-    atoms = final.get_atoms_per_barn_cm()
-    target_atoms = atoms.get(target)
-    if not target_atoms:
-        raise ValueError(f"no {target} left in the inventory, which cannot be right")
-    produced = sum(atoms.get(product, 0.0) for product in products)
+    material_id = material.id or 0
+    final = results.get_final_material(material_id)
     fluence = flux * seconds
-    return produced / target_atoms / fluence / BARN
+    value = _extract(final.get_atoms_per_barn_cm(), target, products, fluence)
+
+    if uncertainty is None:
+        return value, None, None
+
+    # One pulse, so the final state is step 1; step 0 is the unirradiated input.
+    inventories = results.get_uncertainty_inventories(
+        material_id=material_id, step=results.num_steps)
+    if not inventories or len(inventories) < 2:
+        return value, None, results.data_uncertainty_info
+    spread = np.array(
+        [_extract(inventory, target, products, fluence)
+         for inventory in inventories], dtype=float)
+    return value, float(spread.std(ddof=1)), results.data_uncertainty_info
 
 
 def main():
@@ -130,6 +167,12 @@ def main():
                         help="re-run at a tenth of the fluence and report the drift")
     parser.add_argument("--redo", action="store_true",
                         help="re-solve reactions already in the output file")
+    parser.add_argument("--uncertainty", action="store_true",
+                        help="propagate cross-section covariance onto each value")
+    parser.add_argument("--samples", type=int,
+                        help="fixed replica count (default: until the sigmas settle)")
+    parser.add_argument("--seed", type=int, default=42,
+                        help="covariance sampling seed (default: 42)")
     args = parser.parse_args()
 
     combination = libraries.resolve([args.combination])[0]
@@ -156,8 +199,14 @@ def main():
     done = {(row["reaction"], row["spectrum"]) for row in results}
 
     libraries.apply(combination, yani)
+    uncertainty = None
+    if args.uncertainty:
+        uncertainty = yani.DataUncertainty(seed=args.seed, samples=args.samples)
     print(f"combination: {combination.name} (xs {combination.cross_sections}, "
           f"branching {combination.branching})", flush=True)
+    if uncertainty is not None:
+        print(f"uncertainty: cross-section covariance, seed {args.seed}, "
+              f"{args.samples or 'adaptive'} replicas", flush=True)
     print(f"{len(rows)} reactions across "
           f"{len({row['spectrum'] for row in rows})} spectra"
           + (f", {len(done)} already done" if done else ""), flush=True)
@@ -178,6 +227,8 @@ def main():
             "yani_version": getattr(yani, "__version__", "unknown"),
             "pulse_seconds": PULSE_SECONDS,
             "pulse_flux": PULSE_FLUX,
+            "uncertainty": ({"seed": args.seed, "samples": args.samples}
+                            if uncertainty is not None else None),
             "wall_seconds": time.time() - started,
             "results": results,
             "failures": failures,
@@ -192,10 +243,11 @@ def main():
         if name not in sources:
             sources[name] = source_for(document["spectra"][name])
         try:
-            calculated = effective_cross_section(
-                row["target"], row["products"], sources[name])
+            calculated, sigma, info = effective_cross_section(
+                row["target"], row["products"], sources[name],
+                uncertainty=uncertainty)
             if args.check_linearity:
-                tenth = effective_cross_section(
+                tenth, _, _ = effective_cross_section(
                     row["target"], row["products"], sources[name],
                     flux=PULSE_FLUX / 10.0)
                 if calculated > 0:
@@ -208,11 +260,26 @@ def main():
             continue
 
         ratio = calculated / row["measured_barns"] if row["measured_barns"] else None
-        results.append({**row, "yani_barns": calculated, "yani_ce": ratio})
+        entry = {**row, "yani_barns": calculated, "yani_ce": ratio}
+        if uncertainty is not None:
+            entry["yani_sigma_barns"] = sigma
+            # Kept as a fraction as well, because that is what a reader compares
+            # against the measurement's own quoted percentage.
+            entry["yani_sigma_percent"] = (
+                sigma / calculated * 100.0
+                if sigma is not None and calculated > 0 else None)
+            # Recorded even when no sigma came out, because "no covariance
+            # published" is the answer to why there is no band and has to
+            # survive into the result file to be readable there.
+            entry["data_uncertainty_info"] = unc.summarise(info)
+        results.append(entry)
         fispact = (f"  FISPACT C/E {row['fispact_ce']:5.2f}"
                    if row["fispact_ce"] is not None else "")
+        band = (f" +/- {entry['yani_sigma_percent']:4.1f}%"
+                if entry.get("yani_sigma_percent") is not None else "")
         print(f"[{index}/{len(todo)}] {row['reaction']:26s} {name:16s} "
-              f"yani {calculated:9.3e} b  measured {row['measured_barns']:9.3e} b  "
+              f"yani {calculated:9.3e} b{band}  "
+              f"measured {row['measured_barns']:9.3e} b  "
               f"C/E {ratio:5.2f}{fispact}", flush=True)
         save()
 
@@ -238,6 +305,20 @@ def main():
               f"median C/E {np.median(pair_yani):.3f}, "
               f"within 10%: {int(np.sum(np.abs(pair_yani - 1) <= 0.1))}/{len(pair_yani)}, "
               f"within 20%: {int(np.sum(np.abs(pair_yani - 1) <= 0.2))}/{len(pair_yani)}")
+    if uncertainty is not None:
+        banded = [row for row in results if row.get("yani_sigma_percent")]
+        print(f"\nuncertainty: {len(banded)}/{len(results)} reactions came back "
+              f"with a non-zero band")
+        # Taken from the last reaction solved: the coverage report is per
+        # target, and printing 365 of them would bury the one line that
+        # matters, which is whether anything was perturbed at all.
+        last = next((row["data_uncertainty_info"] for row in reversed(results)
+                     if row.get("data_uncertainty_info")), None)
+        for line in unc.describe(last):
+            print(f"  {line}")
+        if not banded:
+            print("  every band is zero: the libraries these runs download "
+                  "carry no covariance section yet")
     if args.check_linearity:
         print(f"linearity: largest change at a tenth of the fluence {drift * 100:.4f}%")
 

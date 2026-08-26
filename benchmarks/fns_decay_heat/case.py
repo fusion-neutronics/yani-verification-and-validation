@@ -121,7 +121,7 @@ def every(path=None):
             for experiment in sorted(document["cases"][name])]
 
 
-def score(calculated, case):
+def score(calculated, case, calculated_sigma=None):
     """How a calculated curve compares with the measurement.
 
     `mean_deviation_percent` is the headline: the average of |C/E - 1| over the
@@ -129,6 +129,16 @@ def score(calculated, case):
     high early and low late can hold a median C/E of 1.000 while matching
     nothing, and because the quantity being judged is agreement rather than
     bias. Both are reported.
+
+    `calculated_sigma` is the nuclear-data standard deviation on the calculated
+    curve, in the same units, when the run asked for one. Given it, the
+    agreement test becomes |C - E| <= sqrt(sigmaC^2 + sigmaE^2) rather than
+    |C - E| <= sigmaE, which is the question worth asking once both sides carry
+    an error bar: a point can sit outside the measurement uncertainty and still
+    be consistent, if the data it was calculated from is poorly known.
+
+    `points_within_sigma` keeps its old meaning either way, so the two
+    columns can be read against each other.
     """
     calculated = np.asarray(calculated, dtype=float)
     measured = case.measured
@@ -137,7 +147,7 @@ def score(calculated, case):
                       out=np.full(calculated.shape, np.nan), where=usable)
     sigma = np.divide(case.uncertainty, measured,
                       out=np.full(measured.shape, np.nan), where=usable)
-    return {
+    metrics = {
         "ratio": ratio.tolist(),
         "median_ratio": float(np.nanmedian(ratio)),
         "mean_deviation_percent": float(np.nanmean(np.abs(ratio - 1.0)) * 100.0),
@@ -146,3 +156,24 @@ def score(calculated, case):
         "points_within_sigma": int(np.nansum(np.abs(ratio - 1.0) <= sigma)),
         "points": int(usable.sum()),
     }
+
+    if calculated_sigma is not None:
+        calculated_sigma = np.asarray(calculated_sigma, dtype=float)
+        # Combined in absolute terms and then divided through, so a measured
+        # zero drops out the same way it does above.
+        combined = np.hypot(calculated_sigma, case.uncertainty)
+        relative = np.divide(combined, measured,
+                             out=np.full(measured.shape, np.nan), where=usable)
+        calculated_relative = np.divide(
+            calculated_sigma, calculated,
+            out=np.full(calculated.shape, np.nan), where=calculated > 0)
+        metrics.update({
+            "calculated_sigma": calculated_sigma.tolist(),
+            "median_calculated_sigma_percent":
+                float(np.nanmedian(calculated_relative) * 100.0),
+            "max_calculated_sigma_percent":
+                float(np.nanmax(calculated_relative) * 100.0),
+            "points_within_combined_sigma":
+                int(np.nansum(np.abs(ratio - 1.0) <= relative)),
+        })
+    return metrics

@@ -197,6 +197,11 @@ def fns_case_figure(key, documents, destination, openmc=None):
     times = np.array(entry["times"])
     measured = np.array(entry["measured_uW_per_g"])
     uncertainty = np.array(entry["measured_uncertainty_uW_per_g"])
+    calculated = np.array(entry["yani_uW_per_g"])
+    # None on a result written before the sweep carried covariance, and None on
+    # a sweep that chose not to, so the figure has to work either way.
+    sigma = (np.array(entry["yani_sigma_uW_per_g"])
+             if entry.get("yani_sigma_uW_per_g") else None)
 
     # The best other combination, by mean deviation, is drawn as one extra line.
     # All ten would be unreadable, and the table underneath carries them all.
@@ -225,6 +230,13 @@ def fns_case_figure(key, documents, destination, openmc=None):
         top.plot(times, entry["yani_uW_per_g"], "-", color=palette["yani"],
                  linewidth=plotting.LINE_WIDTH, label=f"yani, {apples_name}",
                  zorder=4)
+        if sigma is not None:
+            # Drawn as a band rather than as error bars: the measurement owns
+            # the error-bar idiom on this figure, and a second set of them on a
+            # 21-point log curve is unreadable.
+            top.fill_between(times, calculated - sigma, calculated + sigma,
+                             color=palette["yani"], alpha=0.20, linewidth=0,
+                             label="yani, nuclear-data 1 sigma", zorder=2)
         if best is not None:
             top.plot(times, best[1]["yani_uW_per_g"], "--",
                      color=palette["yani_best"], linewidth=plotting.LINE_WIDTH,
@@ -253,6 +265,12 @@ def fns_case_figure(key, documents, destination, openmc=None):
         if entry.get("fispact_uW_per_g"):
             bottom.plot(times, over_measured(entry["fispact_uW_per_g"], measured),
                         "o-", color=palette["fispact"], markersize=4, linewidth=1.5)
+        if sigma is not None:
+            ratio = over_measured(calculated, measured)
+            band = over_measured(sigma, measured)
+            bottom.fill_between(times, ratio - band, ratio + band,
+                                color=palette["yani"], alpha=0.20, linewidth=0,
+                                label="yani, nuclear-data 1 sigma")
         bottom.plot(times, over_measured(entry["yani_uW_per_g"], measured), "o-",
                     color=palette["yani"], markersize=4, linewidth=1.5)
         if best is not None:

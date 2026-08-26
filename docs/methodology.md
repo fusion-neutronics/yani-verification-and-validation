@@ -122,6 +122,11 @@ long-cooling behaviour of the other eight, since `1996exp_7hour` is the only
 campaign that follows a foil out to 400 days. Tracked as
 [issue #1](https://github.com/fusion-neutronics/yani-verification-and-validation/issues/1).
 
+**No calculated error bar has a non-zero value yet.** The runners propagate
+cross-section covariance on request, but the published libraries carry no
+covariance section, so every sigma comes back as 0. See
+[Uncertainty on the calculated side](#uncertainty-on-the-calculated-side).
+
 **Every benchmark here is 14 MeV.** JAEA-FNS, FNG and TUD are all DT
 assemblies, so a cross section that folds correctly against a 14 MeV field and
 badly against a fission spectrum is a failure this site cannot currently see.
@@ -143,6 +148,65 @@ measurement's scatter is not a result.
 For effective cross sections the score is C/E per reaction, and the summary is
 the fraction of reactions inside 10% and inside 20%, which is how the source
 publication reports its own.
+
+## Uncertainty on the calculated side
+
+Until recently only one side of a C/E here carried an error bar. The
+measurements come with theirs, and the calculation was a single number. yani can
+now propagate nuclear-data uncertainty, so the runners can put an error bar on
+the calculated curve too, with `--uncertainty`:
+
+```bash
+python benchmarks/fns_decay_heat/run.py --case Fe --uncertainty --samples 32
+python benchmarks/effective_cross_sections/run.py --uncertainty --samples 32
+```
+
+What it does is resample the activation cross sections from their ENDF MF=33
+covariance, fold each replica against this benchmark's own spectrum, and
+re-solve the schedule per replica. The reported sigma is then the spread over
+that ensemble.
+
+Two details matter for reading the result:
+
+* **The band is an ensemble spread, not a sum of per-nuclide sigmas.** Decay
+  heat is a function of the whole inventory, and a parent and its daughter do
+  not move independently, so each replica's inventory is evaluated into a decay
+  heat and the spread taken over those. Adding per-nuclide sigmas in quadrature
+  would assume away the correlation that the resampling exists to keep.
+* **It covers the activation cross sections and nothing else.** Half-lives,
+  decay branching ratios, fission yields and the isomeric-branching overlay
+  stay at their evaluated values, and every run prints which of those were left
+  out rather than implying a total.
+
+With a band on both sides, the agreement test becomes
+|C − E| ≤ sqrt(sigmaC² + sigmaE²) rather than |C − E| ≤ sigmaE. Both are
+reported per case, because a point can sit outside the measurement uncertainty
+and still be consistent once the data it was calculated from is known to be
+poorly determined. That is a different statement from a point that misses for
+any other reason, and the two should not be scored the same.
+
+### Why the bands on this site are currently zero
+
+The capability is wired through the runners and the figures, but every sigma it
+reports today is exactly 0. The published libraries these benchmarks download
+do not yet carry a covariance section: yani records that per nuclide, and on
+TENDL-2017, the library the FISPACT-II comparison uses, every nuclide fetched so
+far is marked as having none.
+
+This is stated here rather than shown as a zero-width band because a zero sigma
+is ambiguous, and the two things it can mean are opposite. A well-known cross
+section and an evaluation that publishes no covariance at all both report zero.
+The runners print the split, so a run says how many nuclides were actually
+perturbed and how many had nothing to perturb from:
+
+```
+covariance:  0 nuclide(s) perturbed, 462 with none published
+```
+
+Nothing on this site is evidence about nuclear-data uncertainty until that
+number is non-zero. What lands here is the machinery and the honest report of
+its coverage, so that republishing the libraries with their covariance sections
+is the only remaining step.
 
 ## Reproducing any of it
 
