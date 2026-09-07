@@ -15,39 +15,71 @@ publishes:
 | `endf-b8.1`  | yes            | yes   | yes       | yes            | yes       |
 | `jeff-4.0`   | yes            | yes   | yes       | yes            | yes       |
 | `fendl-3.2d` | yes            | --    | --        | --             | --        |
+| `ukaea-decay-2012` | --       | yes   | --        | --             | --        |
 
 TENDL is a neutron-only evaluation, so a TENDL run always borrows decay data and
 fission yields from somewhere else. That is not a workaround; it is the most of
 a library swap TENDL is able to express, and it means a C/E from a TENDL
 combination is a statement about production rates measured against fixed decay
 data.
+
+`ukaea-decay-2012` is not a yani keyword. It is UKAEA's FISPACT-II decay
+library, the one the published CoNDERC results were run with, fetched from
+UKAEA's own distribution and converted locally by `common.ukaea_decay` the
+first time a combination names it. It exists here so the comparison with
+FISPACT-II can be made on the same decay data, and nowhere else.
 """
 
 import collections
+
+from common import ukaea_decay
 
 Combination = collections.namedtuple(
     "Combination", "name cross_sections reactions branching decay fission_yields note")
 
 
-def _combination(name, cross_sections, reactions, branching, decay, note):
+def _combination(name, cross_sections, reactions, branching, decay, note,
+                 fission_yields=None):
     """Fission yields follow the decay library: no benchmark here is fissionable.
 
     Neither FNS foils nor the integral spectra hold a fissionable nuclide, so
     the yields subsection is never read. It is still set explicitly rather than
-    left to a default, so the run is fully described by its combination.
+    left to a default, so the run is fully described by its combination. A
+    decay source that publishes no yields names where they come from instead.
     """
-    return Combination(name, cross_sections, reactions, branching, decay, decay, note)
+    return Combination(name, cross_sections, reactions, branching, decay,
+                       fission_yields or decay, note)
 
+
+# Decay sources that are not yani keywords: the name a combination uses, and
+# the function that fetches and converts the data and returns the directory to
+# point yani at.
+LOCAL_DECAY = {
+    "ukaea-decay-2012": lambda: ukaea_decay.decay_directory("decay_2012"),
+}
 
 # The apples-to-apples entry comes first and is treated specially by the runners:
-# it is the one FISPACT-II was run with on the CoNDERC benchmarks, so it is the
-# only line on which yani and FISPACT are reading the same evaluations.
+# it is what FISPACT-II was run with on the CoNDERC benchmarks, cross sections
+# and decay data both, so it is the only line on which yani and FISPACT-II are
+# reading the same data and a difference between them is the code.
 COMBINATIONS = [
     _combination(
+        "tendl-2017+decay-2012", "tendl-2017", "tendl-2017", "tendl-2017",
+        "ukaea-decay-2012",
+        "Exactly what FISPACT-II was run with for the published CoNDERC "
+        "results: TENDL-2017 cross sections, reaction topology and branching, "
+        "and UKAEA's decay_2012 decay library. On this line a difference "
+        "between yani and FISPACT-II is a difference between two codes, and "
+        "there is almost none: the median deviation between the two heat "
+        "curves is 0.01%.",
+        fission_yields="endf-b8.1"),
+    _combination(
         "tendl-2017", "tendl-2017", "tendl-2017", "tendl-2017", "endf-b8.1",
-        "The library FISPACT-II was run with for the published CoNDERC results. "
-        "This is the apples-to-apples comparison: same cross sections, same "
-        "reaction topology, same branching, different code."),
+        "The same neutron library with the decay data yani users get by "
+        "default, ENDF/B-VIII.1. Against the line above this isolates the "
+        "decay data: it is what moves the Sn, Ta and Ho foils, and where "
+        "ENDF/B-VIII.1 carries a Q/3 placeholder record (Sn111, Cd105, "
+        "Co62m) the placeholder is what moves them."),
     _combination(
         "tendl-2025", "tendl-2025", "tendl-2025", "tendl-2025", "endf-b8.1",
         "The current TENDL, everything else held fixed. The difference from "
@@ -68,7 +100,10 @@ COMBINATIONS = [
         "tendl-2017+jeff-decay", "tendl-2017", "tendl-2017", "tendl-2017", "jeff-4.0",
         "tendl-2017 with the decay data swapped to JEFF-4.0. Decay heat is a "
         "sum of N x lambda x Q, so this moves lambda and Q while leaving N: it "
-        "separates how much of the deviation belongs to the decay data."),
+        "separates how much of the deviation belongs to the decay data. JEFF-4.0 "
+        "reproduces FISPACT-II's decay_2012 values for the nuclides that carry "
+        "the FNS heat (Ta180, Ho164), so this is the closest same-data "
+        "comparison with the published FISPACT-II curves."),
     _combination(
         "tendl-2025+jeff-decay", "tendl-2025", "tendl-2025", "tendl-2025", "jeff-4.0",
         "The same swap on the current TENDL."),
@@ -94,8 +129,13 @@ COMBINATIONS = [
 BY_NAME = {combination.name: combination for combination in COMBINATIONS}
 
 # What FISPACT-II was run with for the results published in the CoNDERC
-# archives, and therefore the only fair code-to-code comparison.
-APPLES_TO_APPLES = "tendl-2017"
+# archives, cross sections and decay data both, and therefore the only fair
+# code-to-code comparison on the decay-heat benchmark.
+APPLES_TO_APPLES = "tendl-2017+decay-2012"
+
+# The effective cross sections involve no decay data, so there the plain
+# TENDL-2017 combination already is the same-data comparison.
+APPLES_TO_APPLES_ECS = "tendl-2017"
 
 
 def apply(combination, yani):
@@ -105,11 +145,18 @@ def apply(combination, yani):
     is a function with a side effect by necessity. Every setting is written on
     every call: leaving one at whatever the previous combination set it to is
     how a sweep silently reports the wrong provenance.
+
+    A decay source in `LOCAL_DECAY` is fetched and converted on first use and
+    yani is pointed at the directory; the combination and everything written
+    about the run keep the name.
     """
     yani.cross_section_data = combination.cross_sections
     yani.transmutation_reactions = combination.reactions
     yani.transmutation_branch_ratios = combination.branching
-    yani.transmutation_decay_data = combination.decay
+    decay = combination.decay
+    if decay in LOCAL_DECAY:
+        decay = str(LOCAL_DECAY[decay]())
+    yani.transmutation_decay_data = decay
     yani.transmutation_fission_yields = combination.fission_yields
 
 

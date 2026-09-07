@@ -158,7 +158,7 @@ def effective_cross_section(target, products, source, seconds=PULSE_SECONDS,
 def main():
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--combination", default=libraries.APPLES_TO_APPLES)
+    parser.add_argument("--combination", default=libraries.APPLES_TO_APPLES_ECS)
     parser.add_argument("--spectrum", action="append", default=[])
     parser.add_argument("--reaction", action="append", default=[])
     parser.add_argument("--data", type=pathlib.Path)
