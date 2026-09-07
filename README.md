@@ -29,8 +29,12 @@ archives worth building on is that each one carries three things, not one:
   FISPACT-II. So every plot here shows the measurement, yani, and an independent
   inventory code, and a disagreement can be attributed rather than just noted.
 
-Those published calculations used TENDL-2017, so TENDL-2017 is also the default
-library for the yani runs, which keeps the comparison like for like.
+Those published calculations used TENDL-2017 cross sections and UKAEA's
+`decay_2012` decay library, so the default combination for the yani runs is
+`tendl-2017+decay-2012`, which keeps the comparison like for like. decay_2012
+is not a yani library: the harness fetches it from UKAEA's own distribution on
+the OECD-NEA GitLab and converts it locally the first time it is needed, about
+a minute, and never republishes it.
 
 [conderc]: https://nds.iaea.org/conderc/
 
@@ -93,8 +97,8 @@ was in flight. Nothing needs to be finished in one sitting.
 Useful shapes for a long run:
 
 ```bash
-# just the like-for-like library, all 132 decay-heat experiments
-python tools/run_all.py --stage fns --combination tendl-2017
+# just the like-for-like combination, all 132 decay-heat experiments
+python tools/run_all.py --stage fns --combination tendl-2017+decay-2012
 
 # every combination, but only the campaign that covers all 73 foils
 python tools/run_all.py --experiment 2000exp_5min

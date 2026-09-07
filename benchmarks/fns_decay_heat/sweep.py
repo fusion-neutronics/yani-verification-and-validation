@@ -2,7 +2,7 @@
 """Run every FNS experiment against every nuclear-data combination.
 
     sweep.py                                  # 132 experiments x every combination
-    sweep.py --combination tendl-2017         # just the apples-to-apples one
+    sweep.py --combination tendl-2017+decay-2012   # just the apples-to-apples one
     sweep.py --experiment 2000exp_5min        # the campaign covering all 73 foils
     sweep.py --case Fe --case W --case Nb     # a few foils, all combinations
     sweep.py --workers 3

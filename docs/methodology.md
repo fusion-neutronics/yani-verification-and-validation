@@ -10,14 +10,35 @@ A code comparison and a library comparison are different experiments, and
 running them together produces a number that means neither.
 
 The CoNDERC archives make it possible to keep them apart, because they publish
-**FISPACT-II's own results next to the measurements**, and they say which
-library those results were produced with: TENDL-2017. The FNS input decks are
-literally named `TENDL-2017_2000exp_5min.i`.
+**FISPACT-II's own results next to the measurements**, and they say what those
+results were produced with. The FNS input decks are literally named
+`TENDL-2017_2000exp_5min.i`, and the archive's `files` lists show the decay
+library beside them: UKAEA's `decay_2012`.
 
-So the default combination everywhere on this site is **TENDL-2017**, and on
-that line yani and FISPACT-II are reading the same evaluations, with the same
-cross sections, the same reaction topology and the same isomeric branching. A
-difference between them is a difference between two codes.
+So the comparison line everywhere on this site is **`tendl-2017+decay-2012`**:
+TENDL-2017 cross sections, reaction topology and isomeric branching, and the
+same decay_2012 decay data FISPACT-II read. TENDL publishes no decay data and
+decay_2012 is not a yani library, so the harness fetches it from UKAEA's own
+distribution on the OECD-NEA GitLab and converts it locally with yani's
+converter the first time it is needed (`benchmarks/common/ukaea_decay.py`,
+about a minute, cached under `~/.cache/yani-verification-and-validation`). On
+that line a difference between yani and FISPACT-II is a difference between two
+codes, and there is almost none: checked nuclide by nuclide against the
+per-nuclide inventories in the archive's `.out` files, the two agree on the
+atoms of every heat-carrying nuclide to about 0.1%, and on the heat curves to a
+median 0.01% over the 130 experiments that have a FISPACT-II curve. The
+residuals above 1% are Ir (TENDL-2017's isomer partials for Ir191(n,2n) sum to
+6% less than the total cross section; yani conserves the total, FISPACT-II
+takes the partials as given), Pt and Mo (yani's newer natural abundances) and
+Hf (a 1.08 s isomer that FISPACT-II's nuclide index leaves out).
+
+The `tendl-2017` line is the same neutron data with ENDF/B-VIII.1 decay data,
+which is what a yani user gets by default. Set against the comparison line it
+isolates the decay data, and that is what moves the foils where the two codes
+were thought to disagree: Ta180's mean energy is 102.5 keV in ENDF/B-VIII.1 and
+110.0 keV in decay_2012, Ho164's 175.5 against 212.4 keV (ENSDF sides with
+ENDF/B-VIII.1 on both), and Sn111's is a Q/3 placeholder in ENDF/B-VIII.1
+(1634 keV, no evaluated decay scheme) against 694 keV.
 
 Every other combination on a page is a second question -- *given a free choice
 of data, how close can this get?* -- and is labelled as such. Those lines are
@@ -43,7 +64,13 @@ silently reports the wrong provenance.
 TENDL publishes no decay sublibrary, so a TENDL combination always borrows
 decay data from ENDF/B-VIII.1 or JEFF-4.0. That is not a workaround; it is the
 most of a library swap TENDL can express, and it has a consequence worth
-stating outright:
+stating outright, and one caveat. The caveat: ENDF/B-VIII.1 carries about 1100
+decay records converted from the Nuclear Wallet Cards with no evaluated decay
+scheme, whose mean energies are a third of Q to the light particles and a third
+to the photons. For an electron-capture emitter that can be several times the
+recoverable energy. On this benchmark those records carry a mean 14 to 16% of
+the heat in the Sn, Cd and Pd foils and 8% in Yb; JENDL-5.0 has evaluated
+schemes for most of them.
 
 > Decay heat at time *t* is a sum over products of *N(t) × λ × Q*. The library
 > under test sets *N*, how much of each product got made. The decay library sets

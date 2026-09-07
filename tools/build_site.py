@@ -315,13 +315,14 @@ def fns_page(documents):
                            "python tools/run_all.py")
 
     # --- headline -----------------------------------------------------------
-    lines += ["## yani against FISPACT-II, same library", ""]
+    lines += ["## yani against FISPACT-II, same data", ""]
     if summary_path:
         lines += [plotting.image_markup(summary_path,
                                         "yani against FISPACT-II mean deviation"), ""]
         lines += [
             f"On the {paired} experiments the archive publishes a FISPACT-II "
-            f"curve for, both codes reading TENDL-2017, yani is closer to the "
+            f"curve for, both codes reading TENDL-2017 cross sections and "
+            f"UKAEA's decay_2012 decay data, yani is closer to the "
             f"measurement on **{yani_wins}** of them "
             f"({yani_wins / paired * 100:.0f}%).", ""]
 
@@ -341,8 +342,17 @@ def fns_page(documents):
     lines += [f"| FISPACT-II, {apples_name} | {len(fispact_dev)} | "
               f"{np.median(fispact_dev):.1f}% | "
               f"{int(np.sum(fispact_dev <= 10))} | {int(np.sum(fispact_dev <= 20))} |"]
-    lines += ["", "Both rows are the same experiments with the same evaluations, "
-                  "so the difference is the code.", ""]
+    lines += ["", "Both rows are the same experiments with the same data: "
+                  "TENDL-2017 cross sections, reaction topology and isomeric "
+                  "branching, and UKAEA's decay_2012 decay library, fetched from "
+                  "UKAEA's own distribution and converted locally. What separates "
+                  "the rows is the code, and the two agree on the heat of every "
+                  "experiment to a median 0.01%; the residuals are TENDL-2017 "
+                  "isomer partials that do not sum to the total (Ir), natural "
+                  "abundances (Pt, Mo) and a short-lived isomer FISPACT-II's "
+                  "nuclide index leaves out (Hf). The `tendl-2017` line below is "
+                  "the same neutron data with ENDF/B-VIII.1 decay data, which is "
+                  "what yani users get by default. See the methodology page.", ""]
 
     # --- every combination --------------------------------------------------
     lines += ["## Every nuclear-data combination", "",
@@ -442,7 +452,7 @@ def fns_page(documents):
 
 def ecs_summary_figure(documents, destination):
     """C/E per reaction, yani against FISPACT-II, paired the same way."""
-    apples = documents[libraries.APPLES_TO_APPLES]["results"]
+    apples = documents[libraries.APPLES_TO_APPLES_ECS]["results"]
     pairs = [(row["yani_ce"], row["fispact_ce"]) for row in apples
              if row.get("yani_ce") and row.get("fispact_ce")]
     if not pairs:
@@ -478,10 +488,10 @@ def ecs_summary_figure(documents, destination):
 
 
 def ecs_page(documents):
-    if not documents or libraries.APPLES_TO_APPLES not in documents:
+    if not documents or libraries.APPLES_TO_APPLES_ECS not in documents:
         return "# Effective cross sections\n\nNo results yet.\n"
 
-    apples_name = libraries.APPLES_TO_APPLES
+    apples_name = libraries.APPLES_TO_APPLES_ECS
     apples = documents[apples_name]
     FIGURES.mkdir(parents=True, exist_ok=True)
     summary_path, yani_wins, paired = ecs_summary_figure(
