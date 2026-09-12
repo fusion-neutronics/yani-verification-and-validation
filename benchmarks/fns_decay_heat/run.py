@@ -38,6 +38,7 @@ keep.
 
 import argparse
 import collections
+import functools
 import json
 import pathlib
 import sys
@@ -57,6 +58,50 @@ HERE = pathlib.Path(__file__).resolve().parent
 
 Solved = collections.namedtuple(
     "Solved", "heat breakdown elapsed sigma uncertainty_info replicas")
+
+
+class MissingEvaluations(Exception):
+    """The cross-section library has no evaluation for one of the foil's elements.
+
+    Raised before the solve rather than after it, because the solve does not
+    fail: a foil whose element the library does not publish comes back with
+    almost no activation and a C/E near zero, which reads as a library being
+    wrong about the physics rather than a library not containing the element.
+    """
+
+
+@functools.lru_cache(maxsize=None)
+def _is_available(nuclide, library):
+    """Can `library` supply cross sections for `nuclide`?
+
+    Memoised because a sweep asks the same question for the same 73 foils in
+    every worker, and the answer is a property of the library rather than of
+    the case. The load itself is what a solve would do anyway, so on a warm
+    cache this costs a parse and no download.
+    """
+    try:
+        yani.Nuclide(nuclide).read_nuclear_data(library)
+    except Exception:
+        return False
+    return True
+
+
+def uncovered(case, combination):
+    """Foil elements the cross-section library cannot represent at all.
+
+    Returns `{element: [its natural nuclides]}` for every element where not one
+    naturally occurring isotope is published. A partial gap is left alone: a
+    missing minor isotope changes a rate, which is a library being different,
+    while a missing element means the foil cannot activate at all, which is a
+    library being absent.
+    """
+    library = combination.cross_sections
+    missing = {}
+    for element in sorted(case.composition):
+        nuclides = yani.Element(element).get_nuclides()
+        if nuclides and not any(_is_available(n, library) for n in nuclides):
+            missing[element] = list(nuclides)
+    return missing
 
 
 def _replica_heat(results, material_id, step, case):
@@ -93,6 +138,18 @@ def run(case, combination, uncertainty=None):
     covariance did and did not cover.
     """
     libraries.apply(combination, yani)
+
+    missing = uncovered(case, combination)
+    if missing:
+        detail = "; ".join(f"{element} ({', '.join(nuclides)})"
+                           for element, nuclides in missing.items())
+        raise MissingEvaluations(
+            f"{case.name}/{case.experiment}: {combination.cross_sections} "
+            f"publishes no evaluation for {detail}. The foil cannot activate, "
+            f"so this is a gap in the library's coverage and not a measure of "
+            f"how well it describes the physics.\n"
+            f"  combination: {combination.name}\n"
+            f"  cross sections: {combination.cross_sections}")
 
     # The histogram carries the shape; the pulse rate carries the magnitude.
     spectrum = yani.NeutronSource(
