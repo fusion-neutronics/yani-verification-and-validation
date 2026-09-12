@@ -157,3 +157,30 @@ def test_one_library_alone_gives_no_ranking():
     """A single sweep file cannot say which library is better."""
     lines, wins, losses = attribute.report({"a": result("a", 9.0)}, SURVEY, {}, "a")
     assert lines == [] and wins == [] and losses == []
+
+
+def test_a_one_letter_element_does_not_match_a_two_letter_carrier():
+    """`startswith` put every one-letter symbol in front of every two-letter one.
+
+    A gap on a carbon channel was attributed to a caesium carrier, boron to
+    barium and bismuth, sulphur to tin, strontium and antimony.
+    """
+    for channel, carrier in [("C12 (n,p)", "Cs134_m1"),
+                             ("B10 (n,a)", "Ba137_m1"),
+                             ("S32 (n,p)", "Sn111"),
+                             ("Y89 (n,2n)", "Yb167_m1")]:
+        survey = {"gaps": [{"channel": channel, "state_keV": 0,
+                            "carried_by": [], "omitted_by": ["lib"]}]}
+        assert attribute.gaps_for(survey, "lib", [carrier]) == []
+
+
+def test_the_real_osmium_case_still_matches():
+    survey = {"gaps": [{"channel": "Os190 (n,n')", "state_keV": 1706,
+                        "carried_by": ["Os190_m1"], "omitted_by": ["tendl-2017"]}]}
+    assert len(attribute.gaps_for(survey, "tendl-2017", ["Os190_m1"])) == 1
+
+
+def test_element_of_takes_the_whole_symbol():
+    assert attribute.element_of("Cs134_m1") == "Cs"
+    assert attribute.element_of("C12") == "C"
+    assert attribute.element_of("Os190_m1") == "Os"
