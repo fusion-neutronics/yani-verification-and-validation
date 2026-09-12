@@ -100,6 +100,63 @@ def source_for(spectrum):
     )
 
 
+# The two JAEA-FNS fields in the effective-cross-section archive are the same
+# physical fields as positions 3 and 7 of the decay-heat archive: the 175-group
+# spectra here and the 709-group spectra there integrate to the same total
+# (1.1168e10 and 1.0509e10 n/cm2/s). What differs is the resolution they are
+# published at.
+FNS_POSITION = {"JAEA-FNS-pos3": "3", "JAEA-FNS-pos7": "7"}
+
+
+def fns_709_source(name, fns_data_path=None):
+    """The same field as `name`, on CCFE-709 instead of 175 groups.
+
+    This exists because the comparison is otherwise not like for like. The
+    FISPACT-II column published in the reaction table was produced by
+    collapsing the `tal2017-n/gxs-709` library against the CCFE-709 form of
+    these fields, the same collapse the decay-heat decks use; matching 119
+    JAEA-FNS-pos3 rows against FISPACT's own printed 709-group collapse agrees
+    to better than 1% on 115 of them. Folding yani against the 175-group form
+    therefore compares two different integrals and calls the difference a code
+    difference.
+
+    Measured rather than predicted, over the 184 JAEA-FNS reactions: the swap is
+    a no-op on 177 of them, and every one of the 9 rows that moves by more than
+    0.5% is radiative capture (MT=102). The largest shift on any non-capture row
+    anywhere is 0.366%, so the threshold reactions are not the sensitive ones.
+    Capture moves by +0.46% to +19.45%, which is the 1/v tail being averaged
+    over groups too coarse to resolve it.
+
+    Every one of those 9 rows lands on the published FISPACT-II value once the
+    group structure matches: Dy-164(n,g)Dy-165 goes from C/E 4.486 to 5.343
+    against FISPACT's 5.340, Lu-175(n,g)Lu-176m from 1.283 to 1.330 against
+    1.330, Rh-103(n,g)Rh-104 from 2.398 to 2.447 against 2.450. That is the
+    evidence that the group structure was the asymmetry.
+
+    It is worth being clear about what this does not do. Agreement with the
+    measurement gets worse, not better: over the JAEA capture rows the median
+    |C/E - 1| goes from 35.4% to 39.1%. Both codes are simply far from those
+    measurements, and this run makes yani wrong in the same way FISPACT is
+    rather than less wrong. The comparison is what becomes honest, not the
+    physics.
+
+    Returns None for a field that has no CCFE-709 counterpart, which is every
+    field except the two JAEA-FNS ones; those keep their published boundaries.
+    """
+    position = FNS_POSITION.get(name)
+    if position is None:
+        return None
+    path = pathlib.Path(fns_data_path) if fns_data_path else (
+        HERE.parent / "fns_decay_heat" / "data" / "fns_data.json")
+    if not path.is_file():
+        raise SystemExit(
+            f"--group-structure ccfe-709 needs the decay-heat benchmark data at "
+            f"{path}, which holds these fields on CCFE-709. Run "
+            f"benchmarks/fns_decay_heat/build_data.py.")
+    flux = json.loads(path.read_text())["spectra_by_position"][position]
+    return yani.NeutronSource(energy=yani.sources.Histogram("CCFE-709", flux))
+
+
 def _extract(atoms, target, products, fluence):
     """One inventory -> one effective cross section [barns]."""
     target_atoms = atoms.get(target)
@@ -173,6 +230,15 @@ def main():
                         help="fixed replica count (default: until the sigmas settle)")
     parser.add_argument("--seed", type=int, default=42,
                         help="covariance sampling seed (default: 42)")
+    parser.add_argument("--group-structure", choices=["published", "ccfe-709"],
+                        default="published",
+                        help="which form of the field to fold against. "
+                             "'published' uses the 175-group spectra shipped "
+                             "with the reaction table; 'ccfe-709' substitutes "
+                             "the CCFE-709 form of the two JAEA-FNS fields, "
+                             "which is what FISPACT-II's published column was "
+                             "collapsed on and so is the like-for-like choice "
+                             "for those 184 reactions")
     args = parser.parse_args()
 
     combination = libraries.resolve([args.combination])[0]
@@ -184,7 +250,10 @@ def main():
         raise SystemExit("no reactions matched --spectrum/--reaction")
 
     args.output.mkdir(parents=True, exist_ok=True)
-    destination = args.output / f"{combination.name}.json"
+    # A different group structure is a different run, not a resumable
+    # continuation of the published-structure one, so it gets its own file.
+    suffix = "" if args.group_structure == "published" else "+ccfe-709"
+    destination = args.output / f"{combination.name}{suffix}.json"
 
     # A full run is 365 solves and takes hours, so it resumes rather than
     # starting over, the same way the decay-heat sweep does.
@@ -225,6 +294,10 @@ def main():
             "benchmark": "effective_cross_sections",
             "combination": libraries.as_dict(combination),
             "yani_version": getattr(yani, "__version__", "unknown"),
+            # Which form of each field was folded against. Recorded because it
+            # decides whether the FISPACT column beside these numbers is a
+            # like-for-like comparison or a different integral.
+            "group_structure": args.group_structure,
             "pulse_seconds": PULSE_SECONDS,
             "pulse_flux": PULSE_FLUX,
             "uncertainty": ({"seed": args.seed, "samples": args.samples}
@@ -241,7 +314,12 @@ def main():
     for index, row in enumerate(todo, start=1):
         name = row["spectrum"]
         if name not in sources:
-            sources[name] = source_for(document["spectra"][name])
+            substitute = (fns_709_source(name)
+                          if args.group_structure == "ccfe-709" else None)
+            sources[name] = substitute or source_for(document["spectra"][name])
+            if substitute is not None:
+                print(f"  {name}: folding against CCFE-709 rather than the "
+                      f"published 175 groups", flush=True)
         try:
             calculated, sigma, info = effective_cross_section(
                 row["target"], row["products"], sources[name],
