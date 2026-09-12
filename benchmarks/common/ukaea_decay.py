@@ -43,6 +43,23 @@ def cache_root():
     return pathlib.Path.home() / ".cache" / "yani-verification-and-validation"
 
 
+def cached_decay_directory(library="decay_2012"):
+    """The converted `decay/` subsection if it is already on this machine.
+
+    Returns `None` rather than fetching. `decay_directory` downloads a 5.5 MB
+    archive from the OECD-NEA GitLab and spends about a minute converting it,
+    which is the right behaviour when a run needs the data and the wrong
+    behaviour when a caller only wants to know what is already there. Recording
+    provenance is the second kind.
+    """
+    if library not in LIBRARIES:
+        return None
+    decay = cache_root() / f"ukaea-{library.replace('_', '-')}" / "decay"
+    if (decay / "provenance.json").is_file() and (decay / "nuclides.arrow").is_file():
+        return decay
+    return None
+
+
 def decay_directory(library="decay_2012"):
     """The converted `decay/` subsection of a UKAEA library, fetching and
     converting it on first use.

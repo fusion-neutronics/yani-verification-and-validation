@@ -53,3 +53,35 @@ def test_every_combination_reports_all_five_settings():
         recorded = libraries.as_dict(combination)["data_versions"]
         assert set(recorded) == {"cross_sections", "reactions", "branching",
                                  "decay", "fission_yields"}
+
+
+def test_recording_provenance_never_fetches(monkeypatch):
+    """`as_dict` must not download 5.5 MB and spend a minute converting it.
+
+    `LOCAL_DECAY` maps the UKAEA decay name to `ukaea_decay.decay_directory`,
+    which fetches and converts when the cache is cold. Calling it to read a
+    stamp turned a metadata lookup into a network operation, which showed up as
+    a CI failure rather than as a slow run only because the runner had no cache
+    and no yani.
+    """
+    from common import ukaea_decay
+
+    def explode(*args, **kwargs):
+        raise AssertionError("provenance must not fetch or convert")
+
+    monkeypatch.setattr(ukaea_decay, "decay_directory", explode)
+    for combination in libraries.COMBINATIONS:
+        recorded = libraries.as_dict(combination)
+        assert "data_versions" in recorded
+
+
+def test_an_unconverted_local_decay_reads_as_not_recorded(monkeypatch, tmp_path):
+    from common import ukaea_decay
+
+    monkeypatch.setenv("YANI_VV_CACHE", str(tmp_path))
+    monkeypatch.setattr(ukaea_decay, "decay_directory",
+                        lambda *a, **k: (_ for _ in ()).throw(
+                            AssertionError("must not fetch")))
+    versions = libraries.data_versions(
+        libraries.BY_NAME["tendl-2017+decay-2012"])
+    assert versions["decay"] is None
