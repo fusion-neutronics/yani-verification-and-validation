@@ -39,7 +39,9 @@ spectrum each foil actually saw, so that spectrum is the input.
 ![yani against FISPACT-II mean deviation](figures/fns-summary.png#only-light)
 ![yani against FISPACT-II mean deviation](figures/fns-summary-dark.png#only-dark)
 
-On the 130 experiments the archive publishes a FISPACT-II curve for, both codes reading TENDL-2017 cross sections and UKAEA's decay_2012 decay data, yani is closer to the measurement on **59** of them (45%).
+On the 130 experiments the archive publishes a FISPACT-II curve for, both codes reading TENDL-2017 cross sections and UKAEA's decay_2012 decay data, yani is closer to the measurement on **7**, FISPACT-II on **13**, and **110** are tied within 0.25 percentage points.
+
+The tie band is not a courtesy. The two codes agree on the heat curves to a median 0.019%, which is far below the 0 to 0.8% error introduced by the two being stepped to slightly different times, so a difference of a few hundredths of a point is not something this benchmark can resolve. Counted without a band, every experiment produces a verdict and almost none of them means anything.
 
 | code | experiments | median mean deviation | within 10% | within 20% |
 | --- | ---: | ---: | ---: | ---: |

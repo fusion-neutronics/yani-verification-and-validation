@@ -147,14 +147,46 @@ def score(calculated, case, calculated_sigma=None):
                       out=np.full(calculated.shape, np.nan), where=usable)
     sigma = np.divide(case.uncertainty, measured,
                       out=np.full(measured.shape, np.nan), where=usable)
+    # A calculation of zero scores 100% under |C/E - 1| and cannot score worse,
+    # while one that is a factor of two high scores 100% and one a factor of
+    # ten high scores 900%. The metric is therefore bounded below and unbounded
+    # above, and it rewards whichever code runs lower. |ln C/E| is the
+    # symmetric counterpart: a factor of two either way scores the same.
+    #
+    # Both are reported because the ordering between two codes can depend on
+    # which is used. On the 130 experiments carrying a FISPACT-II curve, yani
+    # is at 10.57% against 10.68% under |C/E - 1| and at 10.81% against 10.64%
+    # under |ln C/E|. Neither difference is real; quoting only the first would
+    # make it look as though one were.
+    positive = usable & (calculated > 0)
+    log_ratio = np.log(np.divide(calculated, measured,
+                                 out=np.full(calculated.shape, np.nan),
+                                 where=positive),
+                       out=np.full(calculated.shape, np.nan), where=positive)
+
+    # The same score over the points the measurement actually constrains. 82 of
+    # the 2378 measured points carry a quoted uncertainty above half their own
+    # value and 118 are not three sigma above zero, and whole experiments
+    # consist of nothing else, so a mean over every point is partly a mean over
+    # noise.
+    constrained = usable & (case.uncertainty < 0.25 * measured)
+
     metrics = {
         "ratio": ratio.tolist(),
         "median_ratio": float(np.nanmedian(ratio)),
         "mean_deviation_percent": float(np.nanmean(np.abs(ratio - 1.0)) * 100.0),
+        "mean_log_deviation_percent": (
+            float(np.nanmean(np.abs(log_ratio)) * 100.0)
+            if positive.any() else float("nan")),
         "max_deviation_percent": float(np.nanmax(np.abs(ratio - 1.0)) * 100.0),
         "median_measurement_sigma_percent": float(np.nanmedian(sigma) * 100.0),
         "points_within_sigma": int(np.nansum(np.abs(ratio - 1.0) <= sigma)),
         "points": int(usable.sum()),
+        # How much of the experiment is worth scoring at all.
+        "points_constrained": int(constrained.sum()),
+        "mean_deviation_constrained_percent": (
+            float(np.nanmean(np.abs(ratio[constrained] - 1.0)) * 100.0)
+            if constrained.any() else float("nan")),
     }
 
     if calculated_sigma is not None:

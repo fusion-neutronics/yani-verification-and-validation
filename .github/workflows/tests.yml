@@ -1,0 +1,54 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  pytest:
+    name: pytest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install what the tests need
+        run: |
+          python -m pip install --upgrade pip
+          # yani as well as numpy. Most tests run against stubs, but the ones
+          # covering `run.py` import it, and `run.py` imports yani at module
+          # level, so without it four tests fail on ModuleNotFoundError rather
+          # than on anything real.
+          #
+          # Installing it is a prebuilt wheel and costs seconds. What still must
+          # not happen is a test reaching for nuclear DATA: nothing here
+          # downloads a library or reads ~/.cache/yamc, and a test that needed
+          # to would turn this job into a multi-gigabyte download. Importing
+          # yani is free; solving with it is not.
+          pip install -r requirements.txt -r requirements-docs.txt pytest
+
+      - name: Run the tests
+        run: python -m pytest tests/ -q
+
+      - name: The tests must actually be running
+        shell: bash
+        run: |
+          # A test suite that silently collects nothing passes. This job exists
+          # because tests/ was written and then never run by any workflow, so
+          # the failure mode worth guarding is the one that already happened:
+          # a green check over an empty collection.
+          collected=$(python -m pytest tests/ --collect-only -q | tail -1)
+          echo "collection: ${collected}"
+          count=$(python -m pytest tests/ --collect-only -q \
+                  | grep -oE '^[0-9]+ tests? collected' | grep -oE '^[0-9]+' || echo 0)
+          if [ "${count:-0}" -lt 1 ]; then
+            echo "::error::pytest collected no tests"
+            exit 1
+          fi
+          echo "${count} tests collected"

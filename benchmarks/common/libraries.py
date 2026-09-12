@@ -31,6 +31,9 @@ FISPACT-II can be made on the same decay data, and nowhere else.
 """
 
 import collections
+import json
+import os
+import pathlib
 
 from common import ukaea_decay
 
@@ -173,6 +176,80 @@ def resolve(names):
     return chosen
 
 
+def _cache_root():
+    override = os.environ.get("YAMC_CACHE_DIR")
+    if override:
+        return pathlib.Path(override)
+    return pathlib.Path.home() / ".cache" / "yamc"
+
+
+def _stamp(directory):
+    """The `data_version` a cached subsection records, if it records one."""
+    for marker in ("provenance.json", "version.json"):
+        path = pathlib.Path(directory) / marker
+        if not path.is_file():
+            continue
+        try:
+            value = json.loads(path.read_text()).get("data_version")
+        except (json.JSONDecodeError, OSError):
+            return None
+        if isinstance(value, str) and value:
+            return value
+    return None
+
+
+def data_versions(combination):
+    """The release stamp behind each of a combination's five settings.
+
+    The published libraries are overwritten in place when they are rebuilt, so
+    the keyword `tendl-2017` names different bytes before and after a
+    republish. Without this a result file cannot say which. The 2026-09-08
+    rebuild changed every library's isomeric branching and was invisible in
+    every output.
+
+    Read out of the cache rather than asked of yani, because yani exposes no
+    accessor for it: the stamp lives in `provenance.json` beside each cached
+    transmutation subsection and in `version.json` beside each cached nuclide.
+    That makes this best-effort and layout-dependent, and a `None` here means
+    "not recorded" rather than "unstamped data". The durable fix is an
+    accessor in the core, at which point this can be deleted.
+    """
+    root = _cache_root()
+    found = {}
+    for setting, source, subsection in (
+            ("reactions", combination.reactions, "reactions"),
+            ("branching", combination.branching, "branching"),
+            ("decay", combination.decay, "decay"),
+            ("fission_yields", combination.fission_yields, "fission_yields")):
+        if source in LOCAL_DECAY:
+            # Converted on this machine, so its stamp sits with the conversion.
+            # Looked up rather than resolved: `LOCAL_DECAY[source]()` fetches
+            # and converts when the cache is cold, and recording provenance
+            # must not download 5.5 MB and spend a minute converting it.
+            cached = ukaea_decay.cached_decay_directory(
+                source.replace("ukaea-", "").replace("-", "_"))
+            found[setting] = _stamp(cached) if cached else None
+        elif isinstance(source, str) and not pathlib.Path(source).is_dir():
+            found[setting] = _stamp(
+                root / f"{source}-transmutation-{subsection}.arrow")
+        else:
+            found[setting] = _stamp(pathlib.Path(str(source)) / subsection)
+
+    # Cross sections are per nuclide, so any cached one carries the stamp of
+    # the release they all came from.
+    library = combination.cross_sections
+    stamp = None
+    if isinstance(library, str):
+        for directory in sorted(root.glob(f"{library}-*.arrow")):
+            if "transmutation" in directory.name:
+                continue
+            stamp = _stamp(directory)
+            if stamp:
+                break
+    found["cross_sections"] = stamp
+    return found
+
+
 def as_dict(combination):
     return {
         "name": combination.name,
@@ -181,5 +258,7 @@ def as_dict(combination):
         "branching": combination.branching,
         "decay": combination.decay,
         "fission_yields": combination.fission_yields,
+        # Which bytes each setting resolved to, so a data rebuild is visible.
+        "data_versions": data_versions(combination),
         "note": combination.note,
     }

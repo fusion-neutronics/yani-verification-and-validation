@@ -79,6 +79,24 @@ def ranking(results, experiment):
     return sorted(scored, key=lambda row: row[0])
 
 
+def element_of(nuclide):
+    """The element symbol in a nuclide name, as a whole symbol.
+
+    `Cs134_m1` is caesium, not carbon. Comparing symbols with `startswith` puts
+    every one-letter element in front of every two-letter one that begins with
+    the same character, so a gap on a carbon channel matched a caesium carrier,
+    a boron gap matched barium and bismuth, and a sulphur gap matched tin,
+    strontium and antimony. Taking the leading run of letters and comparing it
+    whole removes the collision.
+    """
+    symbol = ""
+    for character in nuclide:
+        if not character.isalpha():
+            break
+        symbol += character
+    return symbol
+
+
 def gaps_for(survey, library, leaders):
     """Survey gaps in `library` whose omitted state could be a heat carrier.
 
@@ -100,8 +118,8 @@ def gaps_for(survey, library, leaders):
         # reaction makes, which the survey does not name, so fall back to
         # whether any metastable leader shares the channel's element.
         parent = gap["channel"].split()[0]
-        element = "".join(c for c in parent if c.isalpha())
-        if any(name.startswith(element) for name in grounds):
+        element = element_of(parent)
+        if any(element_of(name) == element for name in grounds):
             out.append(gap)
     return out
 
