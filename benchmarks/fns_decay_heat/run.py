@@ -59,6 +59,18 @@ Solved = collections.namedtuple(
     "Solved", "heat breakdown elapsed sigma uncertainty_info replicas")
 
 
+class ZeroActivation(Exception):
+    """An irradiated foil came back with no activation products at all.
+
+    A plain `Exception` and not `SystemExit`, because this is raised inside a
+    `multiprocessing` pool worker by the sweep. CPython's `pool.worker` catches
+    only `Exception`, so a `SystemExit` escapes it, kills the worker, and the
+    task it was holding is never returned: `imap_unordered` then waits for a
+    result that can no longer arrive and the sweep hangs on that foil forever
+    rather than recording it as a failure.
+    """
+
+
 def _replica_heat(results, material_id, step, case):
     """Specific decay heat [uW/g] for every replica at one schedule step.
 
@@ -148,7 +160,7 @@ def run(case, combination, uncertainty=None):
     # like a physics result rather than the wiring mistake it invariably is, and
     # a sweep would log it foil after foil without ever failing.
     if not heat.any():
-        raise SystemExit(
+        raise ZeroActivation(
             f"{case.name}/{case.experiment}: every cooling step came out at zero "
             f"decay heat, so the transmutation produced no activation products.\n"
             f"  combination: {combination.name}\n"
