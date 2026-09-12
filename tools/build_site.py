@@ -480,7 +480,8 @@ def ecs_summary_figure(documents, destination):
     """C/E per reaction, yani against FISPACT-II, paired the same way."""
     apples = documents[libraries.APPLES_TO_APPLES_ECS]["results"]
     pairs = [(row["yani_ce"], row["fispact_ce"]) for row in apples
-             if row.get("yani_ce") and row.get("fispact_ce")]
+             if row.get("yani_ce") is not None
+             and row.get("fispact_ce") is not None]
     if not pairs:
         return None, 0, 0
     yani = np.array([p[0] for p in pairs])
@@ -535,9 +536,9 @@ def ecs_page(documents):
                   f"TENDL-2017, yani is closer to the measurement on "
                   f"**{yani_wins}** ({yani_wins / paired * 100:.0f}%).", ""]
 
-    rows = [row for row in apples["results"] if row.get("yani_ce")]
+    rows = [row for row in apples["results"] if row.get("yani_ce") is not None]
     yani_ce = np.array([row["yani_ce"] for row in rows])
-    paired_rows = [row for row in rows if row.get("fispact_ce")]
+    paired_rows = [row for row in rows if row.get("fispact_ce") is not None]
     fispact_ce = np.array([row["fispact_ce"] for row in paired_rows])
     paired_yani = np.array([row["yani_ce"] for row in paired_rows])
 
@@ -573,10 +574,12 @@ def ecs_page(documents):
               "| --- | ---: | ---: | ---: | ---: |"]
     for name, document in ordered(documents):
         values = np.array([row["yani_ce"] for row in document["results"]
-                           if row.get("yani_ce")])
+                           if row.get("yani_ce") is not None])
+        zeros = int(np.sum(values == 0.0))
         if not values.size:
             continue
-        lines += [f"| `{name}` | {len(values)} | {np.median(values):.3f} | "
+        lines += [f"| `{name}` | {len(values)}{f' ({zeros} zero)' if zeros else ''} "
+                  f"| {np.median(values):.3f} | "
                   f"{int(np.sum(np.abs(values - 1) <= 0.1))} | "
                   f"{int(np.sum(np.abs(values - 1) <= 0.2))} |"]
     lines += [""]

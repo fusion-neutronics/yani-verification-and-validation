@@ -363,13 +363,27 @@ def main():
 
     save()
     elapsed = time.time() - started
-    scored = [row for row in results if row["yani_ce"]]
+    # `is not None` and not truthiness: a C/E of exactly 0.0 is a result, and
+    # dropping it hides the failures that matter most. Every one of the 24
+    # zeros on endf-b8.1 is an isomeric-state measurement the library has no
+    # branching route to, which is precisely what this benchmark exists to
+    # test.
+    scored = [row for row in results if row["yani_ce"] is not None]
+    produced_nothing = [row for row in scored if row["yani_ce"] == 0.0]
     yani_ce = np.array([row["yani_ce"] for row in scored])
-    paired = [row for row in scored if row["fispact_ce"]]
+    paired = [row for row in scored if row["fispact_ce"] is not None]
     fispact_ce = np.array([row["fispact_ce"] for row in paired])
 
     print(f"\n{len(results)} reactions in {elapsed / 60:.1f} min, "
           f"{len(failures)} failed")
+    if produced_nothing:
+        print(f"{len(produced_nothing)} reaction(s) produced none of the named "
+              f"product, so their C/E is exactly zero. They are scored, not "
+              f"dropped: a library with no route to the product is a gap worth "
+              f"seeing.")
+        for row in produced_nothing[:10]:
+            print(f"  {row['reaction']:26s} {row['spectrum']:16s} "
+                  f"products {row['products']}")
     print(f"yani     median C/E {np.median(yani_ce):.3f}, "
           f"within 10%: {int(np.sum(np.abs(yani_ce - 1) <= 0.1))}/{len(yani_ce)}, "
           f"within 20%: {int(np.sum(np.abs(yani_ce - 1) <= 0.2))}/{len(yani_ce)}")
