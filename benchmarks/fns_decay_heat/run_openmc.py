@@ -145,6 +145,14 @@ def run_case(case, chain_file, boundaries):
     integrator = openmc.deplete.PredictorIntegrator(
         operator, timesteps, source_rates=source_rates, timestep_units="s")
 
+    # `get_decay_heat` reads decay energies from the chain, and it looks for the
+    # chain in the global config rather than taking the one the operator was
+    # built with. Without this every case integrates successfully and then dies
+    # on "A depletion chain file must be specified with
+    # openmc.config['chain_file'] in order to load decay data", which is the
+    # last statement in the run and so costs the whole solve.
+    openmc.config["chain_file"] = str(chain_file)
+
     # Depletion writes its results to the working directory, so each case gets a
     # scratch one rather than clobbering the last.
     with tempfile.TemporaryDirectory() as scratch:
