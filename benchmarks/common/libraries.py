@@ -35,11 +35,13 @@ import collections
 from common import ukaea_decay
 
 Combination = collections.namedtuple(
-    "Combination", "name cross_sections reactions branching decay fission_yields note")
+    "Combination",
+    "name cross_sections reactions branching decay fission_yields "
+    "cross_section_overrides note")
 
 
 def _combination(name, cross_sections, reactions, branching, decay, note,
-                 fission_yields=None):
+                 fission_yields=None, cross_section_overrides=None):
     """Fission yields follow the decay library: no benchmark here is fissionable.
 
     Neither FNS foils nor the integral spectra hold a fissionable nuclide, so
@@ -48,7 +50,8 @@ def _combination(name, cross_sections, reactions, branching, decay, note,
     decay source that publishes no yields names where they come from instead.
     """
     return Combination(name, cross_sections, reactions, branching, decay,
-                       fission_yields or decay, note)
+                       fission_yields or decay,
+                       dict(cross_section_overrides or {}), note)
 
 
 # Decay sources that are not yani keywords: the name a combination uses, and
@@ -80,6 +83,20 @@ COMBINATIONS = [
         "decay data: it is what moves the Sn, Ta and Ho foils, and where "
         "ENDF/B-VIII.1 carries a Q/3 placeholder record (Sn111, Cd105, "
         "Co62m) the placeholder is what moves them."),
+    _combination(
+        "tendl-2017+in115-2025", "tendl-2017", "tendl-2017", "tendl-2017",
+        "ukaea-decay-2012",
+        "The apples-to-apples combination with one nuclide's cross sections "
+        "replaced, because TENDL-2017's In115 file is wrong rather than "
+        "different. Its radiative capture is 4.64 b at 14.5 MeV, against "
+        "3.4e-3 b in TENDL-2025 and 1.0e-3 b in ENDF/B-VIII.1, and it rises by "
+        "a factor 500 between 5 and 14 MeV, which radiative capture does not "
+        "do. Both codes reproduce it from that file: yani and FISPACT-II agree "
+        "on the indium foil to 0.01% and are both a factor 45.8 above the "
+        "measurement. Taking In115 alone from TENDL-2025 moves the foil from "
+        "3863% to 119% mean deviation and leaves the other 72 foils untouched.",
+        fission_yields="endf-b8.1",
+        cross_section_overrides={"In115": "tendl-2025"}),
     _combination(
         "tendl-2025", "tendl-2025", "tendl-2025", "tendl-2025", "endf-b8.1",
         "The current TENDL, everything else held fixed. The difference from "
@@ -151,6 +168,11 @@ def apply(combination, yani):
     about the run keep the name.
     """
     yani.cross_section_data = combination.cross_sections
+    # Per-nuclide overrides go on after the global default, which is the order
+    # yani resolves them in: a nuclide with its own entry uses it, everything
+    # else falls back to the library named above.
+    for nuclide, source in sorted(combination.cross_section_overrides.items()):
+        yani.set_cross_section_data_entry(nuclide, source)
     yani.transmutation_reactions = combination.reactions
     yani.transmutation_branch_ratios = combination.branching
     decay = combination.decay
@@ -181,5 +203,6 @@ def as_dict(combination):
         "branching": combination.branching,
         "decay": combination.decay,
         "fission_yields": combination.fission_yields,
+        "cross_section_overrides": dict(combination.cross_section_overrides),
         "note": combination.note,
     }
