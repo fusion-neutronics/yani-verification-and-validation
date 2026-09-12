@@ -133,6 +133,25 @@ def ordered(documents):
 # FNS decay heat
 # --------------------------------------------------------------------------
 
+#: Two mean deviations closer than this are not distinguishable by this
+#: benchmark, so neither code is credited with the difference.
+#:
+#: The two codes agree on the heat curves to a median 0.019%, and they are
+#: stepped to times that differ by up to 0.82% on the 1996exp_7hour campaign,
+#: so a gap of a few hundredths of a point says nothing about either. Without a
+#: band, 130 experiments produce 130 verdicts where about 20 are real: 85 of
+#: the pairs differ by less than 0.05 percentage points.
+TIE_POINTS = 0.25
+
+
+def head_to_head(yani, fispact, band=TIE_POINTS):
+    """(yani closer, FISPACT closer, tied) over paired mean deviations."""
+    difference = yani - fispact
+    return (int(np.sum(difference < -band)),
+            int(np.sum(difference > band)),
+            int(np.sum(np.abs(difference) <= band)))
+
+
 def fns_summary_figure(documents, destination):
     """Mean deviation, yani against FISPACT-II, one point per experiment.
 
@@ -147,10 +166,10 @@ def fns_summary_figure(documents, destination):
              for key, entry in sorted(apples.items())
              if "fispact_metrics" in entry]
     if not pairs:
-        return None, 0, 0
+        return None, 0, 0, 0, 0
     fispact = np.array([p[1] for p in pairs])
     yani = np.array([p[2] for p in pairs])
-    yani_wins = int(np.sum(yani < fispact))
+    yani_wins, fispact_wins, ties = head_to_head(yani, fispact)
 
     def draw(palette):
         figure, axes = plotting.plt.subplots(figsize=(6.4, 6.4))
@@ -169,8 +188,8 @@ def fns_summary_figure(documents, destination):
         axes.set_ylabel("yani mean deviation [%]")
         axes.set_title(
             f"FNS decay heat, both codes on TENDL-2017\n"
-            f"{yani_wins} of {len(pairs)} experiments closer to the measurement "
-            f"with yani",
+            f"{yani_wins} closer with yani, {fispact_wins} with FISPACT-II, "
+            f"{ties} tied within {TIE_POINTS} points",
             color=palette["text"], fontsize=11, pad=12)
         # The shaded half is the claim; saying which half is which beats a
         # legend entry for a region.
@@ -182,7 +201,7 @@ def fns_summary_figure(documents, destination):
         return figure
 
     plotting.both_modes(draw, destination)
-    return destination, yani_wins, len(pairs)
+    return destination, yani_wins, fispact_wins, ties, len(pairs)
 
 
 def fns_case_figure(key, documents, destination, openmc=None):
@@ -307,7 +326,7 @@ def fns_page(documents):
     apples = documents[apples_name]
 
     FIGURES.mkdir(parents=True, exist_ok=True)
-    summary_path, yani_wins, paired = fns_summary_figure(
+    summary_path, yani_wins, fispact_wins, ties, paired = fns_summary_figure(
         documents, FIGURES / "fns-summary.png")
 
     lines = [GENERATED, "# FNS decay heat", "", PROSE["fns_decay_heat"], ""]
@@ -322,9 +341,16 @@ def fns_page(documents):
         lines += [
             f"On the {paired} experiments the archive publishes a FISPACT-II "
             f"curve for, both codes reading TENDL-2017 cross sections and "
-            f"UKAEA's decay_2012 decay data, yani is closer to the "
-            f"measurement on **{yani_wins}** of them "
-            f"({yani_wins / paired * 100:.0f}%).", ""]
+            f"UKAEA's decay_2012 decay data, yani is closer to the measurement "
+            f"on **{yani_wins}**, FISPACT-II on **{fispact_wins}**, and "
+            f"**{ties}** are tied within {TIE_POINTS} percentage points.", "",
+            f"The tie band is not a courtesy. The two codes agree on the heat "
+            f"curves to a median 0.019%, which is far below the 0 to 0.8% "
+            f"error introduced by the two being stepped to slightly different "
+            f"times, so a difference of a few hundredths of a point is not "
+            f"something this benchmark can resolve. Counted without a band, "
+            f"every experiment produces a verdict and almost none of them "
+            f"means anything.", ""]
 
     rows = [(key, entry) for key, entry in sorted(apples["results"].items())]
     yani_dev = np.array([e["metrics"]["mean_deviation_percent"] for _, e in rows])
