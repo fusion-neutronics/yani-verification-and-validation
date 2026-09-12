@@ -145,6 +145,14 @@ def run_case(case, chain_file, boundaries):
     integrator = openmc.deplete.PredictorIntegrator(
         operator, timesteps, source_rates=source_rates, timestep_units="s")
 
+    # `get_decay_heat` reads decay energies from the chain, and it looks for the
+    # chain in the global config rather than taking the one the operator was
+    # built with. Without this every case integrates successfully and then dies
+    # on "A depletion chain file must be specified with
+    # openmc.config['chain_file'] in order to load decay data", which is the
+    # last statement in the run and so costs the whole solve.
+    openmc.config["chain_file"] = str(chain_file)
+
     # Depletion writes its results to the working directory, so each case gets a
     # scratch one rather than clobbering the last.
     with tempfile.TemporaryDirectory() as scratch:
@@ -178,6 +186,8 @@ def main():
     parser.add_argument("--experiment", action="append", default=[])
     parser.add_argument("--data", type=pathlib.Path)
     parser.add_argument("--output", type=pathlib.Path, default=HERE / "results")
+    parser.add_argument("--redo", action="store_true",
+                        help="re-solve cases already in the output file")
     parser.add_argument("--list-chains", action="store_true")
     args = parser.parse_args()
 
@@ -206,9 +216,48 @@ def main():
     print(f"cross sections {os.environ['OPENMC_CROSS_SECTIONS']}")
     print(f"{len(selection)} experiments\n")
 
+    args.output.mkdir(parents=True, exist_ok=True)
+    destination = args.output / f"openmc-{label}.json"
+
+    # Resume, like every other stage. A case here costs a couple of minutes and
+    # the full 132 is hours, so a run that only wrote at the end threw away
+    # everything it had done on the first interruption.
     results, failures = {}, {}
+    if destination.is_file() and not args.redo:
+        try:
+            previous = json.loads(destination.read_text())
+            results = previous.get("results", {})
+            failures = previous.get("failures", {})
+        except json.JSONDecodeError:
+            pass
+    todo = [entry for entry in selection
+            if f"{entry[0]}/{entry[1]}" not in results]
+    if len(todo) < len(selection):
+        print(f"resuming: {len(selection) - len(todo)} already done")
+
     started = time.time()
-    for index, (name, experiment) in enumerate(selection, start=1):
+
+    def save():
+        # Written aside and moved, so a run killed mid-write leaves a whole file.
+        payload = {
+            "benchmark": "fns_decay_heat",
+            "code": "openmc",
+            "openmc_version": openmc.__version__,
+            "chain_file": str(args.chain),
+            "chain_label": label,
+            "cross_sections": os.environ["OPENMC_CROSS_SECTIONS"],
+            "temperature": TEMPERATURE,
+            "solved": len(results),
+            "failed": len(failures),
+            "wall_seconds": time.time() - started,
+            "results": results,
+            "failures": failures,
+        }
+        scratch = destination.with_suffix(".json.part")
+        scratch.write_text(json.dumps(payload, indent=1, sort_keys=True))
+        scratch.replace(destination)
+
+    for index, (name, experiment) in enumerate(todo, start=1):
         key = f"{name}/{experiment}"
         try:
             case = fns_case.load(name, experiment, args.data)
@@ -225,28 +274,16 @@ def main():
                 "metrics": metrics,
                 "solve_seconds": elapsed,
             }
-            print(f"[{index}/{len(selection)}] {key}: "
-                  f"{metrics['mean_deviation_percent']:.1f}%")
+            print(f"[{index}/{len(todo)}] {key}: "
+                  f"{metrics['mean_deviation_percent']:.1f}%", flush=True)
         except Exception as exc:
             failures[key] = traceback.format_exc()
-            print(f"[{index}/{len(selection)}] {key}: FAILED {exc}")
+            print(f"[{index}/{len(todo)}] {key}: FAILED {exc}", flush=True)
+        # A case costs minutes and a write costs milliseconds, so there is
+        # nothing to batch for.
+        save()
 
-    args.output.mkdir(parents=True, exist_ok=True)
-    destination = args.output / f"openmc-{label}.json"
-    destination.write_text(json.dumps({
-        "benchmark": "fns_decay_heat",
-        "code": "openmc",
-        "openmc_version": openmc.__version__,
-        "chain_file": str(args.chain),
-        "chain_label": label,
-        "cross_sections": os.environ["OPENMC_CROSS_SECTIONS"],
-        "temperature": TEMPERATURE,
-        "solved": len(results),
-        "failed": len(failures),
-        "wall_seconds": time.time() - started,
-        "results": results,
-        "failures": failures,
-    }, indent=1, sort_keys=True))
+    save()
     print(f"\n{len(results)} solved, {len(failures)} failed -> {destination}")
 
 
