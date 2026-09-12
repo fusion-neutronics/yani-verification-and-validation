@@ -55,6 +55,7 @@ markdown_extensions:
 nav:
   - Overview: index.md
   - How the comparisons are made: methodology.md
+  - Proposal for a new campaign: proposed-experiments.md
   - Benchmarks:
       - FNS decay heat: benchmarks/fns-decay-heat.md
       - Effective cross sections: benchmarks/effective-cross-sections.md
