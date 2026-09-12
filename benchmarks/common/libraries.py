@@ -223,7 +223,12 @@ def data_versions(combination):
             ("fission_yields", combination.fission_yields, "fission_yields")):
         if source in LOCAL_DECAY:
             # Converted on this machine, so its stamp sits with the conversion.
-            found[setting] = _stamp(LOCAL_DECAY[source]())
+            # Looked up rather than resolved: `LOCAL_DECAY[source]()` fetches
+            # and converts when the cache is cold, and recording provenance
+            # must not download 5.5 MB and spend a minute converting it.
+            cached = ukaea_decay.cached_decay_directory(
+                source.replace("ukaea-", "").replace("-", "_"))
+            found[setting] = _stamp(cached) if cached else None
         elif isinstance(source, str) and not pathlib.Path(source).is_dir():
             found[setting] = _stamp(
                 root / f"{source}-transmutation-{subsection}.arrow")

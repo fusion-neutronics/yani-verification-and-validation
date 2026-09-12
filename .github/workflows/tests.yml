@@ -21,11 +21,17 @@ jobs:
       - name: Install what the tests need
         run: |
           python -m pip install --upgrade pip
-          # numpy only, plus pytest. Every test here runs against stubs or
-          # synthetic arrays: none of them imports yani, downloads nuclear data
-          # or reads ~/.cache/yamc, so this job stays a few seconds rather than
-          # becoming the slowest thing in the repository.
-          pip install -r requirements-docs.txt pytest
+          # yani as well as numpy. Most tests run against stubs, but the ones
+          # covering `run.py` import it, and `run.py` imports yani at module
+          # level, so without it four tests fail on ModuleNotFoundError rather
+          # than on anything real.
+          #
+          # Installing it is a prebuilt wheel and costs seconds. What still must
+          # not happen is a test reaching for nuclear DATA: nothing here
+          # downloads a library or reads ~/.cache/yamc, and a test that needed
+          # to would turn this job into a multi-gigabyte download. Importing
+          # yani is free; solving with it is not.
+          pip install -r requirements.txt -r requirements-docs.txt pytest
 
       - name: Run the tests
         run: python -m pytest tests/ -q
