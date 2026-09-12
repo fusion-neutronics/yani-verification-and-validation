@@ -61,3 +61,23 @@ def test_every_combination_reports_the_field_even_when_empty():
         recorded = libraries.as_dict(combination)
         assert "cross_section_overrides" in recorded
         assert isinstance(recorded["cross_section_overrides"], dict)
+
+
+def test_the_override_combination_is_marked_diagnostic():
+    """It must not be able to win a headline it was built from."""
+    assert libraries.BY_NAME["tendl-2017+in115-2025"].diagnostic is True
+    assert libraries.as_dict(
+        libraries.BY_NAME["tendl-2017+in115-2025"])["diagnostic"] is True
+
+
+def test_scoreable_excludes_diagnostic_combinations():
+    names = [c.name for c in libraries.scoreable()]
+    assert "tendl-2017+in115-2025" not in names
+    assert "tendl-2017+decay-2012" in names
+    assert len(names) == len(libraries.COMBINATIONS) - 1
+
+
+def test_no_ordinary_combination_is_diagnostic():
+    ordinary = [c for c in libraries.COMBINATIONS
+                if c.name != "tendl-2017+in115-2025"]
+    assert not any(c.diagnostic for c in ordinary)

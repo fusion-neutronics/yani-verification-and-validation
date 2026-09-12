@@ -37,11 +37,12 @@ from common import ukaea_decay
 Combination = collections.namedtuple(
     "Combination",
     "name cross_sections reactions branching decay fission_yields "
-    "cross_section_overrides note")
+    "cross_section_overrides diagnostic note")
 
 
 def _combination(name, cross_sections, reactions, branching, decay, note,
-                 fission_yields=None, cross_section_overrides=None):
+                 fission_yields=None, cross_section_overrides=None,
+                 diagnostic=False):
     """Fission yields follow the decay library: no benchmark here is fissionable.
 
     Neither FNS foils nor the integral spectra hold a fissionable nuclide, so
@@ -51,7 +52,7 @@ def _combination(name, cross_sections, reactions, branching, decay, note,
     """
     return Combination(name, cross_sections, reactions, branching, decay,
                        fission_yields or decay,
-                       dict(cross_section_overrides or {}), note)
+                       dict(cross_section_overrides or {}), diagnostic, note)
 
 
 # Decay sources that are not yani keywords: the name a combination uses, and
@@ -96,7 +97,8 @@ COMBINATIONS = [
         "measurement. Taking In115 alone from TENDL-2025 moves the foil from "
         "3863% to 119% mean deviation and leaves the other 72 foils untouched.",
         fission_yields="endf-b8.1",
-        cross_section_overrides={"In115": "tendl-2025"}),
+        cross_section_overrides={"In115": "tendl-2025"},
+        diagnostic=True),
     _combination(
         "tendl-2025", "tendl-2025", "tendl-2025", "tendl-2025", "endf-b8.1",
         "The current TENDL, everything else held fixed. The difference from "
@@ -155,6 +157,19 @@ APPLES_TO_APPLES = "tendl-2017+decay-2012"
 APPLES_TO_APPLES_ECS = "tendl-2017"
 
 
+def scoreable():
+    """Combinations a headline number may be taken from.
+
+    A diagnostic combination is one that departs from the library it names,
+    which today means replacing a nuclide whose evaluation is demonstrably
+    broken. It is run and plotted and its result is real, but it must not be
+    picked up by a "best combination" aggregate: the defect it corrects was
+    found by looking at the benchmark, so letting it into a headline would be
+    reporting the benchmark back to itself.
+    """
+    return [c for c in COMBINATIONS if not c.diagnostic]
+
+
 def apply(combination, yani):
     """Set yani's five nuclear-data settings from a combination.
 
@@ -204,5 +219,6 @@ def as_dict(combination):
         "decay": combination.decay,
         "fission_yields": combination.fission_yields,
         "cross_section_overrides": dict(combination.cross_section_overrides),
+        "diagnostic": combination.diagnostic,
         "note": combination.note,
     }

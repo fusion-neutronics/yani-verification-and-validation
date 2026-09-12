@@ -205,10 +205,16 @@ def fns_case_figure(key, documents, destination, openmc=None):
 
     # The best other combination, by mean deviation, is drawn as one extra line.
     # All ten would be unreadable, and the table underneath carries them all.
+    # A diagnostic combination is excluded: it departs from the library it
+    # names to work around a broken evaluation, and the defect was identified
+    # from this benchmark, so letting it win a "best combination" line would be
+    # reporting the benchmark back to itself. See libraries.scoreable().
+    diagnostic = {c.name for c in libraries.COMBINATIONS if c.diagnostic}
     alternatives = [
         (name, document["results"][key])
         for name, document in ordered(documents)
         if name != apples_name and key in document["results"]
+        and name not in diagnostic
     ]
     best = min(alternatives,
                key=lambda pair: pair[1]["metrics"]["mean_deviation_percent"],
