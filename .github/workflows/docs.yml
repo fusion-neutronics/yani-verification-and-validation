@@ -9,8 +9,22 @@ on:
 
 # One deploy at a time; queued rather than cancelled so a merge is never
 # published over by an older run.
+#
+# Pull requests get a group of their own, one per branch. GitHub allows only
+# one PENDING run per concurrency group, so a second queued run cancels the
+# first even with `cancel-in-progress: false`: that setting protects a run that
+# has already started, not one waiting behind it. With every pull request
+# sharing the `pages` group, opening several at once left all but the newest
+# cancelled, reporting no result rather than a failure, and a required check
+# that never reports leaves a pull request unmergeable.
+#
+# Observed with twelve open pull requests: ten had no Documentation result at
+# all, and re-running them only moved which ten.
 concurrency:
-  group: pages
+  group: >-
+    ${{ github.event_name == 'pull_request'
+        && format('docs-pr-{0}', github.head_ref)
+        || 'pages' }}
   cancel-in-progress: false
 
 jobs:
