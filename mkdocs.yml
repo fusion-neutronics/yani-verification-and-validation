@@ -59,4 +59,6 @@ nav:
   - Benchmarks:
       - FNS decay heat: benchmarks/fns-decay-heat.md
       - Effective cross sections: benchmarks/effective-cross-sections.md
+  - Studies:
+      - Group structure: studies/group-structure.md
   - Add a benchmark: contributing.md
