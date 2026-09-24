@@ -1,0 +1,75 @@
+name: Benchmark regression
+
+# The other two workflows run against stubs and never touch nuclear data, on
+# purpose: `tests.yml` says so in as many words, because a test that reached
+# for a library would turn a seconds-long job into a multi-gigabyte download.
+#
+# This one does solve. It is the only check that runs the physics, and it
+# exists because nothing else notices when a yani release changes an answer.
+# The sweep would notice, months later, when someone next reruns it.
+#
+# It is therefore NOT on every push. It runs nightly, on a change to the parts
+# of the repository that could move a number, and on demand. The nuclear data
+# is cached between runs, so a warm run is a minute and a cold one is the
+# download.
+
+on:
+  schedule:
+    # 04:17 UTC. Off the hour, because every project that picks 00:00 queues
+    # against every other one.
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "benchmarks/fns_decay_heat/**"
+      - "benchmarks/common/**"
+      - "tools/regression.py"
+      - "requirements.txt"
+      - ".github/workflows/benchmark-regression.yml"
+
+# A second run of this on the same branch tells you nothing the first did not.
+concurrency:
+  group: benchmark-regression-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    name: One FNS foil, against a pinned answer
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install yani and what the runner needs
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Which yani, and which data release it expects
+        id: versions
+        shell: bash
+        run: |
+          version=$(python -c "import yani; print(yani.__version__)")
+          echo "yani=${version}" >> "$GITHUB_OUTPUT"
+          echo "yani ${version}"
+
+      # Keyed on the yani version, because the data release a wheel expects is
+      # compiled into it: a new wheel evicts and refetches anyway, so sharing a
+      # cache across versions would just carry dead bytes. Restore-keys is
+      # deliberately absent for the same reason.
+      - name: Cache the nuclear data
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/yamc
+          key: yamc-data-${{ runner.os }}-yani-${{ steps.versions.outputs.yani }}-fe-tendl2017
+
+      - name: What is being checked
+        run: python tools/regression.py --show
+
+      - name: Solve it
+        run: python tools/regression.py
