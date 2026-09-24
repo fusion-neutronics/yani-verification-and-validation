@@ -63,16 +63,25 @@ python benchmarks/fns_decay_heat/run.py --case Fe --uncertainty --samples 32
 ```
 
 It is off by default because it costs one solve per replica rather than one in
-total. **Every sigma it reports today is zero**, because the published libraries
-do not yet carry a covariance section, and a run says so explicitly rather than
-letting a zero read as "well known":
+total. On the iron foil it reports:
 
 ```
-covariance:  0 nuclide(s) perturbed, 462 with none published
+measurement sigma 5.4% (median), 0/21 yani points inside it
+nuclear-data sigma on yani 16.7% (median), 21/21 points agreeing within the two combined
+covariance:  2572 nuclide(s) perturbed, 5 with none published
+             rate coverage down to 1% (Li7 (n,d))
 ```
 
-So what is in the repository is the machinery and its coverage report, not yet a
-result. [The methodology page](docs/methodology.md) says what it covers, why the
+That is the band doing the job it exists for. yani and FISPACT-II both sit 7.3%
+from the measurement on this foil, which is outside the measurement's own 5.4%
+at every one of its 21 points. Against the nuclear data's 16.7%, every point
+agrees. The two codes are not both wrong about the physics; they are both
+reading cross sections that are not known to better than that.
+
+A run says what it left out rather than letting a small sigma read as "well
+known": which nuclides carry no published covariance, how much of each reaction
+rate the covariance grid actually spans, and which sources are not propagated at
+all. [The methodology page](docs/methodology.md) says what it covers, why the
 band is an ensemble spread rather than a quadrature sum, and what is still held
 at its evaluated value.
 
