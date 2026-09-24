@@ -148,17 +148,29 @@ VALIDATED = [
     ("Pu239_thermal", "Tobias_pulse"),
     ("Pu239_fast", "Akiyama_pulse"),
     ("Pu241_thermal", "Dickens_pulse"),
+    # Finite irradiations, published per unit fission rate. See
+    # `published_scale` for how that was established.
+    ("U235_thermal", "Lott_100"),
+    ("U235_thermal", "Lott_1000"),
+    ("U235_thermal", "Lott_5000"),
+    ("U233_thermal", "Yarnell_20000"),
+    ("Pu239_thermal", "Yarnell_20000"),
 ]
 
 # Why each of the rest is out. Running them is a flag away; believing them is
 # not, and the distinction is the point of keeping this list in the code.
 EXCLUDED = {
-    "finite": (
-        "Finite-irradiation curves (Yarnell, Jurney, Lott, Baumung, McNair, "
-        "MacMahon, Scobie, Murphy, Fisher, Lowell) do not follow the pulse "
-        "t*f(t) convention: the ratio to a yani solve runs from 1e2 to 1e7 "
-        "and is not flat in time, so their normalisation is a different one "
-        "and has not been established."),
+    "convention": (
+        "U235_thermal/Baumung_200 is a 200 s irradiation published in the "
+        "burst convention rather than the finite one, fitting t*f(t) at 1.054 "
+        "with spread 1.09x against 248x for per-fission-rate. One dataset "
+        "disagreeing with the other six is a question for the source paper, "
+        "not something to switch on per curve."),
+    "disagreement": (
+        "U235_thermal/Jurney_20000 follows the finite convention in shape, "
+        "spread 1.37x, but sits 42% low. That is a disagreement about the "
+        "physics or the data rather than about units, and pulling it in "
+        "would hide it."),
     "no_total": (
         "Th232_fast and several others publish beta or gamma but no total "
         "column, so there is nothing for the current scoring to compare "
@@ -168,6 +180,44 @@ EXCLUDED = {
 
 def document(path=None):
     return json.loads((path or DATA).read_text())
+
+
+def published_scale(case, times):
+    """What to multiply f(t) by to reach the number the archive prints.
+
+    The archive uses two conventions and labels both `MeV/f/s`.
+
+    **A burst is published as t*f(t)**, in MeV per fission, the standard
+    compressed presentation: f falls roughly as t^-1.2 and multiplying by t
+    makes the curve readable. Measured on U235 thermal over 2.7 s to 12000 s,
+    measured/calculated has median 102 and spread 4393x while
+    measured/(calculated*t) has median 0.9944 and spread 1.13x.
+
+    **A finite irradiation is published per unit fission rate**, which is f
+    integrated over the irradiation window, in MeV per fission. This solve
+    normalises by the total fissions rather than the rate, so the two differ
+    by exactly the irradiation length.
+
+    That second one is a determination rather than a fit. The ratio comes out
+    at the irradiation length across four durations spanning 200x, on three
+    fissioning systems, without that number being fitted to anything:
+
+        Lott 100 s          1.019 x D, spread 1.15x
+        Lott 1000 s         1.005 x D, spread 1.05x
+        Lott 5000 s         1.006 x D, spread 1.06x
+        U233 Yarnell 20000  1.044 x D, spread 1.07x
+        Pu239 Yarnell 20000 1.082 x D, spread 1.07x
+
+    Two curves do not follow it and are excluded rather than bent to fit.
+    Baumung 200 s follows the burst convention instead (1.054, spread 1.09x,
+    against 248x for this one). Jurney 20000 s follows this convention in
+    shape, spread 1.37x, but sits 42% low, which is a disagreement about the
+    physics rather than about the units.
+    """
+    duration = case["irradiation_s"]
+    if not duration:
+        return np.array(times, dtype=float)
+    return duration
 
 
 def mass_number(nuclide):
@@ -285,9 +335,13 @@ def solve(case, combination):
     return {
         # f(t) itself, in MeV per fission per second.
         "calculated_MeV_per_fission_s": f_of_t.tolist(),
-        # t*f(t), in MeV per fission, which is what the archive tabulates and
-        # therefore what the scores below compare.
-        "calculated_t_f_MeV_per_fission": (f_of_t * np.array(times)).tolist(),
+        # What the archive tabulates, and therefore what the scores compare.
+        # A burst is published as t*f(t); a finite irradiation is published as
+        # the decay heat per unit fission RATE, which is f integrated over the
+        # window and equals this f(t) times the irradiation length. See
+        # `published_scale`.
+        "calculated_t_f_MeV_per_fission":
+            (f_of_t * published_scale(case, times)).tolist(),
         # Everything the sample makes, for comparison with the line above.
         # Where these differ the parent's capture chain is contributing, which
         # is not what the measurement counted.

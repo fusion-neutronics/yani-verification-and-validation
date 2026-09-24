@@ -19,8 +19,11 @@ It is also the only one here that is not a 14 MeV field.
 
 ## The result
 
-Eight burst irradiations across five fissioning systems, thermal and fast, on
-TENDL-2017 cross sections with ENDF/B-VIII.1 yields and decay data.
+Thirteen irradiations across **six fissioning systems**, thermal and fast,
+burst and finite, on TENDL-2017 cross sections with ENDF/B-VIII.1 yields and
+decay data.
+
+**Burst irradiations**, published as t·f(t):
 
 | system | author | median C/E | mean deviation | within measurement sigma |
 | --- | --- | ---: | ---: | ---: |
@@ -33,11 +36,59 @@ TENDL-2017 cross sections with ENDF/B-VIII.1 yields and decay data.
 | Pu241 thermal | Dickens | 0.950 | 4.5% | 11/31 |
 | U238 fast | Akiyama | 0.944 | 5.4% | 22/34 |
 
-**Every case runs low at the median**, between 0.944 and 0.992. That is one
-direction across five fissioning systems, two neutron fields and three
-independent experimenters, so it is far more likely to be a property of the
-yields or the decay data than of any one measurement. It is the most
-interesting number on this page.
+**Finite irradiations**, published per unit fission rate:
+
+| system | author | irradiation | median C/E | mean deviation | within sigma |
+| --- | --- | ---: | ---: | ---: | ---: |
+| U235 thermal | Lott | 5000 s | 0.987 | 1.9% | 14/15 |
+| U235 thermal | Lott | 1000 s | 0.978 | 2.6% | 11/13 |
+| U235 thermal | Lott | 100 s | 0.965 | 4.2% | 7/11 |
+| U233 thermal | Yarnell | 20000 s | 0.946 | 4.7% | 21/43 |
+| Pu239 thermal | Yarnell | 20000 s | 0.930 | 8.1% | 4/50 |
+
+**Every one of the thirteen runs low**, between 0.930 and 0.992. One direction
+across six fissioning systems, two neutron fields, both irradiation shapes and
+five independent experimenters. A single measurement leaning one way is noise;
+thirteen leaning the same way is not, and it points at the yields or the decay
+data rather than at any experiment. It is the most interesting number on this
+page.
+
+The Lott series is worth a second look on its own: 0.965 at 100 s, 0.978 at
+1000 s, 0.987 at 5000 s, with the agreement improving as the irradiation
+lengthens. A short irradiation weights the short-lived products hardest, so a
+trend in that direction is a statement about where in the yield set the
+disagreement sits.
+
+## The archive uses two conventions and labels both MeV/f/s
+
+**A burst is published as t·f(t)**, in MeV per fission. f falls roughly as
+t^-1.2 over many decades, and multiplying by t turns that into a nearly flat
+curve with readable structure. Measured rather than assumed, on U235 thermal
+over 2.7 s to 12000 s:
+
+| comparison | median | spread |
+| --- | ---: | ---: |
+| measured / calculated | 102 | 4393x |
+| measured / (calculated × t) | 0.9944 | 1.13x |
+
+**A finite irradiation is published per unit fission rate**, which is f
+integrated over the irradiation window. This benchmark normalises by the total
+number of fissions instead, so the two differ by exactly the irradiation
+length.
+
+That is a determination and not a fit. The ratio comes out at the irradiation
+length across four durations spanning 200x, on three fissioning systems,
+without that number being fitted to anything:
+
+| dataset | irradiation | measured/calculated ÷ D | spread |
+| --- | ---: | ---: | ---: |
+| Lott | 100 s | 1.019 | 1.15x |
+| Lott | 1000 s | 1.005 | 1.05x |
+| Lott | 5000 s | 1.006 | 1.06x |
+| U233 Yarnell | 20000 s | 1.044 | 1.07x |
+| Pu239 Yarnell | 20000 s | 1.082 | 1.07x |
+
+A spurious fit does not reproduce a number that varies by 200x across the set.
 
 ## Only the fission products are counted
 
@@ -70,28 +121,9 @@ can be applied to every case rather than only to the ones that need it.
 The unfiltered total is kept in the results file beside the scored one, so the
 size of the difference is visible per curve rather than taken on trust.
 
-## Two things worth knowing about the data
+## One file contradicts itself
 
-**The archive tabulates t·f(t), not f(t).** The column header says `MeV/f/s`,
-which is the unit of the decay power per fission. The values are the power
-multiplied by the time, in MeV per fission, which is the standard compressed
-presentation: f(t) falls roughly as t^-1.2 over many decades, and multiplying
-by t turns that into a nearly flat curve with readable structure.
-
-This was measured rather than assumed. Against a yani solve on U235 thermal,
-32 points from 2.7 s to 12000 s:
-
-| comparison | median | spread |
-| --- | ---: | ---: |
-| measured / calculated | 102 | 4393x |
-| measured / (calculated × t) | 0.9944 | 1.13x |
-
-A wrong constant would show as a flat offset. A spread of 4393x collapsing to
-1.13x when divided by t is the t in the published quantity. The comparison is
-therefore done in the archive's own space, so the numbers on this page are the
-numbers in the tables they came from.
-
-**One file contradicts itself.** `U235_thermal/Yarnell_20000.csv` declares
+ `U235_thermal/Yarnell_20000.csv` declares
 `Author: Akiyama` and `Irradiation: Pulse` in its header, against a filename
 saying Yarnell and 20000 s. It is the only one of the 48 where the header and
 the filename disagree, so this is an isolated error in the archive rather than
@@ -128,14 +160,17 @@ burst running at exactly the 1e22 it would otherwise have used.
 
 ## What is not here yet
 
-The archive holds 48 curves and this page stands behind 8. The rest are
+The archive holds 48 curves and this page stands behind 13. The rest are
 excluded for stated reasons rather than quietly dropped, and
 `run.py --list` prints them:
 
-- **Finite irradiations** (Yarnell, Jurney, Lott, Baumung, McNair, MacMahon,
-  Scobie, Murphy, Fisher, Lowell). The burnup fix above moved these from
-  nonsense to the right order of magnitude, but they do not follow the pulse
-  t·f(t) convention and their normalisation has not been established.
+- **Baumung 200 s**, a finite irradiation published in the *burst* convention
+  instead, fitting t·f(t) at 1.054 with 1.09x spread against 248x for the
+  finite one. One dataset disagreeing with the other six is a question for its
+  source paper, not a reason to switch convention per curve.
+- **Jurney 20000 s**, which follows the finite convention in shape, 1.37x
+  spread, but sits 42% low. That is a disagreement about the physics or the
+  data rather than about units, and pulling it in would hide it.
 - **Curves with no total column.** Th232 fast and several others publish beta
   or gamma but not their sum, so the current scoring has nothing to compare
   against. Scoring the components separately would bring them in.
