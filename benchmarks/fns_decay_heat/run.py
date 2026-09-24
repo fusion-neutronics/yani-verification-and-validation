@@ -55,6 +55,10 @@ import case as fns_case  # noqa: E402
 
 HERE = pathlib.Path(__file__).resolve().parent
 
+# How hard to try before giving up on reaching the data at all.
+_COVERAGE_ATTEMPTS = 4
+_COVERAGE_BACKOFF_S = 2.0
+
 
 Solved = collections.namedtuple(
     "Solved", "heat breakdown elapsed sigma uncertainty_info replicas")
@@ -82,6 +86,20 @@ class MissingEvaluations(Exception):
     """
 
 
+class CoverageUnknown(RuntimeError):
+    """The library could not be asked whether it publishes a nuclide.
+
+    Distinct from a library answering "no". A dropped connection or a
+    truncated body means the question went unanswered, and answering it "no"
+    anyway is how this benchmark came to report that TENDL-2017 publishes no
+    evaluation for gold.
+    """
+
+
+# A 404 is the library answering. Anything else is the network failing to ask.
+_ABSENT_MARKERS = ("404", "not found")
+
+
 @functools.lru_cache(maxsize=None)
 def _is_available(nuclide, library):
     """Can `library` supply cross sections for `nuclide`?
@@ -90,12 +108,36 @@ def _is_available(nuclide, library):
     every worker, and the answer is a property of the library rather than of
     the case. The load itself is what a solve would do anyway, so on a warm
     cache this costs a parse and no download.
+
+    This used to be `except Exception: return False`, which folded every way of
+    failing to reach the data into the one answer that reads as a statement
+    about the library. A sweep with sixteen workers against one origin drops
+    connections, and a dropped connection became "tendl-2017 publishes no
+    evaluation for Au (Au197)" in the results file, for an evaluation that is
+    published and that the same process reads without complaint a minute later.
+    Twenty of 132 experiments failed that way in one run, and nothing in the
+    output said they had.
+
+    So a 404 answers False, and everything else retries and then raises.
     """
-    try:
-        yani.Nuclide(nuclide).read_nuclear_data(library)
-    except Exception:
-        return False
-    return True
+    last = None
+    for attempt in range(_COVERAGE_ATTEMPTS):
+        try:
+            yani.Nuclide(nuclide).read_nuclear_data(library)
+            return True
+        except Exception as exc:  # noqa: BLE001 - re-raised below unless it is a 404
+            message = str(exc).lower()
+            if any(marker in message for marker in _ABSENT_MARKERS):
+                return False
+            last = exc
+            if attempt + 1 < _COVERAGE_ATTEMPTS:
+                time.sleep(_COVERAGE_BACKOFF_S * (attempt + 1))
+    raise CoverageUnknown(
+        f"could not determine whether {library} publishes {nuclide}, after "
+        f"{_COVERAGE_ATTEMPTS} attempts: {type(last).__name__}: {last}. "
+        f"This is a failure to reach the data, not a gap in the library, and "
+        f"is raised rather than recorded as one."
+    ) from last
 
 
 def uncovered(case, combination):
