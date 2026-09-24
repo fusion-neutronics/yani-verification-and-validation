@@ -28,8 +28,9 @@ would test the data and skip the code.
 
 !!! warning "Draft: this page is built from a partial run"
 
-    0 of 10 nuclear-data combinations are complete, out of 365 reactions each.
+    0 of 11 nuclear-data combinations have been run, out of 365 reactions each.
 
+    * `tendl-2017+decay-2012` -- not run
     * `tendl-2017` -- 15 of 365
     * `tendl-2025` -- not run
     * `endf-b8.1` -- not run
