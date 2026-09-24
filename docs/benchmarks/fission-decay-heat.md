@@ -19,20 +19,56 @@ It is also the only one here that is not a 14 MeV field.
 
 ## The result
 
-Five burst irradiations across four fissioning systems, on TENDL-2017 cross
-sections with ENDF/B-VIII.1 yields and decay data.
+Eight burst irradiations across five fissioning systems, thermal and fast, on
+TENDL-2017 cross sections with ENDF/B-VIII.1 yields and decay data.
 
 | system | author | median C/E | mean deviation | within measurement sigma |
 | --- | --- | ---: | ---: | ---: |
 | U235 thermal | Dickens | 0.992 | 2.4% | 21/32 |
+| U233 fast | Akiyama | 0.973 | 2.9% | 32/34 |
+| Pu239 fast | Akiyama | 0.970 | 3.7% | 19/34 |
 | U235 fast | Akiyama | 0.969 | 3.1% | 24/34 |
-| Pu241 thermal | Dickens | 0.952 | 4.4% | 11/31 |
+| Pu239 thermal | Tobias | 0.956 | 5.6% | 6/31 |
 | U235 thermal | Tobias | 0.952 | 5.4% | 5/31 |
-| Pu239 thermal | Tobias | 0.956 | 7.8% | 6/31 |
+| Pu241 thermal | Dickens | 0.950 | 4.5% | 11/31 |
+| U238 fast | Akiyama | 0.944 | 5.4% | 22/34 |
 
-Every case runs a few percent low at the median. That is one direction across
-four fissioning systems and two independent experimenters, so it is more likely
-to be a property of the yields or the decay data than of any one measurement.
+**Every case runs low at the median**, between 0.944 and 0.992. That is one
+direction across five fissioning systems, two neutron fields and three
+independent experimenters, so it is far more likely to be a property of the
+yields or the decay data than of any one measurement. It is the most
+interesting number on this page.
+
+## Only the fission products are counted
+
+What the benchmark measures is fission-product decay heat, not everything an
+irradiated sample makes. The archive's own FISPACT decks say so by suppressing
+the parent's capture route (`OVER U235 / ACROSS U236 0.0`).
+
+Below a fission threshold that stops being a refinement and becomes the whole
+answer. At the archive's 400 keV fast field, U238 captures **405 times** more
+than it fissions and Th232 **15749 times**, so an unfiltered inventory is
+mostly U239 and Np239 and has almost nothing to do with fission. Dividing that
+heat by a near-zero fission count produces a number with no meaning.
+
+So the score counts nuclides with A below 200, which separates fission
+products (A roughly 70 to 160) from the actinide chain (above 220) with a wide
+margin. The effect, as median C/E and spread across the curve:
+
+| case | everything | fission products only |
+| --- | --- | --- |
+| U235 thermal, Dickens | 1.0056, 1.13x | 1.0056, 1.13x |
+| U233 fast, Akiyama | 1.0177, 2.95x | 0.9913, 1.09x |
+| Pu239 fast, Akiyama | 1.3195, 23.48x | 0.9922, 1.07x |
+| U238 fast, Akiyama | 27.5626, 38.16x | 0.9615, 1.12x |
+
+The first row is the control and it does not move at all, because for U235
+thermal the actinide chain carries nothing measurable. That is why this went
+unnoticed while only thermal cases were looked at, and it is why the filter
+can be applied to every case rather than only to the ones that need it.
+
+The unfiltered total is kept in the results file beside the scored one, so the
+size of the difference is visible per curve rather than taken on trust.
 
 ## Two things worth knowing about the data
 
@@ -92,7 +128,7 @@ burst running at exactly the 1e22 it would otherwise have used.
 
 ## What is not here yet
 
-The archive holds 48 curves and this page stands behind 5. The rest are
+The archive holds 48 curves and this page stands behind 8. The rest are
 excluded for stated reasons rather than quietly dropped, and
 `run.py --list` prints them:
 
@@ -100,14 +136,9 @@ excluded for stated reasons rather than quietly dropped, and
   Scobie, Murphy, Fisher, Lowell). The burnup fix above moved these from
   nonsense to the right order of magnitude, but they do not follow the pulse
   t·f(t) convention and their normalisation has not been established.
-- **Threshold fissioners** (U238 fast, Th232 fast). These fission above about
-  1 MeV, and the archive's `fluxes_fast` is a single populated group at 398 to
-  417 keV, below the threshold. The fission rate a solve drives there is not
-  the rate the experiment ran at, so the per-fission normalisation is
-  meaningless until the real spectrum is supplied.
-- **Two curves that follow the convention at the median but not across it**
-  (U233 fast and Pu239 fast, both Akiyama), spreading 2.9x and 23x. Something
-  else is moving and they are held back until it is named.
+- **Curves with no total column.** Th232 fast and several others publish beta
+  or gamma but not their sum, so the current scoring has nothing to compare
+  against. Scoring the components separately would bring them in.
 
 ## Reproducing it
 

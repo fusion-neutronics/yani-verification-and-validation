@@ -86,6 +86,7 @@ compares two codes; this one compares yani with a measurement.
 
 import argparse
 import json
+import re
 import pathlib
 import sys
 import time
@@ -101,6 +102,11 @@ HERE = pathlib.Path(__file__).resolve().parent
 DATA = HERE / "data" / "fission_data.json"
 
 MEV_PER_JOULE = 6.241509074e12
+
+# Fission products span A of roughly 70 to 160; the actinide chain the parent
+# captures its way up starts above 220. This separates them with a wide margin.
+FISSION_PRODUCT_MAX_A = 200
+_MASS_NUMBER = re.compile(r"^[A-Za-z]+(\d+)")
 
 # Short enough that the shortest-lived products the measurement resolves do not
 # decay appreciably within it, and the same order the archive's own FISPACT
@@ -137,7 +143,10 @@ VALIDATED = [
     ("U235_thermal", "Dickens_pulse"),
     ("U235_thermal", "Tobias_pulse"),
     ("U235_fast", "Akiyama_pulse"),
+    ("U233_fast", "Akiyama_pulse"),
+    ("U238_fast", "Akiyama_pulse"),
     ("Pu239_thermal", "Tobias_pulse"),
+    ("Pu239_fast", "Akiyama_pulse"),
     ("Pu241_thermal", "Dickens_pulse"),
 ]
 
@@ -150,22 +159,52 @@ EXCLUDED = {
         "t*f(t) convention: the ratio to a yani solve runs from 1e2 to 1e7 "
         "and is not flat in time, so their normalisation is a different one "
         "and has not been established."),
-    "threshold": (
-        "U238_fast and Th232_fast sit on a fission threshold near 1 MeV, and "
-        "the archive's `fluxes_fast` is a single populated group at 398 to "
-        "417 keV, below it. The fission rate a solve drives there is not the "
-        "rate the experiment ran at, so the per-fission normalisation is "
-        "meaningless before the real spectrum is supplied."),
-    "spread": (
-        "U233_fast/Akiyama_pulse and Pu239_fast/Akiyama_pulse follow the "
-        "convention at the median (0.98 and 0.76) but spread 2.9x and 23x "
-        "across the curve, so something else is moving and they are held "
-        "back until it is named."),
+    "no_total": (
+        "Th232_fast and several others publish beta or gamma but no total "
+        "column, so there is nothing for the current scoring to compare "
+        "against. Scoring the components separately would bring them in."),
 }
 
 
 def document(path=None):
     return json.loads((path or DATA).read_text())
+
+
+def mass_number(nuclide):
+    """The A in a name like `Cs137` or `Ag110_m1`, or None if unparseable."""
+    match = _MASS_NUMBER.match(nuclide)
+    return int(match.group(1)) if match else None
+
+
+def fission_product_heat(breakdown):
+    """Decay heat from the fission products alone, in watts.
+
+    What the benchmark measures is fission-product decay heat, not everything
+    an irradiated sample makes. The archive's own FISPACT decks say so by
+    suppressing the parent's capture route (`OVER U235 / ACROSS U236 0.0`),
+    and below a fission threshold that distinction is the whole answer rather
+    than a refinement: at the archive's 400 keV fast field, U238 captures 405
+    times more than it fissions and Th232 15749 times, so an unfiltered
+    inventory is mostly U239 and Np239 and has almost nothing to do with
+    fission.
+
+    Measured effect, median C/E and spread over the curve:
+
+        U235 thermal, Dickens   1.0056 / 1.13x  ->  1.0056 / 1.13x   unchanged
+        U238 fast,    Akiyama  27.5626 / 38.16x ->  0.9615 / 1.12x
+        U233 fast,    Akiyama   1.0177 / 2.95x  ->  0.9913 / 1.09x
+        Pu239 fast,   Akiyama   1.3195 / 23.48x ->  0.9922 / 1.07x
+
+    The control is untouched, because for U235 thermal the actinide chain
+    carries nothing measurable, which is why this went unnoticed while only
+    thermal cases were looked at.
+
+    A nuclide whose name will not parse is kept rather than dropped: losing
+    heat silently is worse than counting a little too much, and the totals are
+    reported beside this so the difference is visible.
+    """
+    return sum(watts for nuclide, watts in breakdown.items()
+               if (mass_number(nuclide) or 0) < FISSION_PRODUCT_MAX_A)
 
 
 def fission_rate(results, material_id, parent, step=0):
@@ -239,9 +278,9 @@ def solve(case, combination):
             f"{case['source_file']}: {len(states)} cooling states for "
             f"{len(times)} measured times")
 
-    heat = np.array([
-        sum(state.decay_heat(by_nuclide=True).values()) for state in states
-    ])
+    breakdowns = [state.decay_heat(by_nuclide=True) for state in states]
+    heat_all = np.array([sum(b.values()) for b in breakdowns])
+    heat = np.array([fission_product_heat(b) for b in breakdowns])
     f_of_t = heat * MEV_PER_JOULE / fissions
     return {
         # f(t) itself, in MeV per fission per second.
@@ -249,6 +288,11 @@ def solve(case, combination):
         # t*f(t), in MeV per fission, which is what the archive tabulates and
         # therefore what the scores below compare.
         "calculated_t_f_MeV_per_fission": (f_of_t * np.array(times)).tolist(),
+        # Everything the sample makes, for comparison with the line above.
+        # Where these differ the parent's capture chain is contributing, which
+        # is not what the measurement counted.
+        "calculated_all_nuclides_MeV_per_fission_s":
+            (heat_all * MEV_PER_JOULE / fissions).tolist(),
         "fission_rate_per_atom_s": rate,
         "parent_atoms": parent_atoms,
         "fissions": fissions,
