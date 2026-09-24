@@ -57,27 +57,47 @@ def coverage_note(documents, expected_cases, unit, command):
     complete one, except that some rows are missing, and a reader has no way to
     tell an unrun combination from one that failed. So the page says which it
     is, and how to finish it.
+
+    A combination that ran every case and had some refused by its library is
+    **not** partial, and saying "draft" over it would be wrong: nothing is
+    waiting to be computed, the library does not publish those elements and
+    never will. `solved + failed == expected` is what separates the two, and
+    the refusals get their own note rather than the warning banner.
     """
-    missing = []
+    unrun, refused = [], []
     for combination in libraries.COMBINATIONS:
         document = documents.get(combination.name)
         if document is None:
-            missing.append((combination.name, 0))
-        else:
-            count = len(document["results"])
-            if count < expected_cases:
-                missing.append((combination.name, count))
-    if not missing:
-        return []
+            unrun.append((combination.name, 0))
+            continue
+        solved = len(document["results"])
+        attempted = solved + document.get("failed", 0)
+        if attempted < expected_cases:
+            unrun.append((combination.name, solved))
+        elif solved < expected_cases:
+            refused.append((combination.name, expected_cases - solved))
 
-    lines = ['!!! warning "Draft: this page is built from a partial run"', ""]
-    lines += [f"    {len(libraries.COMBINATIONS) - len(missing)} of "
-              f"{len(libraries.COMBINATIONS)} nuclear-data combinations are "
-              f"complete, out of {expected_cases} {unit} each.", ""]
-    for name, count in missing:
-        state = "not run" if count == 0 else f"{count} of {expected_cases}"
-        lines += [f"    * `{name}` -- {state}"]
-    lines += ["", f"    To finish it: `{command}`", ""]
+    lines = []
+    if unrun:
+        lines += ['!!! warning "Draft: this page is built from a partial run"', ""]
+        lines += [f"    {len(libraries.COMBINATIONS) - len(unrun)} of "
+                  f"{len(libraries.COMBINATIONS)} nuclear-data combinations have "
+                  f"been run, out of {expected_cases} {unit} each.", ""]
+        for name, count in unrun:
+            state = "not run" if count == 0 else f"{count} of {expected_cases}"
+            lines += [f"    * `{name}` -- {state}"]
+        lines += ["", f"    To finish it: `{command}`", ""]
+
+    if refused:
+        lines += ['!!! note "Some libraries do not cover every case"', ""]
+        lines += [f"    These ran every one of the {expected_cases} {unit} and "
+                  f"had some refused, because the library publishes no "
+                  f"evaluation for an element the case needs. That is a gap in "
+                  f"the library rather than a gap in this page.", ""]
+        for name, count in refused:
+            lines += [f"    * `{name}` -- {count} refused, "
+                      f"{expected_cases - count} scored"]
+        lines += [""]
     return lines
 
 
