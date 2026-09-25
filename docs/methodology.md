@@ -212,28 +212,30 @@ and still be consistent once the data it was calculated from is known to be
 poorly determined. That is a different statement from a point that misses for
 any other reason, and the two should not be scored the same.
 
-### Why the bands on this site are currently zero
+### Reading a sigma of zero
 
-The capability is wired through the runners and the figures, but every sigma it
-reports today is exactly 0. The published libraries these benchmarks download
-do not yet carry a covariance section: yani records that per nuclide, and on
-TENDL-2017, the library the FISPACT-II comparison uses, every nuclide fetched so
-far is marked as having none.
-
-This is stated here rather than shown as a zero-width band because a zero sigma
-is ambiguous, and the two things it can mean are opposite. A well-known cross
-section and an evaluation that publishes no covariance at all both report zero.
-The runners print the split, so a run says how many nuclides were actually
-perturbed and how many had nothing to perturb from:
+A zero sigma is ambiguous, and the two things it can mean are opposite. A
+well-known cross section and an evaluation that publishes no covariance at all
+both report zero, and only one of those is reassuring. So the runners print the
+split rather than the band alone: how many nuclides were actually perturbed,
+how many had nothing to perturb from, and how much of each reaction rate the
+covariance grid spans.
 
 ```
-covariance:  0 nuclide(s) perturbed, 462 with none published
+covariance:  2572 nuclide(s) perturbed, 5 with none published
+             rate coverage down to 1% (Li7 (n,d))
 ```
 
-Nothing on this site is evidence about nuclear-data uncertainty until that
-number is non-zero. What lands here is the machinery and the honest report of
-its coverage, so that republishing the libraries with their covariance sections
-is the only remaining step.
+That is the iron foil on TENDL-2017. The libraries carry their covariance
+sections now, so the number is no longer zero and the band on this site is a
+result rather than a promise.
+
+Read the coverage line beside it rather than the count. 2572 of 2577 nuclides
+being perturbed says the evaluations are there; "rate coverage down to 1%" says
+that for at least one channel the covariance grid spans only a hundredth of the
+rate that channel actually drove, so the relative uncertainty it contributes is
+diluted by the ninety-nine hundredths the evaluation says nothing about. A
+count can read as full coverage where the rate-weighted figure does not.
 
 ## Reproducing any of it
 
