@@ -16,8 +16,8 @@ and running them by hand does the same thing.
 
 | stage | what it does | rough cost |
 | --- | --- | --- |
-| `fns` | 132 FNS decay-heat experiments x 10 data combinations | the long one |
-| `ecs` | 365 effective cross sections x 10 data combinations | medium |
+| `fns` | 132 FNS decay-heat experiments x 11 data combinations | the long one |
+| `ecs` | 365 effective cross sections x 11 data combinations | medium |
 | `openmc` | the FNS experiments again, through OpenMC | needs its own data |
 | `site` | the result JSON into pages and figures | seconds |
 
