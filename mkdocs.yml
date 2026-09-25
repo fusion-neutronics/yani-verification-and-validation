@@ -60,5 +60,6 @@ nav:
       - FNS decay heat: benchmarks/fns-decay-heat.md
       - Effective cross sections: benchmarks/effective-cross-sections.md
   - Studies:
+      - Self-shielding: studies/self-shielding.md
       - Group structure: studies/group-structure.md
   - Add a benchmark: contributing.md
