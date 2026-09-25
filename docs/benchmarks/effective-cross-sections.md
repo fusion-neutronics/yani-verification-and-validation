@@ -26,41 +26,31 @@ irradiating a pure target for one short pulse and counting the product atoms,
 rather than by doing the collapse integral separately. Doing it separately
 would test the data and skip the code.
 
-!!! warning "Draft: this page is built from a partial run"
+!!! note "Some libraries do not cover every case"
 
-    0 of 10 nuclear-data combinations are complete, out of 365 reactions each.
+    These ran every one of the 365 reactions and had some refused, because the library publishes no evaluation for an element the case needs. That is a gap in the library rather than a gap in this page.
 
-    * `tendl-2017` -- 15 of 365
-    * `tendl-2025` -- not run
-    * `endf-b8.1` -- not run
-    * `jeff-4.0` -- not run
-    * `fendl-3.2d` -- not run
-    * `tendl-2017+jeff-decay` -- not run
-    * `tendl-2025+jeff-decay` -- not run
-    * `tendl-2025-xs+endf-chain` -- not run
-    * `tendl-2017-xs+endf-branching` -- not run
-    * `fendl-3.2d+tendl-2025-chain` -- not run
-
-    To finish it: `python tools/run_all.py`
+    * `fendl-3.2d` -- 44 refused, 321 scored
+    * `fendl-3.2d+tendl-2025-chain` -- 44 refused, 321 scored
 
 ## yani against FISPACT-II, same library
 
 ![yani against FISPACT-II C/E](figures/ecs-summary.png#only-light)
 ![yani against FISPACT-II C/E](figures/ecs-summary-dark.png#only-dark)
 
-On the 15 reactions both codes calculated with TENDL-2017, yani is closer to the measurement on **7** (47%).
+On the 365 reactions both codes calculated with TENDL-2017, yani is closer to the measurement on **168** (46%).
 
 | code | reactions | median C/E | within 10% | within 20% |
 | --- | ---: | ---: | ---: | ---: |
-| yani, tendl-2017 | 15 | 0.961 | 8 | 12 |
-| FISPACT-II, tendl-2017 | 15 | 0.960 | 8 | 12 |
+| yani, tendl-2017 | 365 | 1.021 | 148 | 238 |
+| FISPACT-II, tendl-2017 | 365 | 1.020 | 145 | 244 |
 
-### The 4 reactions measuring an isomeric state
+### The 89 reactions measuring an isomeric state
 
 | code | median C/E | within 10% | within 20% |
 | --- | ---: | ---: | ---: |
-| yani, tendl-2017 | 0.876 | 2 | 3 |
-| FISPACT-II, tendl-2017 | 0.900 | 2 | 3 |
+| yani, tendl-2017 | 1.110 | 23 | 49 |
+| FISPACT-II, tendl-2017 | 1.120 | 19 | 48 |
 
 These are the ones where the branching fraction is the answer rather than a correction to it.
 
@@ -68,27 +58,387 @@ These are the ones where the branching fraction is the answer rather than a corr
 
 | combination | reactions | median C/E | within 10% | within 20% |
 | --- | ---: | ---: | ---: | ---: |
-| `tendl-2017` | 15 | 0.961 | 8 | 12 |
+| `tendl-2017+decay-2012` | 365 | 1.021 | 148 | 238 |
+| `tendl-2017` | 365 | 1.021 | 148 | 238 |
+| `tendl-2025` | 365 | 1.007 | 124 | 204 |
+| `endf-b8.1` | 365 (24 zero) | 0.954 | 102 | 169 |
+| `jeff-4.0` | 365 (3 zero) | 0.988 | 118 | 205 |
+| `fendl-3.2d` | 321 (28 zero) | 0.975 | 102 | 150 |
+| `tendl-2017+jeff-decay` | 365 | 1.021 | 148 | 238 |
+| `tendl-2025+jeff-decay` | 365 | 1.007 | 124 | 204 |
+| `tendl-2025-xs+endf-chain` | 365 (24 zero) | 0.965 | 102 | 175 |
+| `tendl-2017-xs+endf-branching` | 365 (46 zero) | 0.977 | 121 | 186 |
+| `fendl-3.2d+tendl-2025-chain` | 321 | 0.999 | 121 | 178 |
 
 ## Every reaction
 
 | reaction | field | measured [b] | yani [b] | yani C/E | FISPACT C/E |
 | --- | --- | ---: | ---: | ---: | ---: |
+| Cr-50(n,2n)Cr-49 | FNG-Cr | 3.010e-02 | 2.464e-02 | 0.82 | 0.82 |
+| Cr-52(n,2n)Cr-51 | FNG-Cr | 3.380e-01 | 3.470e-01 | 1.03 | 1.03 |
+| Cr-52(n,p)V-52 | FNG-Cr | 7.120e-02 | 7.610e-02 | 1.07 | 1.07 |
+| Cr-52(n,2n)Cr-51 | FNG-CuCrZr | 4.620e-01 | 3.452e-01 | 0.75 | 0.75 |
+| Cu-63(n,a)Co-60 | FNG-CuCrZr | 3.510e-02 | 3.727e-02 | 1.06 | 1.06 |
+| Cu-65(n,2n)Cu-64 | FNG-CuCrZr | 9.790e-01 | 8.588e-01 | 0.88 | 0.88 |
+| Cu-65(n,a)Co-62m | FNG-CuCrZr | 5.800e-03 | 4.942e-03 | 0.85 | 0.85 |
+| Cu-65(n,na)Co-61 | FNG-CuCrZr | 2.270e-03 | 1.862e-03 | 0.82 | 0.82 |
+| Cu-65(n,p)Ni-65 | FNG-CuCrZr | 2.160e-02 | 1.581e-02 | 0.73 | 0.73 |
+| Zr-90(n,2n)Zr-89 | FNG-CuCrZr | 9.240e-01 | 7.028e-01 | 0.76 | 0.76 |
+| Dy-156(n,2n)Dy-155 | FNG-Dy | 1.530e+00 | 1.643e+00 | 1.07 | 1.07 |
+| Dy-158(n,2n)Dy-157 | FNG-Dy | 1.920e+00 | 1.866e+00 | 0.97 | 0.97 |
+| Dy-162(n,p)Tb-162 | FNG-Dy | 4.080e-03 | 3.926e-03 | 0.96 | 0.96 |
+| Dy-163(n,p)Tb-163 | FNG-Dy | 3.330e-03 | 3.558e-03 | 1.07 | 1.07 |
+| Dy-164(n,g)Dy-165g | FNG-Dy | 2.970e-02 | 1.680e-02 | 0.57 | 0.66 |
+| Mo-100(n,2n)Mo-99 | FNG-Mo | 1.290e+00 | 1.411e+00 | 1.09 | 1.09 |
+| Mo-92(n,2n)Mo-91 | FNG-Mo | 2.350e-01 | 2.220e-01 | 0.94 | 0.95 |
+| Mo-92(n,a)Zr-89 | FNG-Mo | 2.680e-02 | 3.042e-02 | 1.14 | 1.14 |
+| Mo-92(n,p)Nb-92m | FNG-Mo | 5.490e-02 | 6.051e-02 | 1.10 | 1.10 |
+| Mo-95(n,p)Nb-95g | FNG-Mo | 3.180e-02 | 3.244e-02 | 1.02 | 1.02 |
+| Mo-95(n,p)Nb-95m | FNG-Mo | 7.300e-03 | 6.242e-03 | 0.86 | 0.85 |
+| Mo-96(n,p)Nb-96 | FNG-Mo | 2.030e-02 | 2.001e-02 | 0.99 | 0.99 |
+| Re-185(n,2n)Re-184g | FNG-Re | 1.870e+00 | 1.618e+00 | 0.87 | 0.87 |
+| Re-185(n,2n)Re-184m | FNG-Re | 2.990e-01 | 3.680e-01 | 1.23 | 1.23 |
+| Re-185(n,3n)Re-183 | FNG-Re | 4.410e-02 | 6.108e-02 | 1.38 | 1.39 |
+| Re-187(n,2n)Re-186g | FNG-Re | 1.860e+00 | 1.703e+00 | 0.92 | 0.92 |
+| Re-187(n,a)Ta-184 | FNG-Re | 7.100e-04 | 7.037e-04 | 0.99 | 0.99 |
+| Re-187(n,g)Re-188 | FNG-Re | 3.190e-01 | 1.802e-01 | 0.57 | 0.65 |
+| Re-187(n,g)Re-188m | FNG-Re | 7.020e-03 | 8.033e-03 | 1.14 | 1.27 |
+| Re-187(n,p)W-187 | FNG-Re | 4.430e-03 | 4.625e-03 | 1.04 | 1.04 |
+| Gd-158(n,a)Sm-155 | FNG-ScSmGd | 1.110e-03 | 1.175e-03 | 1.06 | 1.06 |
+| Gd-158(n,p)Eu-158 | FNG-ScSmGd | 3.170e-03 | 3.195e-03 | 1.01 | 1.01 |
+| Gd-160(n,2n)Gd-159 | FNG-ScSmGd | 1.960e+00 | 1.793e+00 | 0.91 | 0.91 |
+| Sc-45(n,2n)Sc-44g | FNG-ScSmGd | 1.190e-01 | 1.716e-01 | 1.44 | 1.44 |
+| Sc-45(n,2n)Sc-44m | FNG-ScSmGd | 1.090e-01 | 1.168e-01 | 1.07 | 1.07 |
+| Sc-45(n,a)K-42 | FNG-ScSmGd | 4.740e-02 | 5.145e-02 | 1.09 | 1.09 |
+| Sm-150(n,p)Pm-150 | FNG-ScSmGd | 6.050e-03 | 6.183e-03 | 1.02 | 1.02 |
+| Sm-152(n,a)Nd-149 | FNG-ScSmGd | 2.550e-03 | 2.663e-03 | 1.04 | 1.04 |
+| Sm-154(n,2n)Sm-153 | FNG-ScSmGd | 1.840e+00 | 1.795e+00 | 0.98 | 0.98 |
+| Cu-63(n,a)Co-60 | FNG-SiC | 1.990e-02 | 3.637e-02 | 1.83 | 1.83 |
+| Cu-65(n,2n)Cu-64 | FNG-SiC | 9.400e-01 | 8.473e-01 | 0.90 | 0.90 |
+| Cu-65(n,na)Co-61 | FNG-SiC | 1.250e-03 | 1.885e-03 | 1.51 | 1.51 |
+| Cu-65(n,p)Ni-65 | FNG-SiC | 2.120e-02 | 1.544e-02 | 0.73 | 0.73 |
+| Fe-54(n,a)Cr-51 | FNG-SiC | 8.220e-02 | 8.002e-02 | 0.97 | 0.97 |
 | Fe-56(n,p)Mn-56 | FNG-SiC | 9.580e-02 | 9.266e-02 | 0.97 | 0.97 |
+| Fe-58(n,g)Fe-59 | FNG-SiC | 1.260e-03 | 1.465e-03 | 1.16 | 1.16 |
 | Nb-93(n,2n)Nb-92m | FNG-SiC | 3.930e-01 | 4.048e-01 | 1.03 | 1.06 |
+| Nb-93(n,a)Y-90m | FNG-SiC | 4.760e-03 | 5.155e-03 | 1.08 | 1.08 |
+| Si-28(n,p)Al-28 | FNG-SiC | 2.100e-01 | 2.100e-01 | 1.00 | 1.00 |
+| Si-29(n,p)Al-29 | FNG-SiC | 1.160e-01 | 1.190e-01 | 1.03 | 1.03 |
+| Si-30(n,a)Mg-27 | FNG-SiC | 5.470e-02 | 6.919e-02 | 1.26 | 1.26 |
+| Sn-112(n,2n)Sn-111 | FNG-Sn | 1.170e+00 | 1.126e+00 | 0.96 | 0.96 |
+| Sn-114(n,2n)Sn-113 | FNG-Sn | 1.940e+00 | 1.116e+00 | 0.58 | 0.58 |
+| Sn-114(n,np)In-113m | FNG-Sn | 4.230e-03 | 2.445e-03 | 0.58 | 0.37 |
+| Sn-116(n,np)In-115m | FNG-Sn | 1.100e-03 | 1.063e-03 | 0.97 | 0.40 |
+| Sn-116(n,p)In-116 | FNG-Sn | 2.470e-02 | 3.161e-02 | 1.28 | 1.28 |
+| Sn-117(n,p)In-117 | FNG-Sn | 1.810e-02 | 1.359e-02 | 0.75 | 0.75 |
+| Sn-117(n,p)In-117m | FNG-Sn | 4.090e-03 | 3.228e-03 | 0.79 | 0.79 |
+| Sn-118(n,2n)Sn-117m | FNG-Sn | 1.320e+00 | 7.529e-01 | 0.57 | 0.57 |
+| Sn-118(n,a)Cd-115g | FNG-Sn | 1.230e-03 | 5.801e-04 | 0.47 | 0.47 |
+| Sn-120(n,a)Cd-117g | FNG-Sn | 3.840e-04 | 2.136e-04 | 0.56 | 0.56 |
+| Sn-120(n,a)Cd-117m | FNG-Sn | 3.900e-04 | 4.131e-04 | 1.06 | 1.06 |
+| Sn-124(n,2n)Sn-123g | FNG-Sn | 2.210e+00 | 1.109e+00 | 0.50 | 0.50 |
+| Sn-124(n,2n)Sn-123m | FNG-Sn | 5.600e-01 | 4.953e-01 | 0.88 | 0.88 |
+| Ta-181(n,2n)Ta-180g | FNG-Ta | 1.010e+00 | 1.008e+00 | 1.00 | 1.00 |
+| Ta-181(n,a)Lu-178g | FNG-Ta | 1.010e-03 | 6.552e-04 | 0.65 | 0.65 |
+| Ta-181(n,a)Lu-178m | FNG-Ta | 2.310e-04 | 3.598e-04 | 1.56 | 1.56 |
+| Ta-181(n,g)Ta-182 | FNG-Ta | 4.210e-02 | 2.939e-02 | 0.70 | 0.71 |
+| Ta-181(n,g)Ta-182n | FNG-Ta | 1.200e-04 | 1.108e-04 | 0.92 | 0.30 |
+| Ta-181(n,p)Hf-181 | FNG-Ta | 3.400e-03 | 3.537e-03 | 1.04 | 1.04 |
+| Y-89(n,2n)Y-88 | FNG-Y | 8.910e-01 | 8.798e-01 | 0.99 | 0.99 |
+| Y-89(n,a)Rb-86 | FNG-Y | 1.420e-02 | 7.672e-03 | 0.54 | 0.54 |
+| Y-89(n,a)Rb-86m | FNG-Y | 2.030e-03 | 2.401e-03 | 1.18 | 1.18 |
+| Y-89(n,g)Y-90m | FNG-Y | 3.570e-04 | 4.527e-04 | 1.27 | 1.27 |
+| Y-89(n,n)Y-89m | FNG-Y | 3.310e-01 | 3.999e-01 | 1.21 | 1.21 |
+| Zr-90(n,2n)Zr-89 | FNG-Y | 6.070e-01 | 6.965e-01 | 1.15 | 1.15 |
+| Co-59(n,g)Co-60 | FNG-eurofer | 7.250e-01 | 5.231e-01 | 0.72 | 0.85 |
+| Cr-52(n,2n)Cr-51 | FNG-eurofer | 3.180e-01 | 3.051e-01 | 0.96 | 0.96 |
+| Fe-54(n,p)Mn-54 | FNG-eurofer | 2.460e-01 | 2.404e-01 | 0.98 | 0.98 |
+| Fe-58(n,g)Fe-59 | FNG-eurofer | 2.480e-02 | 1.765e-02 | 0.71 | 0.85 |
+| Ni-58(n,np)Co-57 | FNG-eurofer | 4.760e-01 | 5.626e-01 | 1.18 | 1.15 |
+| Ta-181(n,g)Ta-182 | FNG-eurofer | 1.190e+00 | 1.127e+00 | 0.95 | 1.00 |
+| W-182(n,2n)W-181 | FNG-eurofer | 1.440e+00 | 1.629e+00 | 1.13 | 1.13 |
 | Al-27(n,a)Na-24 | FNG-f82h | 6.660e-02 | 9.717e-02 | 1.46 | 1.46 |
+| Cr-52(n,2n)Cr-51 | FNG-f82h | 3.250e-01 | 3.267e-01 | 1.01 | 1.01 |
+| Fe-54(n,p)Mn-54 | FNG-f82h | 2.690e-01 | 2.665e-01 | 0.99 | 0.99 |
 | Fe-56(n,p)Mn-56 | FNG-f82h | 9.310e-02 | 9.213e-02 | 0.99 | 0.99 |
+| Fe-58(n,g)Fe-59 | FNG-f82h | 5.980e-03 | 5.170e-03 | 0.86 | 1.00 |
+| Ni-58(n,2n)Ni-57 | FNG-f82h | 3.650e-02 | 3.097e-02 | 0.85 | 0.85 |
+| Ni-58(n,np)Co-57 | FNG-f82h | 5.080e-01 | 6.182e-01 | 1.22 | 1.18 |
+| V-51(n,a)Sc-48 | FNG-f82h | 1.670e-02 | 1.453e-02 | 0.87 | 0.87 |
+| W-183(n,p)Ta-183 | FNG-f82h | 4.150e-03 | 5.936e-03 | 1.43 | 1.43 |
+| W-184(n,p)Ta-184 | FNG-f82h | 1.980e-03 | 2.233e-03 | 1.13 | 1.13 |
+| W-186(n,g)W-187 | FNG-f82h | 3.480e-01 | 2.729e-01 | 0.78 | 0.88 |
+| Hf-174(n,2n)Hf-173 | FNG-hafnium | 1.860e+00 | 1.890e+00 | 1.02 | 1.02 |
+| Hf-176(n,2n)Hf-175 | FNG-hafnium | 1.750e+00 | 1.775e+00 | 1.01 | 1.01 |
+| Hf-178(n,p)Lu-178 | FNG-hafnium | 3.670e-03 | 3.156e-03 | 0.86 | 0.86 |
+| Hf-178(n,p)Lu-178m | FNG-hafnium | 5.940e-04 | 6.019e-04 | 1.01 | 1.01 |
+| Hf-179(n,p)Lu-179 | FNG-hafnium | 1.080e-02 | 6.468e-03 | 0.60 | 0.60 |
+| Hf-180(n,g)Hf-181 | FNG-hafnium | 9.280e-03 | 3.673e-03 | 0.40 | 0.40 |
+| Hf-180(n,n)Hf-180m | FNG-hafnium | 1.140e-02 | 2.825e-02 | 2.48 | 2.48 |
+| Hf-180(n,p)Lu-180 | FNG-hafnium | 3.870e-03 | 2.412e-03 | 0.62 | 0.62 |
+| Ag-107(n,2n)Ag-106g | FNG-heat | 9.670e-01 | 7.134e-01 | 0.74 | 0.74 |
+| Ag-109(n,2n)Ag-108g | FNG-heat | 9.610e-01 | 5.952e-01 | 0.62 | 0.62 |
 | Al-27(n,a)Na-24 | FNG-heat | 1.000e-01 | 1.022e-01 | 1.02 | 1.02 |
+| Al-27(n,p)Mg-27 | FNG-heat | 7.240e-02 | 6.172e-02 | 0.85 | 0.85 |
+| Cd-112(n,2n)Cd-111m | FNG-heat | 6.830e-01 | 5.802e-01 | 0.85 | 0.85 |
+| Cu-63(n,2n)Cu-62 | FNG-heat | 5.600e-01 | 5.064e-01 | 0.90 | 0.90 |
+| Hf-180(n,n)Hf-180m | FNG-heat | 4.410e-02 | 2.850e-02 | 0.65 | 0.65 |
+| Hf-180(n,p)Lu-180 | FNG-heat | 3.790e-03 | 2.495e-03 | 0.66 | 0.66 |
+| Mg-24(n,p)Na-24 | FNG-heat | 1.980e-01 | 1.584e-01 | 0.80 | 0.80 |
+| Mg-25(n,p)Na-25 | FNG-heat | 7.170e-02 | 5.453e-02 | 0.76 | 0.76 |
+| Mo-92(n,2n)Mo-91 | FNG-heat | 2.760e-01 | 2.227e-01 | 0.81 | 0.81 |
 | Nb-93(n,2n)Nb-92m | FNG-heat | 5.180e-01 | 4.242e-01 | 0.82 | 0.84 |
+| Nb-93(n,a)Y-90g | FNG-heat | 1.350e-02 | 6.106e-03 | 0.45 | 0.45 |
+| Ni-60(n,p)Co-60m | FNG-heat | 4.380e-02 | 6.892e-02 | 1.57 | 1.57 |
+| Ni-62(n,p)Co-62g | FNG-heat | 2.150e-02 | 2.197e-02 | 1.02 | 1.02 |
+| Ni-62(n,p)Co-62m | FNG-heat | 1.850e-02 | 1.692e-02 | 0.91 | 0.91 |
+| Pb-204(n,n)Pb-204m | FNG-heat | 8.150e-02 | 9.140e-02 | 1.12 | 1.12 |
+| Re-185(n,2n)Re-184g | FNG-heat | 2.580e+00 | 1.616e+00 | 0.63 | 0.63 |
+| Re-187(n,2n)Re-186g | FNG-heat | 9.540e-01 | 1.704e+00 | 1.79 | 1.78 |
+| Sn-124(n,2n)Sn-123m | FNG-heat | 5.840e-01 | 4.939e-01 | 0.85 | 0.85 |
+| Ti-48(n,p)Sc-48 | FNG-heat | 1.060e-01 | 5.615e-02 | 0.53 | 0.53 |
+| Ti-49(n,p)Sc-49 | FNG-heat | 3.970e-02 | 3.674e-02 | 0.93 | 0.92 |
+| Ti-50(n,p)Sc-50 | FNG-heat | 1.860e-02 | 1.433e-02 | 0.77 | 0.77 |
+| W-186(n,2n)W-185m | FNG-heat | 5.640e-01 | 6.629e-01 | 1.18 | 1.18 |
+| W-186(n,p)Ta-186 | FNG-heat | 2.860e-03 | 1.973e-03 | 0.69 | 0.69 |
+| Zr-90(n,2n)Zr-89m | FNG-heat | 1.480e-01 | 1.352e-01 | 0.91 | 0.91 |
+| Zr-94(n,p)Y-94 | FNG-heat | 8.060e-03 | 9.832e-03 | 1.22 | 1.22 |
+| W-182(n,2n)W-181 | FNG-tung | 1.370e+00 | 1.614e+00 | 1.18 | 1.18 |
+| W-182(n,p)Ta-182 | FNG-tung | 3.730e-03 | 4.098e-03 | 1.10 | 1.10 |
+| W-184(n,a)Hf-181 | FNG-tung | 6.270e-04 | 6.713e-04 | 1.07 | 1.07 |
+| W-184(n,p)Ta-184 | FNG-tung | 2.630e-03 | 2.130e-03 | 0.81 | 0.81 |
+| W-186(n,2n)W-185 | FNG-tung | 1.340e+00 | 1.374e+00 | 1.03 | 1.02 |
+| W-186(n,2n)W-185m | FNG-tung | 5.710e-01 | 5.543e-01 | 0.97 | 0.97 |
+| W-186(n,a)Hf-183 | FNG-tung | 5.330e-04 | 4.460e-04 | 0.84 | 0.84 |
+| W-186(n,g)W-187 | FNG-tung | 1.290e+00 | 1.107e+00 | 0.86 | 0.96 |
+| W-186(n,p)Ta-186 | FNG-tung | 1.840e-03 | 1.687e-03 | 0.92 | 0.92 |
 | Al-27(n,a)Na-24 | FNG-vanad | 9.460e-02 | 8.146e-02 | 0.86 | 0.86 |
+| Cr-50(n,2n)Cr-49 | FNG-vanad | 2.290e-02 | 2.017e-02 | 0.88 | 0.88 |
+| Cr-52(n,2n)Cr-51 | FNG-vanad | 2.760e-01 | 2.831e-01 | 1.03 | 1.03 |
+| Cu-63(n,a)Co-60 | FNG-vanad | 2.240e-02 | 3.037e-02 | 1.36 | 1.36 |
+| Fe-54(n,p)Mn-54 | FNG-vanad | 2.440e-01 | 2.302e-01 | 0.94 | 0.94 |
 | Fe-56(n,p)Mn-56 | FNG-vanad | 9.160e-02 | 7.728e-02 | 0.84 | 0.84 |
+| Mo-100(n,2n)Mo-99 | FNG-vanad | 1.120e+00 | 1.111e+00 | 0.99 | 0.99 |
+| Mo-95(n,p)Nb-95g | FNG-vanad | 4.250e-02 | 2.551e-02 | 0.60 | 0.60 |
 | Nb-93(n,2n)Nb-92m | FNG-vanad | 4.810e-01 | 3.358e-01 | 0.70 | 0.72 |
+| Ni-58(n,np)Co-57 | FNG-vanad | 5.290e-01 | 5.250e-01 | 0.99 | 0.97 |
+| Ni-58(n,p)Co-58 | FNG-vanad | 2.720e-01 | 2.372e-01 | 0.87 | 0.87 |
 | Ti-46(n,p)Sc-46 | FNG-vanad | 1.030e-01 | 1.724e-01 | 1.67 | 1.67 |
+| Ti-50(n,a)Ca-47 | FNG-vanad | 9.190e-03 | 4.854e-03 | 0.53 | 0.53 |
+| V-51(n,a)Sc-48 | FNG-vanad | 1.340e-02 | 1.240e-02 | 0.93 | 0.93 |
+| V-51(n,g)V-52 | FNG-vanad | 6.530e-02 | 5.808e-02 | 0.89 | 1.07 |
+| V-51(n,p)Ti-51 | FNG-vanad | 2.010e-02 | 2.145e-02 | 1.07 | 1.07 |
+| Ag-107(n,2n)Ag-106g | JAEA-FNS-pos3 | 6.960e-01 | 6.880e-01 | 0.99 | 0.99 |
+| Ag-109(n,2n)Ag-108g | JAEA-FNS-pos3 | 5.910e-01 | 5.753e-01 | 0.97 | 0.97 |
+| Al-27(n,p)Mg-27 | JAEA-FNS-pos3 | 5.750e-02 | 6.114e-02 | 1.06 | 1.06 |
+| As-75(n,p)Ge-75 | JAEA-FNS-pos3 | 1.720e-02 | 1.912e-02 | 1.11 | 1.11 |
+| As-75(n,p)Ge-75m | JAEA-FNS-pos3 | 1.000e-02 | 1.210e-02 | 1.21 | 1.20 |
+| Au-197(n,2n)Au-196m | JAEA-FNS-pos3 | 1.030e+00 | 1.193e+00 | 1.16 | 1.16 |
+| Au-197(n,2n)Au-196n | JAEA-FNS-pos3 | 9.170e-02 | 1.186e-01 | 1.29 | 1.30 |
+| Ba-138(n,2n)Ba-137m | JAEA-FNS-pos3 | 6.650e-01 | 9.026e-01 | 1.36 | 1.36 |
+| Ba-138(n,p)Cs-138 | JAEA-FNS-pos3 | 2.540e-03 | 2.753e-03 | 1.08 | 1.08 |
+| Bi-209(n,a)Tl-206 | JAEA-FNS-pos3 | 3.260e-04 | 1.082e-03 | 3.32 | 3.33 |
+| Bi-209(n,p)Pb-209 | JAEA-FNS-pos3 | 1.090e-03 | 2.136e-03 | 1.96 | 1.96 |
+| Br-79(n,2n)Br-78 | JAEA-FNS-pos3 | 8.280e-01 | 8.219e-01 | 0.99 | 0.99 |
+| Br-81(n,2n)Br-80g | JAEA-FNS-pos3 | 3.330e-01 | 3.709e-01 | 1.11 | 1.11 |
+| Ca-44(n,p)K-44 | JAEA-FNS-pos3 | 3.700e-02 | 3.823e-02 | 1.03 | 1.03 |
+| Cd-112(n,2n)Cd-111m | JAEA-FNS-pos3 | 4.640e-01 | 5.582e-01 | 1.20 | 1.20 |
+| Ce-140(n,2n)Ce-139m | JAEA-FNS-pos3 | 6.980e-01 | 8.263e-01 | 1.18 | 1.18 |
+| Ce-140(n,a)Ba-137m | JAEA-FNS-pos3 | 2.620e-03 | 2.911e-03 | 1.11 | 1.11 |
+| Ce-142(n,p)La-142 | JAEA-FNS-pos3 | 4.050e-03 | 4.905e-03 | 1.21 | 1.21 |
+| Cl-35(n,2n)Cl-34m | JAEA-FNS-pos3 | 6.640e-03 | 8.738e-03 | 1.32 | 1.33 |
+| Cl-37(n,a)P-34 | JAEA-FNS-pos3 | 3.010e-02 | 2.795e-02 | 0.93 | 0.93 |
+| Cl-37(n,p)S-37 | JAEA-FNS-pos3 | 1.680e-02 | 1.742e-02 | 1.04 | 1.04 |
+| Co-59(n,a)Mn-56 | JAEA-FNS-pos3 | 2.520e-02 | 2.769e-02 | 1.10 | 1.10 |
+| Cr-50(n,2n)Cr-49 | JAEA-FNS-pos3 | 4.780e-02 | 2.458e-02 | 0.51 | 0.51 |
+| Cr-52(n,p)V-52 | JAEA-FNS-pos3 | 6.600e-02 | 7.627e-02 | 1.16 | 1.15 |
+| Cs-133(n,2n)Cs-132 | JAEA-FNS-pos3 | 1.120e+00 | 1.238e+00 | 1.11 | 1.10 |
+| Cu-63(n,2n)Cu-62 | JAEA-FNS-pos3 | 4.610e-01 | 4.849e-01 | 1.05 | 1.05 |
+| Dy-162(n,p)Tb-162 | JAEA-FNS-pos3 | 2.480e-03 | 3.735e-03 | 1.51 | 1.51 |
+| Dy-164(n,g)Dy-165 | JAEA-FNS-pos3 | 3.560e-02 | 1.597e-01 | 4.49 | 5.34 |
+| Dy-164(n,g)Dy-165m | JAEA-FNS-pos3 | 1.010e-01 | 1.102e-01 | 1.09 | 1.30 |
+| Dy-164(n,p)Tb-164 | JAEA-FNS-pos3 | 1.130e-03 | 2.358e-03 | 2.09 | 2.09 |
+| Er-166(n,2n)Er-165 | JAEA-FNS-pos3 | 3.540e-01 | 1.778e+00 | 5.02 | 5.02 |
+| Er-168(n,p)Ho-168 | JAEA-FNS-pos3 | 2.100e-03 | 2.232e-03 | 1.06 | 1.06 |
+| F-19(n,2n)F-18 | JAEA-FNS-pos3 | 4.800e-02 | 4.796e-02 | 1.00 | 1.00 |
+| F-19(n,p)O-19 | JAEA-FNS-pos3 | 1.440e-02 | 1.638e-02 | 1.14 | 1.14 |
 | Fe-56(n,p)Mn-56 | JAEA-FNS-pos3 | 8.690e-02 | 9.445e-02 | 1.09 | 1.09 |
+| Ga-69(n,2n)Ga-68 | JAEA-FNS-pos3 | 7.700e-01 | 7.989e-01 | 1.04 | 1.04 |
+| Ga-71(n,2n)Ga-70 | JAEA-FNS-pos3 | 9.340e-01 | 9.381e-01 | 1.00 | 1.00 |
+| Gd-160(n,2n)Gd-159 | JAEA-FNS-pos3 | 1.260e+00 | 1.697e+00 | 1.35 | 1.35 |
+| Gd-160(n,g)Gd-161 | JAEA-FNS-pos3 | 3.780e-03 | 5.390e-03 | 1.43 | 1.45 |
+| Gd-160(n,p)Eu-160 | JAEA-FNS-pos3 | 1.770e-03 | 1.693e-03 | 0.96 | 0.96 |
+| Ge-74(n,p)Ga-74 | JAEA-FNS-pos3 | 1.310e-02 | 1.376e-02 | 1.05 | 1.05 |
+| Ge-76(n,2n)Ge-75 | JAEA-FNS-pos3 | 1.060e+00 | 1.055e+00 | 1.00 | 1.00 |
+| Ge-76(n,2n)Ge-75m | JAEA-FNS-pos3 | 5.340e-01 | 7.599e-01 | 1.42 | 1.42 |
+| Hf-180(n,2n)Hf-179m | JAEA-FNS-pos3 | 6.050e-02 | 2.131e-01 | 3.52 | 3.52 |
+| Hf-180(n,n)Hf-180m | JAEA-FNS-pos3 | 1.800e-02 | 2.888e-02 | 1.60 | 1.60 |
+| Hf-180(n,p)Lu-180 | JAEA-FNS-pos3 | 3.520e-03 | 2.376e-03 | 0.67 | 0.68 |
+| Hg-200(n,2n)Hg-199m | JAEA-FNS-pos3 | 7.870e-01 | 9.052e-01 | 1.15 | 1.15 |
+| Ho-165(n,2n)Ho-164 | JAEA-FNS-pos3 | 1.440e+00 | 1.734e+00 | 1.20 | 1.20 |
+| Ho-165(n,2n)Ho-164m | JAEA-FNS-pos3 | 7.140e-01 | 8.502e-01 | 1.19 | 1.19 |
+| I-127(n,g)I-128 | JAEA-FNS-pos3 | 1.930e-02 | 3.322e-02 | 1.72 | 1.73 |
+| In-115(n,2n)In-114g | JAEA-FNS-pos3 | 1.990e-01 | 2.519e-01 | 1.27 | 1.22 |
+| In-115(n,g)In-116 | JAEA-FNS-pos3 | 7.060e-02 | 4.405e+00 | 62.40 | 2.44 |
+| Ir-193(n,2n)Ir-192m | JAEA-FNS-pos3 | 1.870e-01 | 1.835e-01 | 0.98 | 0.98 |
+| K-39(n,2n)K-38g | JAEA-FNS-pos3 | 4.920e-03 | 5.175e-03 | 1.05 | 1.05 |
+| K-41(n,a)Cl-38 | JAEA-FNS-pos3 | 2.670e-02 | 3.146e-02 | 1.18 | 1.18 |
+| La-139(n,p)Ba-139 | JAEA-FNS-pos3 | 3.660e-03 | 3.701e-03 | 1.01 | 1.01 |
+| Lu-175(n,g)Lu-176m | JAEA-FNS-pos3 | 5.230e-02 | 6.709e-02 | 1.28 | 1.33 |
+| Mg-24(n,p)Na-24 | JAEA-FNS-pos3 | 1.560e-01 | 1.546e-01 | 0.99 | 0.99 |
+| Mg-25(n,p)Na-25 | JAEA-FNS-pos3 | 6.140e-02 | 5.322e-02 | 0.87 | 0.87 |
+| Mg-26(n,a)Ne-23 | JAEA-FNS-pos3 | 5.830e-02 | 5.018e-02 | 0.86 | 0.86 |
+| Mn-55(n,a)V-52 | JAEA-FNS-pos3 | 2.060e-02 | 2.394e-02 | 1.16 | 1.16 |
+| Mn-55(n,g)Mn-56 | JAEA-FNS-pos3 | 4.000e-03 | 4.400e-03 | 1.10 | 1.12 |
+| Mn-55(n,p)Cr-55 | JAEA-FNS-pos3 | 2.450e-02 | 2.722e-02 | 1.11 | 1.11 |
+| Mo-92(n,2n)Mo-91 | JAEA-FNS-pos3 | 2.150e-01 | 2.123e-01 | 0.99 | 0.99 |
+| N-14(n,2n)N-13 | JAEA-FNS-pos3 | 7.100e-03 | 6.959e-03 | 0.98 | 0.98 |
+| Na-23(n,g)Na-24 | JAEA-FNS-pos3 | 2.880e-04 | 3.253e-04 | 1.13 | 1.15 |
+| Na-23(n,p)Ne-23 | JAEA-FNS-pos3 | 2.260e-02 | 3.226e-02 | 1.43 | 1.42 |
+| Nb-93(n,a)Y-90m | JAEA-FNS-pos3 | 4.970e-03 | 5.213e-03 | 1.05 | 1.05 |
+| Nb-93(n,g)Nb-94m | JAEA-FNS-pos3 | 5.110e-03 | 4.431e-03 | 0.87 | 0.86 |
+| Nb-93(n,na)Y-89m | JAEA-FNS-pos3 | 3.450e-03 | 2.256e-03 | 0.65 | 0.65 |
+| Nd-142(n,2n)Nd-141m | JAEA-FNS-pos3 | 4.110e-01 | 5.553e-01 | 1.35 | 1.35 |
+| Nd-150(n,2n)Nd-149 | JAEA-FNS-pos3 | 8.290e-01 | 1.479e+00 | 1.78 | 1.78 |
+| Ni-60(n,p)Co-60m | JAEA-FNS-pos3 | 6.230e-02 | 6.764e-02 | 1.09 | 1.09 |
+| Ni-62(n,p)Co-62g | JAEA-FNS-pos3 | 1.900e-02 | 2.115e-02 | 1.11 | 1.11 |
+| Ni-62(n,p)Co-62m | JAEA-FNS-pos3 | 1.540e-02 | 1.626e-02 | 1.06 | 1.51 |
+| O-16(n,p)N-16 | JAEA-FNS-pos3 | 3.160e-02 | 3.362e-02 | 1.06 | 1.06 |
+| Os-192(n,2n)Os-191m | JAEA-FNS-pos3 | 2.420e-01 | 7.805e-01 | 3.23 | 3.22 |
+| P-31(n,a)Al-28 | JAEA-FNS-pos3 | 1.120e-01 | 1.104e-01 | 0.99 | 0.99 |
+| Pb-204(n,2n)Pb-203m | JAEA-FNS-pos3 | 1.400e+00 | 1.004e+00 | 0.72 | 0.72 |
+| Pb-204(n,n)Pb-204m | JAEA-FNS-pos3 | 4.600e-02 | 9.230e-02 | 2.01 | 2.01 |
+| Pb-208(n,p)Tl-208 | JAEA-FNS-pos3 | 9.980e-04 | 7.410e-04 | 0.74 | 0.74 |
+| Pd-108(n,2n)Pd-107m | JAEA-FNS-pos3 | 3.600e-01 | 4.343e-01 | 1.21 | 1.20 |
+| Pd-110(n,2n)Pd-109 | JAEA-FNS-pos3 | 1.450e+00 | 1.419e+00 | 0.98 | 0.98 |
+| Pd-110(n,2n)Pd-109m | JAEA-FNS-pos3 | 3.240e-01 | 4.263e-01 | 1.32 | 1.32 |
+| Pr-141(n,2n)Pr-140 | JAEA-FNS-pos3 | 1.010e+00 | 1.510e+00 | 1.49 | 1.49 |
+| Pt-198(n,2n)Pt-197m | JAEA-FNS-pos3 | 8.090e-01 | 1.027e+00 | 1.27 | 1.27 |
+| Rb-85(n,2n)Rb-84 | JAEA-FNS-pos3 | 9.970e-01 | 9.562e-01 | 0.96 | 0.96 |
+| Rb-87(n,2n)Rb-86m | JAEA-FNS-pos3 | 4.100e-01 | 4.200e-01 | 1.02 | 1.02 |
+| Re-185(n,p)W-185m | JAEA-FNS-pos3 | 1.370e-03 | 1.547e-03 | 1.13 | 1.13 |
+| Re-187(n,2n)Re-186g | JAEA-FNS-pos3 | 1.420e+00 | 1.662e+00 | 1.17 | 1.17 |
+| Re-187(n,g)Re-188m | JAEA-FNS-pos3 | 3.980e-03 | 4.718e-03 | 1.19 | 1.19 |
+| Rh-103(n,g)Rh-104 | JAEA-FNS-pos3 | 2.660e-02 | 6.378e-02 | 2.40 | 2.45 |
+| Rh-103(n,n)Rh-103m | JAEA-FNS-pos3 | 1.410e-01 | 3.379e-01 | 2.40 | 2.40 |
+| Ru-100(n,p)Tc-100 | JAEA-FNS-pos3 | 2.940e-02 | 2.999e-02 | 1.02 | 1.02 |
+| Ru-102(n,p)Tc-102m | JAEA-FNS-pos3 | 6.600e-03 | 7.158e-03 | 1.08 | 1.09 |
+| Ru-96(n,2n)Ru-95 | JAEA-FNS-pos3 | 5.500e-01 | 5.270e-01 | 0.96 | 0.96 |
+| S-34(n,a)Si-31 | JAEA-FNS-pos3 | 1.190e-01 | 1.155e-01 | 0.97 | 0.97 |
+| S-34(n,p)P-34 | JAEA-FNS-pos3 | 1.910e-02 | 7.314e-02 | 3.83 | 3.82 |
+| Sb-121(n,2n)Sb-120g | JAEA-FNS-pos3 | 7.770e-01 | 9.626e-01 | 1.24 | 1.24 |
+| Sc-45(n,2n)Sc-44g | JAEA-FNS-pos3 | 1.690e-01 | 1.604e-01 | 0.95 | 0.95 |
+| Se-78(n,2n)Se-77m | JAEA-FNS-pos3 | 6.900e-01 | 6.016e-01 | 0.87 | 0.87 |
+| Se-82(n,2n)Se-81 | JAEA-FNS-pos3 | 9.500e-01 | 1.072e+00 | 1.13 | 1.13 |
+| Si-28(n,p)Al-28 | JAEA-FNS-pos3 | 1.940e-01 | 2.158e-01 | 1.11 | 1.11 |
+| Si-29(n,p)Al-29 | JAEA-FNS-pos3 | 1.160e-01 | 1.213e-01 | 1.05 | 1.04 |
+| Si-30(n,a)Mg-27 | JAEA-FNS-pos3 | 5.410e-02 | 7.007e-02 | 1.30 | 1.29 |
+| Sm-144(n,2n)Sm-143 | JAEA-FNS-pos3 | 1.040e+00 | 1.042e+00 | 1.00 | 1.01 |
+| Sm-144(n,2n)Sm-143m | JAEA-FNS-pos3 | 4.870e-01 | 4.776e-01 | 0.98 | 0.98 |
+| Sn-118(n,p)In-118m | JAEA-FNS-pos3 | 4.930e-03 | 6.725e-03 | 1.36 | 1.36 |
+| Sn-120(n,p)In-120m | JAEA-FNS-pos3 | 8.330e-03 | 5.658e-03 | 0.68 | 0.06 |
+| Sn-124(n,2n)Sn-123m | JAEA-FNS-pos3 | 4.010e-01 | 4.789e-01 | 1.19 | 1.19 |
+| Sr-88(n,p)Rb-88 | JAEA-FNS-pos3 | 1.420e-02 | 1.614e-02 | 1.14 | 1.14 |
+| Ta-181(n,2n)Ta-180g | JAEA-FNS-pos3 | 1.050e+00 | 1.006e+00 | 0.96 | 0.96 |
+| Tb-159(n,2n)Tb-158m | JAEA-FNS-pos3 | 3.240e-01 | 2.415e-01 | 0.75 | 0.74 |
+| Tb-159(n,p)Gd-159 | JAEA-FNS-pos3 | 2.040e-02 | 5.476e-03 | 0.27 | 0.27 |
+| Te-130(n,2n)Te-129g | JAEA-FNS-pos3 | 5.630e-01 | 5.356e-01 | 0.95 | 0.95 |
+| Ti-48(n,p)Sc-48 | JAEA-FNS-pos3 | 5.550e-02 | 5.446e-02 | 0.98 | 0.98 |
+| Ti-50(n,p)Sc-50 | JAEA-FNS-pos3 | 1.280e-02 | 1.372e-02 | 1.07 | 1.07 |
+| Tl-203(n,2n)Tl-202 | JAEA-FNS-pos3 | 1.410e+00 | 1.718e+00 | 1.22 | 1.22 |
+| Tl-205(n,g)Tl-206 | JAEA-FNS-pos3 | 1.850e-03 | 2.804e-03 | 1.52 | 1.52 |
+| Tl-205(n,p)Hg-205 | JAEA-FNS-pos3 | 1.580e-03 | 1.988e-03 | 1.26 | 1.26 |
+| Tm-169(n,2n)Tm-168 | JAEA-FNS-pos3 | 1.980e+00 | 1.779e+00 | 0.90 | 0.90 |
+| V-51(n,p)Ti-51 | JAEA-FNS-pos3 | 2.370e-02 | 2.619e-02 | 1.11 | 1.11 |
+| W-186(n,2n)W-185m | JAEA-FNS-pos3 | 3.220e-01 | 6.456e-01 | 2.01 | 2.01 |
+| W-186(n,p)Ta-186 | JAEA-FNS-pos3 | 1.260e-03 | 1.871e-03 | 1.49 | 1.49 |
+| Y-89(n,2n)Y-88 | JAEA-FNS-pos3 | 8.420e-01 | 8.864e-01 | 1.05 | 1.05 |
+| Y-89(n,a)Rb-86m | JAEA-FNS-pos3 | 1.640e-03 | 2.415e-03 | 1.47 | 1.48 |
+| Y-89(n,n)Y-89m | JAEA-FNS-pos3 | 3.760e-01 | 4.175e-01 | 1.11 | 1.11 |
+| Yb-168(n,2n)Yb-167 | JAEA-FNS-pos3 | 1.530e+00 | 1.685e+00 | 1.10 | 1.10 |
+| Yb-174(n,p)Tm-174 | JAEA-FNS-pos3 | 1.820e-03 | 1.939e-03 | 1.07 | 1.06 |
+| Zn-64(n,2n)Zn-63 | JAEA-FNS-pos3 | 1.510e-01 | 1.279e-01 | 0.85 | 0.85 |
+| Zr-90(n,2n)Zr-89m | JAEA-FNS-pos3 | 1.170e-01 | 1.290e-01 | 1.10 | 1.10 |
+| Zr-94(n,p)Y-94 | JAEA-FNS-pos3 | 7.920e-03 | 9.438e-03 | 1.19 | 1.19 |
 | Al-27(n,a)Na-24 | JAEA-FNS-pos7 | 1.190e-01 | 1.088e-01 | 0.91 | 0.92 |
+| Ba-134(n,2n)Ba-133m | JAEA-FNS-pos7 | 7.250e-01 | 7.929e-01 | 1.09 | 1.09 |
+| Ba-136(n,2n)Ba-135m | JAEA-FNS-pos7 | 9.450e-01 | 1.003e+00 | 1.06 | 1.06 |
+| Ba-136(n,p)Cs-136 | JAEA-FNS-pos7 | 5.030e-03 | 5.438e-03 | 1.08 | 1.08 |
+| Ca-42(n,p)K-42 | JAEA-FNS-pos7 | 2.090e-01 | 1.865e-01 | 0.89 | 0.89 |
+| Ca-48(n,2n)Ca-47 | JAEA-FNS-pos7 | 9.800e-01 | 9.066e-01 | 0.93 | 0.93 |
+| Co-59(n,2n)Co-58 | JAEA-FNS-pos7 | 7.540e-01 | 7.042e-01 | 0.93 | 0.93 |
+| Co-59(n,2n)Co-58m | JAEA-FNS-pos7 | 3.130e-01 | 4.337e-01 | 1.39 | 1.39 |
+| Cr-52(n,2n)Cr-51 | JAEA-FNS-pos7 | 3.370e-01 | 3.361e-01 | 1.00 | 1.00 |
+| Cu-63(n,a)Co-60 | JAEA-FNS-pos7 | 5.010e-02 | 4.075e-02 | 0.81 | 0.81 |
+| Cu-65(n,2n)Cu-64 | JAEA-FNS-pos7 | 8.570e-01 | 8.928e-01 | 1.04 | 1.04 |
+| Fe-54(n,p)Mn-54 | JAEA-FNS-pos7 | 3.340e-01 | 2.949e-01 | 0.88 | 0.88 |
 | Fe-56(n,p)Mn-56 | JAEA-FNS-pos7 | 1.210e-01 | 1.030e-01 | 0.85 | 0.85 |
+| K-39(n,pa)S-35 | JAEA-FNS-pos7 | 1.150e-03 | 1.921e-03 | 1.67 | 1.67 |
+| K-41(n,g)K-42 | JAEA-FNS-pos7 | 7.920e-04 | 2.263e-03 | 2.86 | 2.86 |
+| Mn-55(n,2n)Mn-54 | JAEA-FNS-pos7 | 7.320e-01 | 7.108e-01 | 0.97 | 0.97 |
+| Mn-55(n,g)Mn-56 | JAEA-FNS-pos7 | 7.200e-04 | 8.133e-04 | 1.13 | 1.12 |
+| Mo-100(n,2n)Mo-99 | JAEA-FNS-pos7 | 1.500e+00 | 1.442e+00 | 0.96 | 0.96 |
+| Mo-92(n,np)Nb-91m | JAEA-FNS-pos7 | 1.850e-01 | 2.422e-01 | 1.31 | 1.26 |
+| Mo-92(n,p)Nb-92m | JAEA-FNS-pos7 | 6.150e-02 | 6.493e-02 | 1.06 | 1.05 |
+| Mo-95(n,p)Nb-95g | JAEA-FNS-pos7 | 3.440e-02 | 3.289e-02 | 0.96 | 0.96 |
+| Mo-98(n,a)Zr-95 | JAEA-FNS-pos7 | 7.470e-03 | 6.452e-03 | 0.86 | 0.86 |
+| Na-23(n,2n)Na-22 | JAEA-FNS-pos7 | 3.800e-02 | 3.205e-02 | 0.84 | 0.85 |
+| Na-23(n,g)Na-24 | JAEA-FNS-pos7 | 2.510e-04 | 2.282e-04 | 0.91 | 0.91 |
 | Nb-93(n,2n)Nb-92m | JAEA-FNS-pos7 | 4.680e-01 | 4.371e-01 | 0.93 | 0.96 |
+| Ni-58(n,2n)Ni-57 | JAEA-FNS-pos7 | 3.120e-02 | 3.131e-02 | 1.00 | 1.00 |
+| Ni-58(n,np)Co-57 | JAEA-FNS-pos7 | 6.540e-01 | 6.676e-01 | 1.02 | 0.99 |
+| Ni-58(n,p)Co-58 | JAEA-FNS-pos7 | 2.910e-01 | 3.007e-01 | 1.03 | 1.03 |
+| Pb-204(n,2n)Pb-203 | JAEA-FNS-pos7 | 2.130e+00 | 2.038e+00 | 0.96 | 0.94 |
+| Pb-206(n,a)Hg-203 | JAEA-FNS-pos7 | 1.570e-03 | 5.358e-04 | 0.34 | 0.34 |
+| Re-185(n,2n)Re-184g | JAEA-FNS-pos7 | 1.660e+00 | 1.694e+00 | 1.02 | 1.02 |
+| Re-185(n,2n)Re-184m | JAEA-FNS-pos7 | 3.730e-01 | 3.771e-01 | 1.01 | 1.01 |
+| Re-187(n,2n)Re-186g | JAEA-FNS-pos7 | 1.600e+00 | 1.827e+00 | 1.14 | 1.14 |
+| S-32(n,p)P-32 | JAEA-FNS-pos7 | 2.290e-01 | 2.167e-01 | 0.95 | 0.94 |
+| Sn-118(n,2n)Sn-117m | JAEA-FNS-pos7 | 9.500e-01 | 7.577e-01 | 0.80 | 0.80 |
+| Sn-120(n,2n)Sn-119m | JAEA-FNS-pos7 | 4.800e-01 | 5.878e-01 | 1.22 | 1.22 |
+| Sn-124(n,2n)Sn-123g | JAEA-FNS-pos7 | 1.040e+00 | 1.131e+00 | 1.09 | 1.09 |
+| Sr-84(n,2n)Sr-83 | JAEA-FNS-pos7 | 6.710e-01 | 5.814e-01 | 0.87 | 0.87 |
+| Sr-86(n,2n)Sr-85 | JAEA-FNS-pos7 | 9.170e-01 | 8.745e-01 | 0.95 | 0.95 |
+| Sr-88(n,2n)Sr-87m | JAEA-FNS-pos7 | 2.680e-01 | 2.391e-01 | 0.89 | 0.89 |
+| Ta-181(n,2n)Ta-180g | JAEA-FNS-pos7 | 7.570e-01 | 1.098e+00 | 1.45 | 1.45 |
+| Ta-181(n,g)Ta-182 | JAEA-FNS-pos7 | 1.090e-02 | 5.545e-03 | 0.51 | 0.49 |
+| Ta-181(n,p)Hf-181 | JAEA-FNS-pos7 | 7.530e-03 | 3.404e-03 | 0.45 | 0.45 |
 | Ti-46(n,p)Sc-46 | JAEA-FNS-pos7 | 2.370e-01 | 2.277e-01 | 0.96 | 0.96 |
+| Ti-48(n,p)Sc-48 | JAEA-FNS-pos7 | 6.440e-02 | 5.860e-02 | 0.91 | 0.91 |
+| V-51(n,a)Sc-48 | JAEA-FNS-pos7 | 1.590e-02 | 1.559e-02 | 0.98 | 0.98 |
+| W-182(n,2n)W-181 | JAEA-FNS-pos7 | 1.570e+00 | 1.981e+00 | 1.26 | 1.27 |
+| W-184(n,p)Ta-184 | JAEA-FNS-pos7 | 2.270e-03 | 2.245e-03 | 0.99 | 0.99 |
+| W-186(n,2n)W-185 | JAEA-FNS-pos7 | 1.380e+00 | 1.768e+00 | 1.28 | 1.28 |
+| Y-89(n,2n)Y-88 | JAEA-FNS-pos7 | 1.080e+00 | 9.090e-01 | 0.84 | 0.84 |
+| Zr-90(n,2n)Zr-89 | JAEA-FNS-pos7 | 7.110e-01 | 7.028e-01 | 0.99 | 0.99 |
+| Zr-96(n,2n)Zr-95 | JAEA-FNS-pos7 | 1.480e+00 | 1.463e+00 | 0.99 | 0.99 |
+| Cr-52(n,2n)Cr-51 | TUD-CuCrZr | 3.270e-01 | 3.739e-01 | 1.14 | 1.14 |
+| Cu-63(n,2n)Cu-62 | TUD-CuCrZr | 4.910e-01 | 5.300e-01 | 1.08 | 1.08 |
+| Cu-63(n,a)Co-60 | TUD-CuCrZr | 3.440e-02 | 4.129e-02 | 1.20 | 1.20 |
+| Cu-65(n,2n)Cu-64 | TUD-CuCrZr | 8.160e-01 | 9.410e-01 | 1.15 | 1.15 |
+| Cu-65(n,a)Co-62m | TUD-CuCrZr | 4.830e-03 | 5.438e-03 | 1.13 | 1.13 |
+| Cu-65(n,na)Co-61 | TUD-CuCrZr | 1.500e-03 | 1.711e-03 | 1.14 | 1.15 |
+| Cu-65(n,p)Ni-65 | TUD-CuCrZr | 1.850e-02 | 1.734e-02 | 0.94 | 0.94 |
+| Zr-90(n,2n)Zr-89 | TUD-CuCrZr | 6.710e-01 | 7.651e-01 | 1.14 | 1.14 |
+| Er-162(n,2n)Er-161 | TUD-Er | 1.420e+00 | 1.467e+00 | 1.03 | 1.03 |
+| Er-164(n,2n)Er-163 | TUD-Er | 1.840e+00 | 1.705e+00 | 0.93 | 0.93 |
+| Er-166(n,p)Ho-166g | TUD-Er | 3.500e-03 | 2.640e-03 | 0.75 | 0.75 |
+| Er-167(n,p)Ho-167 | TUD-Er | 2.870e-03 | 3.561e-03 | 1.24 | 1.24 |
+| Er-168(n,p)Ho-168 | TUD-Er | 2.390e-03 | 2.073e-03 | 0.87 | 0.87 |
+| Er-170(n,d)Ho-169 | TUD-Er | 1.690e-04 | 1.262e-04 | 0.75 | 0.66 |
+| Er-170(n,p)Ho-170g | TUD-Er | 1.520e-03 | 8.729e-04 | 0.57 | 0.57 |
+| La-139(n,a)Cs-136 | TUD-Er | 2.050e-03 | 2.120e-03 | 1.03 | 1.03 |
+| La-139(n,g)La-140 | TUD-Er | 2.480e-03 | 2.498e-03 | 1.01 | 1.00 |
+| La-139(n,p)Ba-139 | TUD-Er | 4.000e-03 | 3.389e-03 | 0.85 | 0.85 |
+| Pb-204(n,2n)Pb-203 | TUD-Pb | 1.940e+00 | 1.846e+00 | 0.95 | 0.95 |
+| Pb-204(n,n)Pb-204m | TUD-Pb | 6.190e-02 | 9.291e-02 | 1.50 | 1.50 |
+| Pb-206(n,a)Hg-203 | TUD-Pb | 5.020e-04 | 5.103e-04 | 1.02 | 1.02 |
+| Pb-208(n,p)Tl-208 | TUD-Pb | 8.380e-04 | 6.060e-04 | 0.72 | 0.73 |
+| Ta-181(n,2n)Ta-180g | TUD-Ta | 8.110e-01 | 9.728e-01 | 1.20 | 1.20 |
+| Ta-181(n,a)Lu-178m | TUD-Ta | 2.200e-04 | 3.123e-04 | 1.42 | 1.42 |
+| Ta-181(n,p)Hf-181 | TUD-Ta | 2.940e-03 | 3.127e-03 | 1.06 | 1.06 |
+| Y-89(n,2n)Y-88 | TUD-Y | 8.000e-01 | 8.819e-01 | 1.10 | 1.10 |
+| Y-89(n,g)Y-90m | TUD-Y | 3.820e-04 | 4.500e-04 | 1.18 | 1.18 |
 
 ## Reproducing this page
 
@@ -96,4 +446,4 @@ These are the ones where the branching fraction is the answer rather than a corr
 python benchmarks/effective_cross_sections/run.py
 ```
 
-yani 0.4.0. Measurements from the IAEA CoNDERC 'Effective RR' dataset, fields from CoNDERC 'Spectra', distilled by `benchmarks/effective_cross_sections/build_data.py`.
+yani 0.18.0. Measurements from the IAEA CoNDERC 'Effective RR' dataset, fields from CoNDERC 'Spectra', distilled by `benchmarks/effective_cross_sections/build_data.py`.

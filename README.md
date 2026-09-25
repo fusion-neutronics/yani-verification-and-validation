@@ -139,7 +139,7 @@ python tools/run_all.py --stage openmc --openmc-chain chain_endfb81_fast.xml
 ### Disk
 
 yani caches nuclear data under `~/.cache/yamc`, fetching what a calculation
-needs on first use. TENDL-2017 comes to about 13 GB. The ten combinations name
+needs on first use. TENDL-2017 comes to about 13 GB. The eleven combinations name
 five libraries between them, so a full run is tens of gigabytes in that cache.
 `--plan` checks for headroom and says so if there is not any.
 
