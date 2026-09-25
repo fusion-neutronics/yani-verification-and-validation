@@ -61,8 +61,16 @@ def coverage_note(documents, expected_cases, unit, command):
     A combination that ran every case and had some refused by its library is
     **not** partial, and saying "draft" over it would be wrong: nothing is
     waiting to be computed, the library does not publish those elements and
-    never will. `solved + failed == expected` is what separates the two, and
+    never will. `solved + refused == expected` is what separates the two, and
     the refusals get their own note rather than the warning banner.
+
+    The refusals are counted off `failures`, which both benchmarks write, rather
+    than off the `failed` total, which only the FNS sweep writes. Counting the
+    total instead reads every effective cross-section refusal as unfinished
+    work, which would hold a draft banner over a page that is complete: the two
+    FENDL combinations solve 321 of 365 and can never solve the other 44,
+    because FENDL-3.2d does not evaluate those nuclides. On the FNS files, where
+    both fields exist, they agree.
     """
     unrun, refused = [], []
     for combination in libraries.COMBINATIONS:
@@ -71,7 +79,7 @@ def coverage_note(documents, expected_cases, unit, command):
             unrun.append((combination.name, 0))
             continue
         solved = len(document["results"])
-        attempted = solved + document.get("failed", 0)
+        attempted = solved + len(document.get("failures", {}))
         if attempted < expected_cases:
             unrun.append((combination.name, solved))
         elif solved < expected_cases:
