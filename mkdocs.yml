@@ -63,4 +63,5 @@ nav:
   - Studies:
       - Self-shielding: studies/self-shielding.md
       - Temperature: studies/temperature.md
+      - Group structure: studies/group-structure.md
   - Add a benchmark: contributing.md
