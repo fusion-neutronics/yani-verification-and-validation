@@ -168,9 +168,18 @@ EXCLUDED = {
         "not something to switch on per curve."),
     "disagreement": (
         "U235_thermal/Jurney_20000 follows the finite convention in shape, "
-        "spread 1.37x, but sits 42% low. That is a disagreement about the "
-        "physics or the data rather than about units, and pulling it in "
-        "would hide it."),
+        "spread 1.37x, but sits 42% low. The archive disagrees with itself "
+        "here, which is visible without running anything: against Lott_5000, "
+        "same nuclide, same spectrum, same convention, a 20000 s irradiation "
+        "integrates f over a strictly longer window than a 5000 s one, so the "
+        "ratio has to exceed 1 at every matched cooling time whatever the "
+        "nuclear data says. It runs 0.792 at 538 s to 1.628 at 59320 s, under "
+        "1 at three of the seven matched points, a 2.1x swing in what should "
+        "be a flat bound. Every within-author ladder in the archive holds to "
+        "it (Lott 100/1000/5000, MacMahon and McNair each over four decades "
+        "of irradiation), the one exception being the final overlap point of "
+        "Scobie_100000. So this is a disagreement about the physics or the "
+        "data rather than about units, and pulling it in would hide it."),
     "no_total": (
         "Th232_fast and several others publish beta or gamma but no total "
         "column, so there is nothing for the current scoring to compare "
@@ -390,6 +399,63 @@ def run_case(system, dataset, combination):
     return case, solved, scores
 
 
+def irradiation_monotonicity(doc, system="U235_thermal"):
+    """Longer irradiations must sit above shorter ones, as a data screen.
+
+    Published per unit fission rate, a curve is f integrated over the
+    irradiation window, so lengthening that window can only add to it: at
+    every cooling time a longer irradiation has to read higher than a shorter
+    one on the same nuclide and spectrum. The bound holds whatever the nuclear
+    data says, which makes it a way to question a measurement rather than a
+    calculation.
+
+    Over U235 thermal it lands on the two curves `EXCLUDED` already names and
+    on nothing else of substance. Baumung_200 fails it in four pairs, which is
+    the convention difference showing up as a unit error rather than new
+    evidence: against finite-convention curves it is being read in the wrong
+    units. Jurney_20000 fails it against Lott_5000 at the short end, which is
+    not a unit error, since the same pair agrees at the long end. What is left
+    is single points at the edge of an overlap, where the interpolation runs
+    out, and an 8% offset between MacMahon and Scobie.
+
+    Yields `(longer, shorter, component, times, ratios)` for each ordered pair
+    that shares a component and a cooling-time overlap, longer over shorter,
+    log-interpolated onto the longer one's times.
+    """
+    cases = doc["cases"][system]
+    finite = sorted(
+        (n for n, c in cases.items() if c["irradiation_s"]),
+        key=lambda n: cases[n]["irradiation_s"],
+    )
+    for i, shorter in enumerate(finite):
+        for longer in finite[i + 1:]:
+            if cases[longer]["irradiation_s"] == cases[shorter]["irradiation_s"]:
+                continue
+            for component in cases[longer]["components"]:
+                if component not in cases[shorter]["components"]:
+                    continue
+                key = f"{component}_MeV_per_fission_s"
+                # Zeros are placeholders for an unmeasured point, not values.
+                ta, va = _positive(cases[longer], key)
+                tb, vb = _positive(cases[shorter], key)
+                if len(ta) < 2 or len(tb) < 2:
+                    continue
+                overlap = (ta >= tb.min()) & (ta <= tb.max())
+                if overlap.sum() < 2:
+                    continue
+                t = ta[overlap]
+                interpolated = np.exp(
+                    np.interp(np.log(t), np.log(tb), np.log(vb)))
+                yield longer, shorter, component, t, va[overlap] / interpolated
+
+
+def _positive(case, key):
+    times = np.array(case["times_s"], dtype=float)
+    values = np.array(case[key], dtype=float)
+    keep = values > 0
+    return times[keep], values[keep]
+
+
 def main():
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -402,6 +468,10 @@ def main():
                     help="with --all, also run the curves this benchmark does "
                          "not stand behind, for working on them")
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--check-archive", action="store_true",
+                    help="screen the published curves against the bound that a "
+                         "longer irradiation reads higher than a shorter one, "
+                         "which is what excludes Jurney_20000")
     # Hyphens, not underscores: .gitignore excludes
     # `benchmarks/*/results/*_*_*.json` to keep single-case scratch files out,
     # and `fission_decay_heat.json` matches that by accident, so the sweep
@@ -411,6 +481,25 @@ def main():
     args = ap.parse_args()
 
     doc = document()
+    if args.check_archive:
+        worst = []
+        for longer, shorter, component, times, ratios in irradiation_monotonicity(doc):
+            under = ratios < 1.0
+            if not under.any():
+                continue
+            worst.append((under.sum(), len(ratios), longer, shorter, component,
+                          times[under], ratios[under], ratios[0], ratios[-1]))
+        if not worst:
+            print("every pair holds the bound")
+            return 0
+        print("pairs where a longer irradiation reads lower than a shorter one:\n")
+        for n, total, longer, shorter, component, t, r, first, last in worst:
+            print(f"{longer} / {shorter} ({component}): {n} of {total} points under 1, "
+                  f"{first:.3f} at the short end to {last:.3f} at the long end")
+            print("   " + ", ".join(f"{ti:.0f}s={ri:.3f}" for ti, ri in zip(t, r)))
+        print("\nA single point at the edge of the overlap is interpolation; a run "
+              "of them\nat one end is the curve disagreeing with its neighbours.")
+        return 0
     if args.list:
         validated = set(VALIDATED)
         print("validated, run by --all:")
