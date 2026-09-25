@@ -61,4 +61,5 @@ nav:
       - Effective cross sections: benchmarks/effective-cross-sections.md
   - Studies:
       - Self-shielding: studies/self-shielding.md
+      - Temperature: studies/temperature.md
   - Add a benchmark: contributing.md
