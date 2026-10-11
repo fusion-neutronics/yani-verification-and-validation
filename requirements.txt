@@ -3,7 +3,7 @@
 # There is no NJOY here and no ENDF processing step. Every library these
 # benchmarks are run with -- tendl-2017, tendl-2025, endf-b8.1, jeff-4.0,
 # fendl-3.2d -- is a keyword yani resolves to already-converted data and caches
-# under ~/.cache/yamc on first use. Converting from ENDF yourself is supported
+# in yani.cache_dir() (~/.cache/yamc on Linux) on first use. Converting from ENDF yourself is supported
 # and does need NJOY, but nothing on this site takes that path, so reproducing
 # a page needs no external binary.
 yani

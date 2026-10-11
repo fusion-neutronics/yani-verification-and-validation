@@ -36,9 +36,9 @@ sensible way to start.
 
 ## What it will download
 
-Nuclear data, once, into `~/.cache/yamc`. yani fetches the sections it needs on
-first use, and a combination that names a library not yet cached will spend a
-while getting it before the first solve. TENDL-2017 is about 13 GB. Ten
+Nuclear data, once, into `yani.cache_dir()` (`~/.cache/yamc` on Linux). yani
+fetches the sections it needs on first use, and a combination that names a
+library not yet cached will spend a while getting it before the first solve. TENDL-2017 is about 13 GB. Ten
 combinations do not mean ten downloads -- they name five libraries between them
 -- but they do mean tens of gigabytes in that cache, so check the disk before
 starting a full run rather than during one.
@@ -159,10 +159,20 @@ def check_environment(args):
             problems.append(f"{path} missing: run "
                             f"benchmarks/{benchmark}/build_data.py")
 
-    free_gb = shutil.disk_usage(pathlib.Path.home()).free / 1e9
+    cache = pathlib.Path.home()
+    try:
+        import yani
+
+        cache = pathlib.Path(yani.cache_dir())
+    except ImportError:
+        pass
+    # The cache folder may not exist yet; its volume is that of the nearest
+    # folder above it that does.
+    volume = next(p for p in (cache, *cache.parents) if p.exists())
+    free_gb = shutil.disk_usage(volume).free / 1e9
     if free_gb < 20 and "fns" in args.stage:
         problems.append(
-            f"{free_gb:.0f} GB free on the volume holding ~/.cache/yamc. A full "
+            f"{free_gb:.0f} GB free on the volume holding {cache}. A full "
             f"run caches tens of GB of nuclear data; 20 GB is a floor and not a "
             f"recommendation.")
     return problems

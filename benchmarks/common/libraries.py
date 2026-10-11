@@ -14,7 +14,7 @@ publishes:
 | `tendl-2025` | yes            | --    | yes       | --             | yes       |
 | `endf-b8.1`  | yes            | yes   | yes       | yes            | yes       |
 | `jeff-4.0`   | yes            | yes   | yes       | yes            | yes       |
-| `fendl-3.2d` | yes            | --    | --        | --             | --        |
+| `fendl-3.2d` | yes            | --    | yes       | --             | yes       |
 | `ukaea-decay-2012` | --       | yes   | --        | --             | --        |
 
 TENDL is a neutron-only evaluation, so a TENDL run always borrows decay data and
@@ -32,7 +32,6 @@ FISPACT-II can be made on the same decay data, and nowhere else.
 
 import collections
 import json
-import os
 import pathlib
 
 from common import ukaea_decay
@@ -177,14 +176,19 @@ def resolve(names):
 
 
 def _cache_root():
-    override = os.environ.get("YAMC_CACHE_DIR")
-    if override:
-        return pathlib.Path(override)
-    return pathlib.Path.home() / ".cache" / "yamc"
+    """yani's nuclear-data cache directory, `yani.cache_dir()`.
+
+    There is no setting that moves it; it is the platform's per-user cache
+    directory (`~/.cache/yamc` on Linux, `$XDG_CACHE_HOME/yamc` when that is
+    set).
+    """
+    import yani
+
+    return pathlib.Path(yani.cache_dir())
 
 
 def _stamp(directory):
-    """The `data_version` a cached subsection records, if it records one."""
+    """The `data_version` a locally converted directory records, if any."""
     for marker in ("provenance.json", "version.json"):
         path = pathlib.Path(directory) / marker
         if not path.is_file():
@@ -198,21 +202,42 @@ def _stamp(directory):
     return None
 
 
+def _cached_release(root, keyword, holds):
+    """The newest cached release of `keyword` holding the relative path `holds`.
+
+    yani caches each published release of a library in its own folder,
+    `<cache>/<keyword>/<release>/`, beside that release's `manifest.json`, with
+    the published layout inside (`neutron/<Name>.arrow/`,
+    `transmutation/<subsection>.arrow/`). Releases are named by date
+    (`2026-10-10.1`), so the lexically last one is the newest, and the newest
+    holding the data is the one a run that just used it read. None when no
+    cached release holds it.
+    """
+    library = pathlib.Path(root) / keyword
+    if not library.is_dir():
+        return None
+    releases = sorted(
+        d.name for d in library.iterdir()
+        if d.is_dir() and (d / "manifest.json").is_file() and (d / holds).exists())
+    return releases[-1] if releases else None
+
+
 def data_versions(combination):
-    """The release stamp behind each of a combination's five settings.
+    """The published release behind each of a combination's five settings.
 
-    The published libraries are overwritten in place when they are rebuilt, so
-    the keyword `tendl-2017` names different bytes before and after a
-    republish. Without this a result file cannot say which. The 2026-09-08
-    rebuild changed every library's isomeric branching and was invisible in
-    every output.
+    A library keyword resolves at run time to the library's current published
+    release, so the keyword `tendl-2017` names different bytes before and after
+    a republish, and a result file has to say which. The 2026-09-08 rebuild
+    changed every library's isomeric branching and was invisible in every
+    output.
 
-    Read out of the cache rather than asked of yani, because yani exposes no
-    accessor for it: the stamp lives in `provenance.json` beside each cached
-    transmutation subsection and in `version.json` beside each cached nuclide.
-    That makes this best-effort and layout-dependent, and a `None` here means
-    "not recorded" rather than "unstamped data". The durable fix is an
-    accessor in the core, at which point this can be deleted.
+    Read out of the cache rather than asked of yani, because this is recorded
+    from the combination rather than from a run's results: for a keyword it is
+    the newest cached release holding that setting's data, which is the one a
+    run that just used it read unless it fell back to an older release offline.
+    `TransmutationResults.data_releases` records exactly what a run read. A
+    locally converted directory keeps the `data_version` stamp its conversion
+    wrote. A `None` here means "not recorded" rather than "unstamped data".
     """
     root = _cache_root()
     found = {}
@@ -230,23 +255,15 @@ def data_versions(combination):
                 source.replace("ukaea-", "").replace("-", "_"))
             found[setting] = _stamp(cached) if cached else None
         elif isinstance(source, str) and not pathlib.Path(source).is_dir():
-            found[setting] = _stamp(
-                root / f"{source}-transmutation-{subsection}.arrow")
+            found[setting] = _cached_release(
+                root, source, f"transmutation/{subsection}.arrow")
         else:
             found[setting] = _stamp(pathlib.Path(str(source)) / subsection)
 
-    # Cross sections are per nuclide, so any cached one carries the stamp of
-    # the release they all came from.
     library = combination.cross_sections
-    stamp = None
-    if isinstance(library, str):
-        for directory in sorted(root.glob(f"{library}-*.arrow")):
-            if "transmutation" in directory.name:
-                continue
-            stamp = _stamp(directory)
-            if stamp:
-                break
-    found["cross_sections"] = stamp
+    found["cross_sections"] = (
+        _cached_release(root, library, "neutron")
+        if isinstance(library, str) else None)
     return found
 
 

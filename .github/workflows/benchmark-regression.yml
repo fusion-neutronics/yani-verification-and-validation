@@ -58,10 +58,11 @@ jobs:
           echo "yani=${version}" >> "$GITHUB_OUTPUT"
           echo "yani ${version}"
 
-      # Keyed on the yani version, because the data release a wheel expects is
-      # compiled into it: a new wheel evicts and refetches anyway, so sharing a
-      # cache across versions would just carry dead bytes. Restore-keys is
-      # deliberately absent for the same reason.
+      # Keyed on the yani version. A keyword resolves at run time to the
+      # library's current published release, cached in a folder of its own
+      # beside any older one, so a cache shared across versions would only
+      # accumulate old release folders. Restore-keys is deliberately absent for
+      # the same reason. ~/.cache/yamc is yani.cache_dir() on a Linux runner.
       - name: Cache the nuclear data
         uses: actions/cache@v4
         with:

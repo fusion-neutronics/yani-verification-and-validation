@@ -5,8 +5,10 @@ The published libraries are overwritten in place when rebuilt, so the keyword
 rebuild changed every library's isomeric branching and was invisible in every
 output file.
 
-`_stamp` is the part worth pinning: reading the cache layout is best-effort, so
-it has to degrade to None rather than raise.
+A keyword records the published release it was read from, the folder yani
+caches it under (`<cache>/<keyword>/<release>/`); a locally converted directory
+records the `data_version` its conversion stamped. Both are read best-effort,
+so they have to degrade to None rather than raise.
 """
 
 import json
@@ -85,3 +87,36 @@ def test_an_unconverted_local_decay_reads_as_not_recorded(monkeypatch, tmp_path)
     versions = libraries.data_versions(
         libraries.BY_NAME["tendl-2017+decay-2012"])
     assert versions["decay"] is None
+
+
+def _release(root, keyword, release, *paths):
+    folder = root / keyword / release
+    folder.mkdir(parents=True)
+    (folder / "manifest.json").write_text("{}")
+    for path in paths:
+        (folder / path).mkdir(parents=True)
+    return folder
+
+
+def test_a_keyword_records_its_newest_cached_release(tmp_path):
+    _release(tmp_path, "tendl-2017", "2026-10-01", "transmutation/reactions.arrow")
+    _release(tmp_path, "tendl-2017", "2026-10-15.1", "transmutation/reactions.arrow")
+    assert libraries._cached_release(
+        tmp_path, "tendl-2017", "transmutation/reactions.arrow") == "2026-10-15.1"
+
+
+def test_a_release_without_the_data_is_passed_over(tmp_path):
+    _release(tmp_path, "endf-b8.1", "2026-10-01", "transmutation/decay.arrow")
+    _release(tmp_path, "endf-b8.1", "2026-10-15.1", "neutron")
+    assert libraries._cached_release(
+        tmp_path, "endf-b8.1", "transmutation/decay.arrow") == "2026-10-01"
+    assert libraries._cached_release(tmp_path, "endf-b8.1", "neutron") == "2026-10-15.1"
+
+
+def test_a_folder_without_a_manifest_is_not_a_release(tmp_path):
+    (tmp_path / "endf-b8.1" / "2026-10-15.1" / "neutron").mkdir(parents=True)
+    assert libraries._cached_release(tmp_path, "endf-b8.1", "neutron") is None
+
+
+def test_an_uncached_keyword_reads_as_not_recorded(tmp_path):
+    assert libraries._cached_release(tmp_path, "jeff-4.0", "neutron") is None
