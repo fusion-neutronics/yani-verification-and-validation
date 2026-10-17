@@ -157,6 +157,11 @@ def fns_709_source(name, fns_data_path=None):
     return yani.NeutronSource(energy=yani.sources.Histogram("CCFE-709", flux))
 
 
+def failure_key(reaction, spectrum):
+    """How a reaction that did not solve is named in a result file's `failures`."""
+    return f"{reaction} @ {spectrum}"
+
+
 def _extract(atoms, target, products, fluence):
     """One inventory -> one effective cross section [barns]."""
     target_atoms = atoms.get(target)
@@ -266,6 +271,13 @@ def main():
         except json.JSONDecodeError:
             pass
     done = {(row["reaction"], row["spectrum"]) for row in results}
+    # A reaction is solved or failed, never both. Until a successful retry
+    # dropped its failure (below), this runner kept both, and a solved
+    # reaction is never tried again, so a file written then is put right here
+    # or not at all.
+    answered = {failure_key(reaction, spectrum) for reaction, spectrum in done}
+    failures = {key: message for key, message in failures.items()
+                if key not in answered}
 
     libraries.apply(combination, yani)
     uncertainty = None
@@ -331,7 +343,7 @@ def main():
                 if calculated > 0:
                     drift = max(drift, abs(tenth / calculated - 1.0))
         except Exception as exc:
-            failures[row["reaction"] + " @ " + name] = str(exc)
+            failures[failure_key(row["reaction"], name)] = str(exc)
             print(f"[{index}/{len(todo)}] {row['reaction']:26s} {name:16s} "
                   f"FAILED: {exc}", flush=True)
             save()
@@ -350,6 +362,9 @@ def main():
             # published" is the answer to why there is no band and has to
             # survive into the result file to be readable there.
             entry["data_uncertainty_info"] = unc.summarise(info)
+        # A retry that solved replaces the failure it retried, as in the
+        # decay-heat sweep.
+        failures.pop(failure_key(row["reaction"], name), None)
         results.append(entry)
         fispact = (f"  FISPACT C/E {row['fispact_ce']:5.2f}"
                    if row["fispact_ce"] is not None else "")
