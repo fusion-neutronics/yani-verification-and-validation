@@ -205,11 +205,11 @@ def effective_cross_section(target, products, source, seconds=PULSE_SECONDS,
     inventories = results.get_uncertainty_inventories(
         material_id=material_id, step=results.num_steps)
     if not inventories or len(inventories) < 2:
-        return value, None, results.data_uncertainty_info
+        return value, None, results.get_data_uncertainty_info(material_id)
     spread = np.array(
         [_extract(inventory, target, products, fluence)
          for inventory in inventories], dtype=float)
-    return value, float(spread.std(ddof=1)), results.data_uncertainty_info
+    return value, float(spread.std(ddof=1)), results.get_data_uncertainty_info(material_id)
 
 
 def main():

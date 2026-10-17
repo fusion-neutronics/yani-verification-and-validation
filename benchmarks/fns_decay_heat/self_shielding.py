@@ -27,7 +27,7 @@ uncertainty is one whose dilute C/E is partly a geometry error, and no amount
 of work on the cross sections will fix it.
 
 The dilute run's own screen is reported beside the sweep.
-`self_shielding_info["would_shield"]` is what yani says about a run that
+`get_self_shielding_info(id)["would_shield"]` is what yani says about a run that
 skipped the correction: which resonance absorbers it left uncorrected and how
 strongly their own resonances could bite. It carries no geometry, so it is an
 indicator rather than a bound, and this sweep is the check on whether it points
@@ -102,7 +102,7 @@ def solve(case, thickness_um, combination):
         sum(state.decay_heat(by_nuclide=True).values()) / case.mass_g * 1e6
         for state in states[len(case.irradiation):]
     ])
-    return heat, results.self_shielding_info, elapsed
+    return heat, results.get_self_shielding_info(material_id), elapsed
 
 
 def mean_deviation_percent(calculated, case):

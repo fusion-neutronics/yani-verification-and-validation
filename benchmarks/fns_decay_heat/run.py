@@ -271,7 +271,7 @@ def run(case, combination, uncertainty=None):
         breakdown=breakdown,
         elapsed=elapsed,
         sigma=np.array(sigma) if sigma else None,
-        uncertainty_info=results.data_uncertainty_info,
+        uncertainty_info=results.get_data_uncertainty_info(material_id),
         replicas=replica_count,
     )
 

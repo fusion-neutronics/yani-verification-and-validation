@@ -3,10 +3,15 @@
 # There is no NJOY here and no ENDF processing step. Every library these
 # benchmarks are run with -- tendl-2017, tendl-2025, endf-b8.1, jeff-4.0,
 # fendl-3.2d -- is a keyword yani resolves to already-converted data and caches
-# in yani.cache_dir() (~/.cache/yamc on Linux) on first use. Converting from ENDF yourself is supported
-# and does need NJOY, but nothing on this site takes that path, so reproducing
-# a page needs no external binary.
-yani
+# in yani.cache_dir() (~/.cache/yamc on Linux) on first use. Converting from
+# ENDF yourself is supported and does need NJOY, but nothing on this site takes
+# that path, so reproducing a page needs no external binary.
+#
+# 0.21.0 is the floor: it is the first release that reads the published
+# libraries in their release layout and has yani.cache_dir(), and the code here
+# relies on both. A floor rather than an exact pin, so the nightly regression
+# check still meets each new release the day it is out.
+yani>=0.21.0
 
 # The C/E figures. Brings numpy, which all the scoring arithmetic uses, so numpy
 # is not listed separately.
