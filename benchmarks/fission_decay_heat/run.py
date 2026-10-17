@@ -119,6 +119,14 @@ PULSE_SECONDS = 1.0e-6
 SAMPLE_VOLUME_CM3 = 1.0
 SAMPLE_DENSITY = 19.0
 
+# Room temperature, the same 294 K the other benchmarks state. Stated rather
+# than left to yani's default, because that default is not one number:
+# yani 0.21.0 documents 294 K for a material with no temperature, while
+# `transmute` solves such a material at the lowest temperature its data
+# carries, 250 K on TENDL-2017. For thermal U235 fission the two differ by
+# 5e-5 in the fission rate.
+TEMPERATURE = 294.0
+
 # Total fluence over the irradiation, rather than a flux, so that every
 # irradiation length burns the sample by the same negligible amount.
 #
@@ -293,6 +301,7 @@ def solve(case, combination):
         {parent: 1.0},
         density=SAMPLE_DENSITY,
         volume=SAMPLE_VOLUME_CM3,
+        temperature=TEMPERATURE,
         transmutable=True,
         name=f"{parent} sample",
     )
