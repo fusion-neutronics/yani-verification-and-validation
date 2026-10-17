@@ -372,6 +372,9 @@ def solve(case, combination):
         "flux_n_per_cm2_s": flux,
         "burnup_fissions_per_atom": rate * irradiation,
         "solve_seconds": elapsed,
+        # Which nuclear-data release each library came from. Taken out again
+        # by `main`, into the one record the file carries.
+        "data_releases": results.data_releases,
     }
 
 
@@ -535,6 +538,7 @@ def main():
         todo = [(args.system, args.dataset)]
 
     records, failures = [], {}
+    releases = libraries.DataReleases(combination, args.output)
     for system, dataset in todo:
         key = f"{system}/{dataset}"
         try:
@@ -543,6 +547,7 @@ def main():
             failures[key] = f"{type(exc).__name__}: {exc}"
             print(f"  {key}: FAILED {exc}", flush=True)
             continue
+        releases.read(solved.pop("data_releases"))
         total = scores.get("total")
         summary = (f"median C/E {total['median_ce']:.3f}, "
                    f"mean deviation {total['mean_deviation_percent']:.1f}%, "
@@ -556,7 +561,7 @@ def main():
         args.output.parent.mkdir(parents=True, exist_ok=True)
         payload = {
             "yani_version": yani.__version__,
-            "combination": libraries.as_dict(combination),
+            "combination": libraries.as_dict(combination, releases),
             "validated": [f"{s}/{d}" for s, d in VALIDATED],
             "excluded_reasons": EXCLUDED,
             "includes_unvalidated": bool(args.unvalidated),

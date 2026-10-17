@@ -74,7 +74,12 @@ def _init(combination_name, data_path, uncertainty):
 
 
 def _solve(selection_entry):
-    """One experiment, in whichever worker picks it up."""
+    """One experiment, in whichever worker picks it up.
+
+    Returns `(key, entry, failure, data_releases)`: the result, or the
+    traceback of the failure, and which nuclear-data release each library the
+    solve read came from, which only the worker can see.
+    """
     name, experiment = selection_entry
     key = f"{name}/{experiment}"
     try:
@@ -103,31 +108,35 @@ def _solve(selection_entry):
             entry["fispact_uW_per_g"] = case.fispact.tolist()
             entry["fispact_library"] = case.fispact_library
             entry["fispact_metrics"] = fns_case.score(case.fispact, case)
-        return key, entry, None
+        return key, entry, None, solved.data_releases
     except Exception:
         # One foil that will not solve must not cost the other 131. The
         # traceback is kept in the output so a failure is visible on the site
         # rather than only absent from it.
-        return key, None, traceback.format_exc()
+        return key, None, traceback.format_exc(), None
 
 
 def existing(path):
-    """What a previous run of this combination already got through."""
+    """What a previous run of this combination already got through.
+
+    `(results, failures, document)`, the last being the whole file, or empty
+    ones when there is no readable file.
+    """
     if not path.is_file():
-        return {}, {}
+        return {}, {}, {}
     try:
         document = json.loads(path.read_text())
     except json.JSONDecodeError:
-        return {}, {}
-    return document.get("results", {}), document.get("failures", {})
+        return {}, {}, {}
+    return document.get("results", {}), document.get("failures", {}), document
 
 
 def write(path, combination, results, failures, selection, seconds, version,
-          uncertainty=None):
+          releases, uncertainty=None):
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "benchmark": "fns_decay_heat",
-        "combination": libraries.as_dict(combination),
+        "combination": libraries.as_dict(combination, releases),
         "yani_version": version,
         "uncertainty": uncertainty,
         "experiments": len(selection),
@@ -203,7 +212,8 @@ def main():
 
     for combination in combinations:
         destination = args.output / f"{combination.name}.json"
-        results, failures = ({}, {}) if args.redo else existing(destination)
+        results, failures, previous = (
+            ({}, {}, {}) if args.redo else existing(destination))
         todo = [entry for entry in selection
                 if f"{entry[0]}/{entry[1]}" not in results]
 
@@ -216,18 +226,21 @@ def main():
             continue
         if len(todo) < len(selection):
             print(f"  resuming: {len(selection) - len(todo)} already done")
+        releases = libraries.DataReleases.resumed(
+            combination, destination, previous, len(results))
 
         started = time.time()
         done = 0
         with context.Pool(processes=min(workers, len(todo)), initializer=_init,
                           initargs=(combination.name, args.data,
                                     uncertainty)) as pool:
-            for key, entry, failure in pool.imap_unordered(_solve, todo):
+            for key, entry, failure, read in pool.imap_unordered(_solve, todo):
                 done += 1
                 if entry is None:
                     failures[key] = failure
                     print(f"  [{done}/{len(todo)}] {key}: FAILED")
                 else:
+                    releases.read(read)
                     results.pop(key, None)
                     failures.pop(key, None)
                     results[key] = entry
@@ -237,7 +250,7 @@ def main():
                 # Written every time: a solve costs minutes and a write costs
                 # milliseconds, so there is nothing to batch for.
                 write(destination, combination, results, failures, selection,
-                      time.time() - started, version, uncertainty)
+                      time.time() - started, version, releases, uncertainty)
 
         print(f"  {combination.name}: {len(results)} solved, {len(failures)} "
               f"failed, {(time.time() - started) / 60:.1f} min -> {destination}")

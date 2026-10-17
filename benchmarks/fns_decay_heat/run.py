@@ -61,7 +61,8 @@ _COVERAGE_BACKOFF_S = 2.0
 
 
 Solved = collections.namedtuple(
-    "Solved", "heat breakdown elapsed sigma uncertainty_info replicas")
+    "Solved",
+    "heat breakdown elapsed sigma uncertainty_info replicas data_releases")
 
 
 class ZeroActivation(Exception):
@@ -200,7 +201,9 @@ def run(case, combination, uncertainty=None):
 
     Pass a `yani.DataUncertainty` as `uncertainty` and the result also carries
     a standard deviation per measured point, plus yani's own report of what the
-    covariance did and did not cover.
+    covariance did and did not cover. `data_releases` is the solve's
+    `TransmutationResults.data_releases`, which nuclear-data release each
+    library came from.
     """
     libraries.apply(combination, yani)
 
@@ -284,6 +287,7 @@ def run(case, combination, uncertainty=None):
         sigma=np.array(sigma) if sigma else None,
         uncertainty_info=results.get_data_uncertainty_info(material_id),
         replicas=replica_count,
+        data_releases=results.data_releases,
     )
 
 
@@ -383,10 +387,12 @@ def main():
 
     args.output.mkdir(parents=True, exist_ok=True)
     destination = args.output / f"{case.name}_{case.experiment}_{combination.name}.json"
+    releases = libraries.DataReleases(combination, destination)
+    releases.read(solved.data_releases)
     destination.write_text(json.dumps({
         "case": case.name,
         "experiment": case.experiment,
-        "combination": libraries.as_dict(combination),
+        "combination": libraries.as_dict(combination, releases),
         "yani_version": getattr(yani, "__version__", "unknown"),
         "time_unit": case.time_unit,
         "times": case.times.tolist(),
