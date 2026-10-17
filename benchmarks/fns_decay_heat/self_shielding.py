@@ -27,7 +27,7 @@ uncertainty is one whose dilute C/E is partly a geometry error, and no amount
 of work on the cross sections will fix it.
 
 The dilute run's own screen is reported beside the sweep.
-`self_shielding_info["would_shield"]` is what yani says about a run that
+`get_self_shielding_info(id)["would_shield"]` is what yani says about a run that
 skipped the correction: which resonance absorbers it left uncorrected and how
 strongly their own resonances could bite. It carries no geometry, so it is an
 indicator rather than a bound, and this sweep is the check on whether it points
@@ -70,7 +70,11 @@ DEFAULT_THICKNESS_UM = [100.0, 1000.0]
 
 
 def solve(case, thickness_um, combination):
-    """One FNS case, either dilute (`thickness_um is None`) or shielded."""
+    """One FNS case, either dilute (`thickness_um is None`) or shielded.
+
+    Returns `(heat, self_shielding_info, elapsed, data_releases)`, the last
+    being which nuclear-data release each library came from.
+    """
     spectrum = yani.NeutronSource(
         energy=yani.sources.Histogram(fns_case.GROUP_STRUCTURE, case.spectrum.tolist())
     )
@@ -102,7 +106,8 @@ def solve(case, thickness_um, combination):
         sum(state.decay_heat(by_nuclide=True).values()) / case.mass_g * 1e6
         for state in states[len(case.irradiation):]
     ])
-    return heat, results.self_shielding_info, elapsed
+    return (heat, results.get_self_shielding_info(material_id), elapsed,
+            results.data_releases)
 
 
 def mean_deviation_percent(calculated, case):
@@ -114,9 +119,10 @@ def mean_deviation_percent(calculated, case):
     return float(np.abs(ratio - 1.0).mean() * 100.0)
 
 
-def study(name, experiment, thicknesses, combination):
+def study(name, experiment, thicknesses, combination, releases):
     case = fns_case.load(name, experiment)
-    dilute, dilute_info, elapsed = solve(case, None, combination)
+    dilute, dilute_info, elapsed, read = solve(case, None, combination)
+    releases.read(read)
 
     # `would_shield` is only filled on a dilute run: it is the screen, and a
     # shielded run reports what it actually did instead.
@@ -138,7 +144,8 @@ def study(name, experiment, thicknesses, combination):
     }
 
     for thickness in thicknesses:
-        heat, info, elapsed = solve(case, thickness, combination)
+        heat, info, elapsed, read = solve(case, thickness, combination)
+        releases.read(read)
         # Relative move in the heat curve, over the points the measurement
         # constrains. A foil that does not move here needs no geometry.
         both = (dilute > 0) & (heat > 0)
@@ -186,9 +193,11 @@ def main():
 
     cases = args.cases or DEFAULT_CASES
     records, failures = [], {}
+    releases = libraries.DataReleases(combination, args.output)
     for name in cases:
         try:
-            record = study(name, args.experiment, args.thickness, combination)
+            record = study(name, args.experiment, args.thickness, combination,
+                           releases)
         except Exception as exc:  # noqa: BLE001 - recorded, not swallowed
             failures[name] = f"{type(exc).__name__}: {exc}"
             print(f"  {name}: FAILED {type(exc).__name__}: {exc}", flush=True)
@@ -202,7 +211,7 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "yani_version": yani.__version__,
-        "combination": libraries.as_dict(combination),
+        "combination": libraries.as_dict(combination, releases),
         "thicknesses_um": args.thickness,
         "absorbers": ABSORBERS,
         "controls": CONTROLS,

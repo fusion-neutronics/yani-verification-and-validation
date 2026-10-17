@@ -14,7 +14,7 @@ publishes:
 | `tendl-2025` | yes            | --    | yes       | --             | yes       |
 | `endf-b8.1`  | yes            | yes   | yes       | yes            | yes       |
 | `jeff-4.0`   | yes            | yes   | yes       | yes            | yes       |
-| `fendl-3.2d` | yes            | --    | --        | --             | --        |
+| `fendl-3.2d` | yes            | --    | yes       | --             | yes       |
 | `ukaea-decay-2012` | --       | yes   | --        | --             | --        |
 
 TENDL is a neutron-only evaluation, so a TENDL run always borrows decay data and
@@ -32,7 +32,6 @@ FISPACT-II can be made on the same decay data, and nowhere else.
 
 import collections
 import json
-import os
 import pathlib
 
 from common import ukaea_decay
@@ -176,15 +175,8 @@ def resolve(names):
     return chosen
 
 
-def _cache_root():
-    override = os.environ.get("YAMC_CACHE_DIR")
-    if override:
-        return pathlib.Path(override)
-    return pathlib.Path.home() / ".cache" / "yamc"
-
-
 def _stamp(directory):
-    """The `data_version` a cached subsection records, if it records one."""
+    """The `data_version` a locally converted directory records, if any."""
     for marker in ("provenance.json", "version.json"):
         path = pathlib.Path(directory) / marker
         if not path.is_file():
@@ -198,59 +190,120 @@ def _stamp(directory):
     return None
 
 
-def data_versions(combination):
-    """The release stamp behind each of a combination's five settings.
+def local_data_versions(combination):
+    """The `data_version` stamp of each setting a combination reads from local data.
 
-    The published libraries are overwritten in place when they are rebuilt, so
-    the keyword `tendl-2017` names different bytes before and after a
-    republish. Without this a result file cannot say which. The 2026-09-08
-    rebuild changed every library's isomeric branching and was invisible in
-    every output.
-
-    Read out of the cache rather than asked of yani, because yani exposes no
-    accessor for it: the stamp lives in `provenance.json` beside each cached
-    transmutation subsection and in `version.json` beside each cached nuclide.
-    That makes this best-effort and layout-dependent, and a `None` here means
-    "not recorded" rather than "unstamped data". The durable fix is an
-    accessor in the core, at which point this can be deleted.
+    yani reports the published release behind every library keyword a solve
+    read (see `DataReleases`), and nothing for data it was pointed at as a
+    directory. Here that is the UKAEA decay library, which `common.ukaea_decay`
+    converts on this machine and stamps with the archive it came from, so the
+    stamp is the record. Settings that name a published library are left out.
+    A `None` means "not recorded" rather than "unstamped data".
     """
-    root = _cache_root()
     found = {}
-    for setting, source, subsection in (
-            ("reactions", combination.reactions, "reactions"),
-            ("branching", combination.branching, "branching"),
-            ("decay", combination.decay, "decay"),
-            ("fission_yields", combination.fission_yields, "fission_yields")):
+    for setting, source in (
+            ("reactions", combination.reactions),
+            ("branching", combination.branching),
+            ("decay", combination.decay),
+            ("fission_yields", combination.fission_yields)):
         if source in LOCAL_DECAY:
-            # Converted on this machine, so its stamp sits with the conversion.
             # Looked up rather than resolved: `LOCAL_DECAY[source]()` fetches
             # and converts when the cache is cold, and recording provenance
             # must not download 5.5 MB and spend a minute converting it.
             cached = ukaea_decay.cached_decay_directory(
                 source.replace("ukaea-", "").replace("-", "_"))
             found[setting] = _stamp(cached) if cached else None
-        elif isinstance(source, str) and not pathlib.Path(source).is_dir():
-            found[setting] = _stamp(
-                root / f"{source}-transmutation-{subsection}.arrow")
-        else:
-            found[setting] = _stamp(pathlib.Path(str(source)) / subsection)
-
-    # Cross sections are per nuclide, so any cached one carries the stamp of
-    # the release they all came from.
-    library = combination.cross_sections
-    stamp = None
-    if isinstance(library, str):
-        for directory in sorted(root.glob(f"{library}-*.arrow")):
-            if "transmutation" in directory.name:
-                continue
-            stamp = _stamp(directory)
-            if stamp:
-                break
-    found["cross_sections"] = stamp
+        elif pathlib.Path(str(source)).is_dir():
+            found[setting] = _stamp(pathlib.Path(str(source)) / setting)
     return found
 
 
-def as_dict(combination):
+class DataReleases:
+    """The published release of each library behind one result file.
+
+    A library keyword resolves at run time to the library's current published
+    release, so the keyword `tendl-2017` names different bytes before and after
+    a republish, and a result file has to say which. The 2026-09-08 rebuild
+    changed every library's isomeric branching and was invisible in every
+    output.
+
+    So the record is what the solves report. yani resolves each keyword to one
+    release per process, and every solve reports the ones it read as
+    `TransmutationResults.data_releases`: the release, the sha256 of its
+    manifest (which pins every file in it), the manifest's format version, and
+    `offline`, true when the origin could not be reached and a cached release
+    was used. The newest release in the cache is no substitute. The cache keeps
+    every release a run has used, and a run reads the one the origin points at
+    or, offline, the newest cached one holding what its first request needs;
+    either can be older than the newest there.
+
+    `read` takes one solve's report and keeps the libraries the combination
+    names: the report covers every library the process has read, which for a
+    process that ran another combination first includes others.
+
+    One release of each library per file. A solve that read another release
+    than the file already records, as a run resumed after a republish does,
+    stops the run rather than mixing the two: `--redo` solves every case again
+    against one release.
+    """
+
+    def __init__(self, combination, destination, recorded=None):
+        self.destination = destination
+        self._libraries = {combination.cross_sections, combination.reactions,
+                           combination.branching, combination.decay,
+                           combination.fission_yields}
+        self.recorded = {keyword: dict(record)
+                         for keyword, record in (recorded or {}).items()}
+
+    @classmethod
+    def resumed(cls, combination, destination, document, solved):
+        """The record of a result file that a run is about to add to.
+
+        `document` is the file as it stands, `{}` when there is none, and
+        `solved` how many results it holds. Results from a run that recorded no
+        releases, which is every file written before this record existed, were
+        solved against releases nobody can now name, and adding to them would
+        label them all with this run's, so that stops the run instead.
+        """
+        recorded = (document.get("combination") or {}).get("data_releases")
+        if solved and recorded is None:
+            raise SystemExit(
+                f"{destination} holds {solved} results from a run that recorded "
+                f"no data releases, so which release of each library they were "
+                f"solved against is unknown, and adding to them would label "
+                f"them all with this run's. Run again with --redo to solve them "
+                f"against one release.")
+        return cls(combination, destination, recorded)
+
+    def read(self, data_releases):
+        """Add one solve's `TransmutationResults.data_releases`."""
+        for keyword, record in sorted(data_releases.items()):
+            if keyword not in self._libraries:
+                continue
+            held = self.recorded.setdefault(keyword, dict(record))
+            if (held["release"], held["manifest_sha256"]) != (
+                    record["release"], record["manifest_sha256"]):
+                raise SystemExit(
+                    f"{self.destination}: its results were solved against "
+                    f"{keyword} release {held['release']} (manifest sha256 "
+                    f"{held['manifest_sha256']}), and this solve read release "
+                    f"{record['release']} (manifest sha256 "
+                    f"{record['manifest_sha256']}). A result file holds one "
+                    f"release of each library, so this stops rather than mix "
+                    f"them. Run again with --redo to solve every case against "
+                    f"one release.")
+            # The same bytes either way. True once any solve read them
+            # offline, because that release need not have been the current one.
+            held["offline"] = bool(held["offline"] or record["offline"])
+
+
+def as_dict(combination, releases):
+    """The combination as a result file records it.
+
+    `releases` is the file's `DataReleases`, the published release of each
+    library its solves read. With the stamps of any local data, that is which
+    bytes the results came from, so a data rebuild is visible.
+    """
     return {
         "name": combination.name,
         "cross_sections": combination.cross_sections,
@@ -258,7 +311,7 @@ def as_dict(combination):
         "branching": combination.branching,
         "decay": combination.decay,
         "fission_yields": combination.fission_yields,
-        # Which bytes each setting resolved to, so a data rebuild is visible.
-        "data_versions": data_versions(combination),
+        "data_releases": releases.recorded,
+        "local_data_versions": local_data_versions(combination),
         "note": combination.note,
     }

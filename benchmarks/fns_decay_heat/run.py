@@ -61,7 +61,8 @@ _COVERAGE_BACKOFF_S = 2.0
 
 
 Solved = collections.namedtuple(
-    "Solved", "heat breakdown elapsed sigma uncertainty_info replicas")
+    "Solved",
+    "heat breakdown elapsed sigma uncertainty_info replicas data_releases")
 
 
 class ZeroActivation(Exception):
@@ -96,8 +97,14 @@ class CoverageUnknown(RuntimeError):
     """
 
 
-# A 404 is the library answering. Anything else is the network failing to ask.
-_ABSENT_MARKERS = ("404", "not found")
+# The release manifest answering. yani reads a library's manifest before any
+# file it lists, and refuses a nuclide the manifest does not list with "Nuclide
+# 'Os190' is not available in 'fendl-3.2d' (release ...)". That is the one
+# answer that is about the library. Anything else, a 404 included, is the data
+# failing to arrive: a library not yet published in the release layout
+# (".../latest.json answers 404"), or a file the manifest lists and the origin
+# does not serve ("404, but the release manifest lists ...").
+_ABSENT_MARKERS = ("is not available in",)
 
 
 @functools.lru_cache(maxsize=None)
@@ -118,14 +125,19 @@ def _is_available(nuclide, library):
     Twenty of 132 experiments failed that way in one run, and nothing in the
     output said they had.
 
-    So a 404 answers False, and everything else retries and then raises.
+    So the release manifest not listing the nuclide answers False, and
+    everything else retries and then raises. A 404 is no longer an answer:
+    since yani 0.21.0 the manifest says what a release holds, and a 404 is the
+    origin not serving what it promised, which is how a library not yet
+    published in the release layout would otherwise read as "tendl-2017
+    publishes no evaluation for Fe".
     """
     last = None
     for attempt in range(_COVERAGE_ATTEMPTS):
         try:
             yani.Nuclide(nuclide).read_nuclear_data(library)
             return True
-        except Exception as exc:  # noqa: BLE001 - re-raised below unless it is a 404
+        except Exception as exc:  # noqa: BLE001 - re-raised below unless the manifest answered
             message = str(exc).lower()
             if any(marker in message for marker in _ABSENT_MARKERS):
                 return False
@@ -189,7 +201,9 @@ def run(case, combination, uncertainty=None):
 
     Pass a `yani.DataUncertainty` as `uncertainty` and the result also carries
     a standard deviation per measured point, plus yani's own report of what the
-    covariance did and did not cover.
+    covariance did and did not cover. `data_releases` is the solve's
+    `TransmutationResults.data_releases`, which nuclear-data release each
+    library came from.
     """
     libraries.apply(combination, yani)
 
@@ -271,8 +285,9 @@ def run(case, combination, uncertainty=None):
         breakdown=breakdown,
         elapsed=elapsed,
         sigma=np.array(sigma) if sigma else None,
-        uncertainty_info=results.data_uncertainty_info,
+        uncertainty_info=results.get_data_uncertainty_info(material_id),
         replicas=replica_count,
+        data_releases=results.data_releases,
     )
 
 
@@ -296,7 +311,8 @@ def main():
     parser.add_argument("--uncertainty", action="store_true",
                         help="propagate cross-section covariance onto the curve")
     parser.add_argument("--samples", type=int,
-                        help="fixed replica count (default: until the sigmas settle)")
+                        help="fixed replica count (default: adaptive, until each "
+                             "sigma is known to 5%%, at least 128 replicas)")
     parser.add_argument("--seed", type=int, default=42,
                         help="covariance sampling seed (default: 42)")
     parser.add_argument("--output", type=pathlib.Path, default=HERE / "results",
@@ -371,10 +387,12 @@ def main():
 
     args.output.mkdir(parents=True, exist_ok=True)
     destination = args.output / f"{case.name}_{case.experiment}_{combination.name}.json"
+    releases = libraries.DataReleases(combination, destination)
+    releases.read(solved.data_releases)
     destination.write_text(json.dumps({
         "case": case.name,
         "experiment": case.experiment,
-        "combination": libraries.as_dict(combination),
+        "combination": libraries.as_dict(combination, releases),
         "yani_version": getattr(yani, "__version__", "unknown"),
         "time_unit": case.time_unit,
         "times": case.times.tolist(),

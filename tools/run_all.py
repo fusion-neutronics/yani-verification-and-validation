@@ -36,9 +36,9 @@ sensible way to start.
 
 ## What it will download
 
-Nuclear data, once, into `~/.cache/yamc`. yani fetches the sections it needs on
-first use, and a combination that names a library not yet cached will spend a
-while getting it before the first solve. TENDL-2017 is about 13 GB. Ten
+Nuclear data, once, into `yani.cache_dir()` (`~/.cache/yamc` on Linux). yani
+fetches the sections it needs on first use, and a combination that names a
+library not yet cached will spend a while getting it before the first solve. TENDL-2017 is about 13 GB. Ten
 combinations do not mean ten downloads -- they name five libraries between them
 -- but they do mean tens of gigabytes in that cache, so check the disk before
 starting a full run rather than during one.
@@ -61,6 +61,13 @@ from common import libraries  # noqa: E402
 # costs nothing but a wrong estimate.
 FNS_MINUTES_PER_SOLVE = 0.75
 ECS_MINUTES_PER_SOLVE = 0.5
+
+# What an adaptive uncertainty run (no --samples) stands in as. yani adds
+# replicas 64 at a time until every tracked sigma's standard error is within
+# 5% of it, never fewer than 128: about 201 for a Gaussian output, so 256 once
+# rounded up to a whole batch, and more for a skewed one. 256 is what
+# Fe-56(n,p)Mn-56 in the JAEA-FNS position 3 field took on yani 0.21.0.
+ADAPTIVE_REPLICAS = 256
 
 
 def python():
@@ -123,10 +130,11 @@ def estimate(args):
     experiments = 132 if not args.experiment else 73 * len(args.experiment)
     # One solve per replica rather than one per case, so the replica count
     # multiplies straight through. Adaptive sampling has no number to use, so
-    # 100 stands in for it, which is the point of saying so in --plan.
+    # ADAPTIVE_REPLICAS stands in for it, which is the point of saying so in
+    # --plan.
     replicas = 1
     if args.uncertainty:
-        replicas = args.samples or 100
+        replicas = args.samples or ADAPTIVE_REPLICAS
     fns = (experiments * combinations * replicas
            * FNS_MINUTES_PER_SOLVE / max(1, args.workers))
     ecs = (365 * combinations * replicas
@@ -159,10 +167,20 @@ def check_environment(args):
             problems.append(f"{path} missing: run "
                             f"benchmarks/{benchmark}/build_data.py")
 
-    free_gb = shutil.disk_usage(pathlib.Path.home()).free / 1e9
+    cache = pathlib.Path.home()
+    try:
+        import yani
+
+        cache = pathlib.Path(yani.cache_dir())
+    except ImportError:
+        pass
+    # The cache folder may not exist yet; its volume is that of the nearest
+    # folder above it that does.
+    volume = next(p for p in (cache, *cache.parents) if p.exists())
+    free_gb = shutil.disk_usage(volume).free / 1e9
     if free_gb < 20 and "fns" in args.stage:
         problems.append(
-            f"{free_gb:.0f} GB free on the volume holding ~/.cache/yamc. A full "
+            f"{free_gb:.0f} GB free on the volume holding {cache}. A full "
             f"run caches tens of GB of nuclear data; 20 GB is a floor and not a "
             f"recommendation.")
     return problems
@@ -210,7 +228,7 @@ def main():
               f"seed {args.seed}")
         if not args.samples:
             print("  no --samples, so each case picks its own replica count and "
-                  "the estimate below assumes 100")
+                  f"the estimate below assumes {ADAPTIVE_REPLICAS}")
     if minutes:
         print(f"rough estimate {minutes / 60:.1f} h of solving, resumable "
               f"throughout\n")

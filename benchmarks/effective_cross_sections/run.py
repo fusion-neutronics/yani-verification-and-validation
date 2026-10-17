@@ -175,11 +175,14 @@ def effective_cross_section(target, products, source, seconds=PULSE_SECONDS,
                             flux=PULSE_FLUX, uncertainty=None):
     """Spectrum-averaged cross section [barns] for making `products` from `target`.
 
-    Returns `(value, sigma)`, where sigma is None unless `uncertainty` is a
-    `yani.DataUncertainty`. The value is the total over the listed products,
-    which is what the measurement covers: a bare product name in the benchmark
-    means the sum over the ground and isomeric states, and a named state means
-    just that one.
+    Returns `(value, sigma, info, data_releases)`. sigma and info, yani's
+    report of what the covariance covered, are None unless `uncertainty` is a
+    `yani.DataUncertainty`; data_releases is the solve's
+    `TransmutationResults.data_releases`, which nuclear-data release each
+    library came from. The value is the total over the listed products, which
+    is what the measurement covers: a bare product name in the benchmark means
+    the sum over the ground and isomeric states, and a named state means just
+    that one.
 
     The sigma is the spread of the ratio over the ensemble, taken by extracting
     a cross section from each replica's whole inventory rather than by
@@ -202,19 +205,21 @@ def effective_cross_section(target, products, source, seconds=PULSE_SECONDS,
     final = results.get_final_material(material_id)
     fluence = flux * seconds
     value = _extract(final.get_atoms_per_barn_cm(), target, products, fluence)
+    releases = results.data_releases
 
     if uncertainty is None:
-        return value, None, None
+        return value, None, None, releases
 
     # One pulse, so the final state is step 1; step 0 is the unirradiated input.
     inventories = results.get_uncertainty_inventories(
         material_id=material_id, step=results.num_steps)
+    info = results.get_data_uncertainty_info(material_id)
     if not inventories or len(inventories) < 2:
-        return value, None, results.data_uncertainty_info
+        return value, None, info, releases
     spread = np.array(
         [_extract(inventory, target, products, fluence)
          for inventory in inventories], dtype=float)
-    return value, float(spread.std(ddof=1)), results.data_uncertainty_info
+    return value, float(spread.std(ddof=1)), info, releases
 
 
 def main():
@@ -232,7 +237,8 @@ def main():
     parser.add_argument("--uncertainty", action="store_true",
                         help="propagate cross-section covariance onto each value")
     parser.add_argument("--samples", type=int,
-                        help="fixed replica count (default: until the sigmas settle)")
+                        help="fixed replica count (default: adaptive, until each "
+                             "sigma is known to 5%%, at least 128 replicas)")
     parser.add_argument("--seed", type=int, default=42,
                         help="covariance sampling seed (default: 42)")
     parser.add_argument("--group-structure", choices=["published", "ccfe-709"],
@@ -262,7 +268,7 @@ def main():
 
     # A full run is 365 solves and takes hours, so it resumes rather than
     # starting over, the same way the decay-heat sweep does.
-    results, failures = [], {}
+    results, failures, previous = [], {}, {}
     if destination.is_file() and not args.redo:
         try:
             previous = json.loads(destination.read_text())
@@ -270,6 +276,10 @@ def main():
             failures = previous.get("failures", {})
         except json.JSONDecodeError:
             pass
+    # Before anything is solved, so that results recording no data release
+    # are refused at once rather than after the first solve.
+    releases = libraries.DataReleases.resumed(
+        combination, destination, previous, len(results))
     done = {(row["reaction"], row["spectrum"]) for row in results}
     # A reaction is solved or failed, never both. Until a successful retry
     # dropped its failure (below), this runner kept both, and a solved
@@ -304,7 +314,7 @@ def main():
         scratch = destination.with_suffix(".json.part")
         scratch.write_text(json.dumps({
             "benchmark": "effective_cross_sections",
-            "combination": libraries.as_dict(combination),
+            "combination": libraries.as_dict(combination, releases),
             "yani_version": getattr(yani, "__version__", "unknown"),
             # Which form of each field was folded against. Recorded because it
             # decides whether the FISPACT column beside these numbers is a
@@ -333,11 +343,11 @@ def main():
                 print(f"  {name}: folding against CCFE-709 rather than the "
                       f"published 175 groups", flush=True)
         try:
-            calculated, sigma, info = effective_cross_section(
+            calculated, sigma, info, read = effective_cross_section(
                 row["target"], row["products"], sources[name],
                 uncertainty=uncertainty)
             if args.check_linearity:
-                tenth, _, _ = effective_cross_section(
+                tenth, _, _, _ = effective_cross_section(
                     row["target"], row["products"], sources[name],
                     flux=PULSE_FLUX / 10.0)
                 if calculated > 0:
@@ -349,6 +359,7 @@ def main():
             save()
             continue
 
+        releases.read(read)
         ratio = calculated / row["measured_barns"] if row["measured_barns"] else None
         entry = {**row, "yani_barns": calculated, "yani_ce": ratio}
         if uncertainty is not None:

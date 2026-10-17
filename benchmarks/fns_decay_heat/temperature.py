@@ -71,6 +71,11 @@ def available_temperatures(case):
 
 
 def solve(case, temperature):
+    """Specific decay heat [uW/g] at each measured time, at one temperature.
+
+    Returns `(heat, elapsed, data_releases)`, the last being which
+    nuclear-data release each library came from.
+    """
     spectrum = yani.NeutronSource(
         energy=yani.sources.Histogram(fns_case.GROUP_STRUCTURE, case.spectrum.tolist())
     )
@@ -96,7 +101,7 @@ def solve(case, temperature):
         sum(state.decay_heat(by_nuclide=True).values()) / case.mass_g * 1e6
         for state in states[len(case.irradiation):]
     ])
-    return heat, elapsed
+    return heat, elapsed, results.data_releases
 
 
 def mean_deviation_percent(calculated, case):
@@ -106,7 +111,7 @@ def mean_deviation_percent(calculated, case):
     return float(np.abs(calculated[usable] / case.measured[usable] - 1.0).mean() * 100.0)
 
 
-def study(name, experiment, temperatures=None):
+def study(name, experiment, releases, temperatures=None):
     case = fns_case.load(name, experiment)
     labels = temperatures or available_temperatures(case)
     if REFERENCE_K not in labels:
@@ -126,7 +131,8 @@ def study(name, experiment, temperatures=None):
 
     reference = None
     for label in labels:
-        heat, elapsed = solve(case, label)
+        heat, elapsed, read = solve(case, label)
+        releases.read(read)
         if label == REFERENCE_K:
             reference = heat
         record["rows"][label] = {
@@ -167,9 +173,10 @@ def main():
         return 0
 
     records, failures = [], {}
+    releases = libraries.DataReleases(combination, args.output)
     for name in args.cases or DEFAULT_CASES:
         try:
-            record = study(name, args.experiment, args.temperature)
+            record = study(name, args.experiment, releases, args.temperature)
         except Exception as exc:  # noqa: BLE001 - recorded, not swallowed
             failures[name] = f"{type(exc).__name__}: {exc}"
             print(f"  {name}: FAILED {type(exc).__name__}: {exc}", flush=True)
@@ -182,7 +189,7 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "yani_version": yani.__version__,
-        "combination": libraries.as_dict(combination),
+        "combination": libraries.as_dict(combination, releases),
         "cases": records,
         "failures": failures,
     }

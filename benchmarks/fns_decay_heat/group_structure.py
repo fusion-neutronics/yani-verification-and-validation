@@ -106,6 +106,11 @@ def rebin(source_bounds, flux, dest_bounds):
 
 
 def solve(case, bounds, flux):
+    """Specific decay heat [uW/g] at each measured time, from one spectrum.
+
+    Returns `(heat, elapsed, data_releases)`, the last being which
+    nuclear-data release each library came from.
+    """
     spectrum = yani.NeutronSource(
         energy=yani.sources.Histogram(list(bounds), list(flux))
     )
@@ -130,7 +135,7 @@ def solve(case, bounds, flux):
         sum(state.decay_heat(by_nuclide=True).values()) / case.mass_g * 1e6
         for state in states[len(case.irradiation):]
     ])
-    return heat, elapsed
+    return heat, elapsed, results.data_releases
 
 
 def mean_deviation_percent(calculated, case):
@@ -140,7 +145,7 @@ def mean_deviation_percent(calculated, case):
     return float(np.abs(calculated[usable] / case.measured[usable] - 1.0).mean() * 100.0)
 
 
-def study(name, experiment, structures):
+def study(name, experiment, structures, releases):
     case = fns_case.load(name, experiment)
     native_bounds = yani.group_structure(NATIVE)
     total = float(case.spectrum.sum())
@@ -169,7 +174,8 @@ def study(name, experiment, structures):
                 f"{name}/{structure}: rebin lost flux, closure {closure:.3e}. "
                 f"That is a bug in this script, not a result.")
 
-        heat, elapsed = solve(case, bounds, flux)
+        heat, elapsed, read = solve(case, bounds, flux)
+        releases.read(read)
         if structure == NATIVE:
             native_heat = heat
         record["rows"][structure] = {
@@ -212,9 +218,10 @@ def main():
     libraries.apply(combination, yani)
 
     records, failures = [], {}
+    releases = libraries.DataReleases(combination, args.output)
     for name in args.cases or DEFAULT_CASES:
         try:
-            record = study(name, args.experiment, args.structure)
+            record = study(name, args.experiment, args.structure, releases)
         except Exception as exc:  # noqa: BLE001 - recorded, not swallowed
             failures[name] = f"{type(exc).__name__}: {exc}"
             print(f"  {name}: FAILED {type(exc).__name__}: {exc}", flush=True)
@@ -230,7 +237,7 @@ def main():
     args.output.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "yani_version": yani.__version__,
-        "combination": libraries.as_dict(combination),
+        "combination": libraries.as_dict(combination, releases),
         "native_structure": NATIVE,
         "structures": args.structure,
         "cases": records,

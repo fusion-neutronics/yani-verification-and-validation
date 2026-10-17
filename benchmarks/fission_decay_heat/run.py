@@ -119,6 +119,14 @@ PULSE_SECONDS = 1.0e-6
 SAMPLE_VOLUME_CM3 = 1.0
 SAMPLE_DENSITY = 19.0
 
+# Room temperature, the same 294 K the other benchmarks state. Stated rather
+# than left to yani's default, because that default is not one number:
+# yani 0.21.0 documents 294 K for a material with no temperature, while
+# `transmute` solves such a material at the lowest temperature its data
+# carries, 250 K on TENDL-2017. For thermal U235 fission the two differ by
+# 5e-5 in the fission rate.
+TEMPERATURE = 294.0
+
 # Total fluence over the irradiation, rather than a flux, so that every
 # irradiation length burns the sample by the same negligible amount.
 #
@@ -293,6 +301,7 @@ def solve(case, combination):
         {parent: 1.0},
         density=SAMPLE_DENSITY,
         volume=SAMPLE_VOLUME_CM3,
+        temperature=TEMPERATURE,
         transmutable=True,
         name=f"{parent} sample",
     )
@@ -363,6 +372,9 @@ def solve(case, combination):
         "flux_n_per_cm2_s": flux,
         "burnup_fissions_per_atom": rate * irradiation,
         "solve_seconds": elapsed,
+        # Which nuclear-data release each library came from. Taken out again
+        # by `main`, into the one record the file carries.
+        "data_releases": results.data_releases,
     }
 
 
@@ -526,6 +538,7 @@ def main():
         todo = [(args.system, args.dataset)]
 
     records, failures = [], {}
+    releases = libraries.DataReleases(combination, args.output)
     for system, dataset in todo:
         key = f"{system}/{dataset}"
         try:
@@ -534,6 +547,7 @@ def main():
             failures[key] = f"{type(exc).__name__}: {exc}"
             print(f"  {key}: FAILED {exc}", flush=True)
             continue
+        releases.read(solved.pop("data_releases"))
         total = scores.get("total")
         summary = (f"median C/E {total['median_ce']:.3f}, "
                    f"mean deviation {total['mean_deviation_percent']:.1f}%, "
@@ -547,7 +561,7 @@ def main():
         args.output.parent.mkdir(parents=True, exist_ok=True)
         payload = {
             "yani_version": yani.__version__,
-            "combination": libraries.as_dict(combination),
+            "combination": libraries.as_dict(combination, releases),
             "validated": [f"{s}/{d}" for s, d in VALIDATED],
             "excluded_reasons": EXCLUDED,
             "includes_unvalidated": bool(args.unvalidated),
