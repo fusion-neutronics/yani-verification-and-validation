@@ -3,15 +3,23 @@
  "combination": {
   "branching": "endf-b8.1",
   "cross_sections": "tendl-2025",
-  "data_versions": {
-   "branching": "2026-09-18",
-   "cross_sections": "2026-09-18",
-   "decay": "2026-09-18",
-   "fission_yields": "2026-09-18",
-   "reactions": "2026-09-18"
+  "data_releases": {
+   "endf-b8.1": {
+    "format_version": 2,
+    "manifest_sha256": "db76d01b1620f8ee62a18111e732cee5d9d0409e4f162c401216a983192f56bc",
+    "offline": false,
+    "release": "2026-10-12.1"
+   },
+   "tendl-2025": {
+    "format_version": 2,
+    "manifest_sha256": "4805d7f7d33dbcbe341235fe83b978654954d857b6bc981000427e5daf088cb7",
+    "offline": false,
+    "release": "2026-10-12.1"
+   }
   },
   "decay": "endf-b8.1",
   "fission_yields": "endf-b8.1",
+  "local_data_versions": {},
   "name": "tendl-2025-xs+endf-chain",
   "note": "TENDL cross sections on an ENDF/B network. A blend, and reported as one: it is here to show what the chain contributes, not as a recommendation.",
   "reactions": "endf-b8.1"
@@ -62,8 +70,8 @@
    "spectrum": "FNG-Cr",
    "target": "Cr52",
    "uncertainty_barns": 0.0305,
-   "yani_barns": 0.37442781015281845,
-   "yani_ce": 1.107774586250942
+   "yani_barns": 0.3744278101528184,
+   "yani_ce": 1.1077745862509418
   },
   {
    "channel": "p",
@@ -106,8 +114,8 @@
    "spectrum": "FNG-CuCrZr",
    "target": "Cr52",
    "uncertainty_barns": 0.0369,
-   "yani_barns": 0.37293756127737643,
-   "yani_ce": 0.8072241586090398
+   "yani_barns": 0.3729375612773764,
+   "yani_ce": 0.8072241586090397
   },
   {
    "channel": "a",
@@ -128,8 +136,8 @@
    "spectrum": "FNG-CuCrZr",
    "target": "Cu63",
    "uncertainty_barns": 0.00316,
-   "yani_barns": 0.0372727957831792,
-   "yani_ce": 1.0619030137657892
+   "yani_barns": 0.03727279578317917,
+   "yani_ce": 1.0619030137657883
   },
   {
    "channel": "2n",
@@ -192,8 +200,8 @@
    "spectrum": "FNG-CuCrZr",
    "target": "Cu65",
    "uncertainty_barns": 0.000227,
-   "yani_barns": 0.0037691959017166882,
-   "yani_ce": 1.6604387232232107
+   "yani_barns": 0.003769195901716684,
+   "yani_ce": 1.6604387232232087
   },
   {
    "channel": "p",
@@ -236,8 +244,8 @@
    "spectrum": "FNG-CuCrZr",
    "target": "Zr90",
    "uncertainty_barns": 0.0647,
-   "yani_barns": 0.7024806758724704,
-   "yani_ce": 0.7602604717234528
+   "yani_barns": 0.7024806758732658,
+   "yani_ce": 0.7602604717243135
   },
   {
    "channel": "2n",
@@ -258,8 +266,8 @@
    "spectrum": "FNG-Dy",
    "target": "Dy156",
    "uncertainty_barns": 0.0809,
-   "yani_barns": 1.6397542911447742,
-   "yani_ce": 1.071734830813578
+   "yani_barns": 1.6397542911447738,
+   "yani_ce": 1.0717348308135777
   },
   {
    "channel": "2n",
@@ -280,8 +288,8 @@
    "spectrum": "FNG-Dy",
    "target": "Dy158",
    "uncertainty_barns": 0.0728,
-   "yani_barns": 1.8116983571648915,
-   "yani_ce": 0.9435928943567143
+   "yani_barns": 1.8116983571648864,
+   "yani_ce": 0.9435928943567117
   },
   {
    "channel": "p",
@@ -302,8 +310,8 @@
    "spectrum": "FNG-Dy",
    "target": "Dy162",
    "uncertainty_barns": 0.000192,
-   "yani_barns": 0.004138976782325656,
-   "yani_ce": 1.0144550937072685
+   "yani_barns": 0.004138976782325655,
+   "yani_ce": 1.0144550937072683
   },
   {
    "channel": "p",
@@ -324,8 +332,8 @@
    "spectrum": "FNG-Dy",
    "target": "Dy163",
    "uncertainty_barns": 0.000137,
-   "yani_barns": 0.002739670628818633,
-   "yani_ce": 0.822723912558148
+   "yani_barns": 0.002739670628818634,
+   "yani_ce": 0.8227239125581484
   },
   {
    "channel": "g",
@@ -344,8 +352,8 @@
    "spectrum": "FNG-Dy",
    "target": "Dy164",
    "uncertainty_barns": 0.00134,
-   "yani_barns": 0.017363674382344752,
-   "yani_ce": 0.5846355010890488
+   "yani_barns": 0.01736367438234475,
+   "yani_ce": 0.5846355010890487
   },
   {
    "channel": "2n",
@@ -366,8 +374,8 @@
    "spectrum": "FNG-Mo",
    "target": "Mo92",
    "uncertainty_barns": 0.00283,
-   "yani_barns": 0.19498263809650793,
-   "yani_ce": 0.8297133536021615
+   "yani_barns": 0.19498263809650798,
+   "yani_ce": 0.8297133536021617
   },
   {
    "channel": "p",
@@ -386,8 +394,8 @@
    "spectrum": "FNG-Mo",
    "target": "Mo92",
    "uncertainty_barns": 0.00209,
-   "yani_barns": 8.682624770609178e-12,
-   "yani_ce": 1.5815345665954788e-10
+   "yani_barns": 0.05724148003329077,
+   "yani_ce": 1.042649909531708
   },
   {
    "channel": "a",
@@ -408,8 +416,8 @@
    "spectrum": "FNG-Mo",
    "target": "Mo92",
    "uncertainty_barns": 0.00233,
-   "yani_barns": 0.026261964516198697,
-   "yani_ce": 0.9799240491118917
+   "yani_barns": 0.026261964516192303,
+   "yani_ce": 0.9799240491116531
   },
   {
    "channel": "p",
@@ -428,8 +436,8 @@
    "spectrum": "FNG-Mo",
    "target": "Mo95",
    "uncertainty_barns": 0.00278,
-   "yani_barns": 0.03994535643564419,
-   "yani_ce": 1.2561432841397542
+   "yani_barns": 0.039945356435644196,
+   "yani_ce": 1.2561432841397544
   },
   {
    "channel": "p",
@@ -448,8 +456,8 @@
    "spectrum": "FNG-Mo",
    "target": "Mo95",
    "uncertainty_barns": 0.000658,
-   "yani_barns": 1.5366709544852492e-13,
-   "yani_ce": 2.1050287047743138e-11
+   "yani_barns": 1.5366709544852487e-13,
+   "yani_ce": 2.1050287047743132e-11
   },
   {
    "channel": "p",
@@ -470,8 +478,8 @@
    "spectrum": "FNG-Mo",
    "target": "Mo96",
    "uncertainty_barns": 0.00114,
-   "yani_barns": 0.02281177749156298,
-   "yani_ce": 1.1237328813577823
+   "yani_barns": 0.022811777491562952,
+   "yani_ce": 1.123732881357781
   },
   {
    "channel": "2n",
@@ -492,8 +500,8 @@
    "spectrum": "FNG-Mo",
    "target": "Mo100",
    "uncertainty_barns": 0.0404,
-   "yani_barns": 1.380915942897465,
-   "yani_ce": 1.070477475114314
+   "yani_barns": 1.3809159428974658,
+   "yani_ce": 1.0704774751143145
   },
   {
    "channel": "2n",
@@ -574,8 +582,8 @@
    "spectrum": "FNG-Re",
    "target": "Re187",
    "uncertainty_barns": 0.264,
-   "yani_barns": 1.9304884713357648,
-   "yani_ce": 1.0378970275998736
+   "yani_barns": 1.9304884713357644,
+   "yani_ce": 1.0378970275998733
   },
   {
    "channel": "g",
@@ -594,8 +602,8 @@
    "spectrum": "FNG-Re",
    "target": "Re187",
    "uncertainty_barns": 0.00446,
-   "yani_barns": 0.004853338329247927,
-   "yani_ce": 0.6913587363601036
+   "yani_barns": 0.004853338329247929,
+   "yani_ce": 0.6913587363601038
   },
   {
    "channel": "g",
@@ -660,8 +668,8 @@
    "spectrum": "FNG-Re",
    "target": "Re187",
    "uncertainty_barns": 0.000159,
-   "yani_barns": 0.0006407048511039935,
-   "yani_ce": 0.9024011987380189
+   "yani_barns": 0.0006407048511039936,
+   "yani_ce": 0.902401198738019
   },
   {
    "channel": "2n",
@@ -722,8 +730,8 @@
    "spectrum": "FNG-ScSmGd",
    "target": "Sc45",
    "uncertainty_barns": 0.00413,
-   "yani_barns": 0.057952272272433825,
-   "yani_ce": 1.222621777899448
+   "yani_barns": 0.05795227227243386,
+   "yani_ce": 1.2226217778994486
   },
   {
    "channel": "p",
@@ -744,8 +752,8 @@
    "spectrum": "FNG-ScSmGd",
    "target": "Sm150",
    "uncertainty_barns": 0.000726,
-   "yani_barns": 0.006704272201096523,
-   "yani_ce": 1.1081441654704998
+   "yani_barns": 0.006704272201096521,
+   "yani_ce": 1.1081441654704993
   },
   {
    "channel": "a",
@@ -788,8 +796,8 @@
    "spectrum": "FNG-ScSmGd",
    "target": "Sm154",
    "uncertainty_barns": 0.0642,
-   "yani_barns": 1.7757001113014255,
-   "yani_ce": 0.9650544083159921
+   "yani_barns": 1.775700111301425,
+   "yani_ce": 0.9650544083159918
   },
   {
    "channel": "p",
@@ -810,8 +818,8 @@
    "spectrum": "FNG-ScSmGd",
    "target": "Gd158",
    "uncertainty_barns": 0.000146,
-   "yani_barns": 0.0027168731366022892,
-   "yani_ce": 0.8570577717988294
+   "yani_barns": 0.002716873136602291,
+   "yani_ce": 0.8570577717988299
   },
   {
    "channel": "a",
@@ -832,8 +840,8 @@
    "spectrum": "FNG-ScSmGd",
    "target": "Gd158",
    "uncertainty_barns": 6.67e-05,
-   "yani_barns": 0.0011307453924377085,
-   "yani_ce": 1.0186895427366742
+   "yani_barns": 0.0011307453924377087,
+   "yani_ce": 1.0186895427366744
   },
   {
    "channel": "2n",
@@ -854,8 +862,8 @@
    "spectrum": "FNG-ScSmGd",
    "target": "Gd160",
    "uncertainty_barns": 0.0608,
-   "yani_barns": 1.5424380266063973,
-   "yani_ce": 0.7869581768399986
+   "yani_barns": 1.5424380266063977,
+   "yani_ce": 0.7869581768399988
   },
   {
    "channel": "p",
@@ -876,8 +884,8 @@
    "spectrum": "FNG-SiC",
    "target": "Si28",
    "uncertainty_barns": 0.00629,
-   "yani_barns": 0.22035098752001395,
-   "yani_ce": 1.0492904167619712
+   "yani_barns": 0.22035098752001386,
+   "yani_ce": 1.0492904167619708
   },
   {
    "channel": "p",
@@ -898,8 +906,8 @@
    "spectrum": "FNG-SiC",
    "target": "Si29",
    "uncertainty_barns": 0.00579,
-   "yani_barns": 0.11487600432727336,
-   "yani_ce": 0.9903103821316669
+   "yani_barns": 0.11487600432727325,
+   "yani_ce": 0.9903103821316659
   },
   {
    "channel": "a",
@@ -920,8 +928,8 @@
    "spectrum": "FNG-SiC",
    "target": "Si30",
    "uncertainty_barns": 0.00219,
-   "yani_barns": 0.06288064841698243,
-   "yani_ce": 1.1495548156669548
+   "yani_barns": 0.06288064841698242,
+   "yani_ce": 1.1495548156669546
   },
   {
    "channel": "a",
@@ -942,8 +950,8 @@
    "spectrum": "FNG-SiC",
    "target": "Fe54",
    "uncertainty_barns": 0.00411,
-   "yani_barns": 0.07999378366221245,
-   "yani_ce": 0.9731603851850663
+   "yani_barns": 0.07999378366221241,
+   "yani_ce": 0.9731603851850659
   },
   {
    "channel": "p",
@@ -986,8 +994,8 @@
    "spectrum": "FNG-SiC",
    "target": "Fe58",
    "uncertainty_barns": 6.3e-05,
-   "yani_barns": 0.0014689680238829438,
-   "yani_ce": 1.1658476380023364
+   "yani_barns": 0.0014689680238829425,
+   "yani_ce": 1.1658476380023353
   },
   {
    "channel": "a",
@@ -1052,8 +1060,8 @@
    "spectrum": "FNG-SiC",
    "target": "Cu65",
    "uncertainty_barns": 0.000125,
-   "yani_barns": 0.003810668784199548,
-   "yani_ce": 3.0485350273596383
+   "yani_barns": 0.0038106687841995453,
+   "yani_ce": 3.048535027359636
   },
   {
    "channel": "p",
@@ -1074,8 +1082,8 @@
    "spectrum": "FNG-SiC",
    "target": "Cu65",
    "uncertainty_barns": 0.00106,
-   "yani_barns": 0.0144056546006265,
-   "yani_ce": 0.6795120094635142
+   "yani_barns": 0.014405654600626497,
+   "yani_ce": 0.679512009463514
   },
   {
    "channel": "2n",
@@ -1114,8 +1122,8 @@
    "spectrum": "FNG-SiC",
    "target": "Nb93",
    "uncertainty_barns": 0.000286,
-   "yani_barns": 9.365865598406937e-14,
-   "yani_ce": 1.9676188231947344e-11
+   "yani_barns": 9.354874654241618e-14,
+   "yani_ce": 1.965309801311264e-11
   },
   {
    "channel": "2n",
@@ -1158,8 +1166,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn114",
    "uncertainty_barns": 0.0937,
-   "yani_barns": 1.1338126706465492,
-   "yani_ce": 0.5844395209518295
+   "yani_barns": 1.1338126706465497,
+   "yani_ce": 0.5844395209518297
   },
   {
    "channel": "np",
@@ -1178,8 +1186,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn114",
    "uncertainty_barns": 0.000991,
-   "yani_barns": 2.985388740915183e-11,
-   "yani_ce": 7.057656597908234e-09
+   "yani_barns": 2.985338853387707e-11,
+   "yani_ce": 7.057538660491033e-09
   },
   {
    "channel": "p",
@@ -1200,8 +1208,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn116",
    "uncertainty_barns": 0.000741,
-   "yani_barns": 0.03514078566125573,
-   "yani_ce": 1.4227038729253332
+   "yani_barns": 0.0351407856612557,
+   "yani_ce": 1.4227038729253318
   },
   {
    "channel": "np",
@@ -1220,8 +1228,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn116",
    "uncertainty_barns": 0.000105,
-   "yani_barns": 1.0597763501306177e-11,
-   "yani_ce": 9.634330455732887e-09
+   "yani_barns": 1.0597544289035369e-11,
+   "yani_ce": 9.634131171850335e-09
   },
   {
    "channel": "p",
@@ -1262,8 +1270,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn117",
    "uncertainty_barns": 0.000655,
-   "yani_barns": 0.014840677409941948,
-   "yani_ce": 0.8199269287260744
+   "yani_barns": 0.014840677409941952,
+   "yani_ce": 0.8199269287260746
   },
   {
    "channel": "2n",
@@ -1282,8 +1290,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn118",
    "uncertainty_barns": 0.0327,
-   "yani_barns": 2.3404336526751512e-14,
-   "yani_ce": 1.773055797481175e-14
+   "yani_barns": 2.3403181394021108e-14,
+   "yani_ce": 1.7729682874258416e-14
   },
   {
    "channel": "a",
@@ -1302,8 +1310,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn118",
    "uncertainty_barns": 0.000237,
-   "yani_barns": 0.00213095143788916,
-   "yani_ce": 1.7324808438123254
+   "yani_barns": 0.0021309514378891597,
+   "yani_ce": 1.732480843812325
   },
   {
    "channel": "a",
@@ -1322,8 +1330,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn120",
    "uncertainty_barns": 5.32e-05,
-   "yani_barns": 0.0003167908884060355,
-   "yani_ce": 0.8249762718907174
+   "yani_barns": 0.000316790888405693,
+   "yani_ce": 0.8249762718898255
   },
   {
    "channel": "a",
@@ -1342,8 +1350,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn120",
    "uncertainty_barns": 6.11e-05,
-   "yani_barns": 1.7147804979515559e-16,
-   "yani_ce": 4.396873071670656e-13
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "2n",
@@ -1362,8 +1370,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn124",
    "uncertainty_barns": 0.896,
-   "yani_barns": 1.5700007817669654,
-   "yani_ce": 0.7104075935597128
+   "yani_barns": 1.5700007817669643,
+   "yani_ce": 0.7104075935597124
   },
   {
    "channel": "2n",
@@ -1382,8 +1390,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn124",
    "uncertainty_barns": 0.0171,
-   "yani_barns": 1.4759091850912367e-11,
-   "yani_ce": 2.635552116234351e-11
+   "yani_barns": 1.475909185091237e-11,
+   "yani_ce": 2.6355521162343516e-11
   },
   {
    "channel": "2n",
@@ -1402,8 +1410,8 @@
    "spectrum": "FNG-Ta",
    "target": "Ta181",
    "uncertainty_barns": 0.0232,
-   "yani_barns": 1.161142839936111,
-   "yani_ce": 1.1496463761743674
+   "yani_barns": 1.1611194755103231,
+   "yani_ce": 1.149623243079528
   },
   {
    "channel": "g",
@@ -1422,8 +1430,8 @@
    "spectrum": "FNG-Ta",
    "target": "Ta181",
    "uncertainty_barns": 4.13e-05,
-   "yani_barns": 0.007718477480489442,
-   "yani_ce": 64.32064567074535
+   "yani_barns": 0.007718478831878795,
+   "yani_ce": 64.32065693232329
   },
   {
    "channel": "g",
@@ -1444,8 +1452,8 @@
    "spectrum": "FNG-Ta",
    "target": "Ta181",
    "uncertainty_barns": 0.0029,
-   "yani_barns": 0.029827932136733726,
-   "yani_ce": 0.7085019509913
+   "yani_barns": 0.029827932136733903,
+   "yani_ce": 0.7085019509913042
   },
   {
    "channel": "p",
@@ -1486,8 +1494,8 @@
    "spectrum": "FNG-Ta",
    "target": "Ta181",
    "uncertainty_barns": 0.000404,
-   "yani_barns": 0.0005178848617632384,
-   "yani_ce": 0.5127572888744935
+   "yani_barns": 0.0005178851489166692,
+   "yani_ce": 0.512757573184821
   },
   {
    "channel": "a",
@@ -1506,8 +1514,8 @@
    "spectrum": "FNG-Ta",
    "target": "Ta181",
    "uncertainty_barns": 2.77e-05,
-   "yani_barns": 0.00024106940182747711,
-   "yani_ce": 1.0435904841016326
+   "yani_barns": 0.00024106911467404747,
+   "yani_ce": 1.0435892410131924
   },
   {
    "channel": "n",
@@ -1526,8 +1534,8 @@
    "spectrum": "FNG-Y",
    "target": "Y89",
    "uncertainty_barns": 0.0199,
-   "yani_barns": 0.34934839354142044,
-   "yani_ce": 1.0554332131160737
+   "yani_barns": 0.3492238940966858,
+   "yani_ce": 1.055057081863099
   },
   {
    "channel": "2n",
@@ -1548,8 +1556,8 @@
    "spectrum": "FNG-Y",
    "target": "Y89",
    "uncertainty_barns": 0.00891,
-   "yani_barns": 0.8796272166903792,
-   "yani_ce": 0.987235933434769
+   "yani_barns": 0.879627216684904,
+   "yani_ce": 0.9872359334286239
   },
   {
    "channel": "g",
@@ -1568,8 +1576,8 @@
    "spectrum": "FNG-Y",
    "target": "Y89",
    "uncertainty_barns": 1.07e-05,
-   "yani_barns": 2.3312326290380853e-05,
-   "yani_ce": 0.06530063386661303
+   "yani_barns": 2.3312326290235746e-05,
+   "yani_ce": 0.06530063386620658
   },
   {
    "channel": "a",
@@ -1588,8 +1596,8 @@
    "spectrum": "FNG-Y",
    "target": "Y89",
    "uncertainty_barns": 0.000264,
-   "yani_barns": 3.315131989317761e-17,
-   "yani_ce": 1.6330699454767295e-14
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "a",
@@ -1610,8 +1618,8 @@
    "spectrum": "FNG-Y",
    "target": "Y89",
    "uncertainty_barns": 0.00184,
-   "yani_barns": 0.0062942899092088425,
-   "yani_ce": 0.44325985276118607
+   "yani_barns": 0.006294289909169383,
+   "yani_ce": 0.44325985275840724
   },
   {
    "channel": "2n",
@@ -1632,8 +1640,8 @@
    "spectrum": "FNG-Y",
    "target": "Zr90",
    "uncertainty_barns": 0.0728,
-   "yani_barns": 0.6961695313735848,
-   "yani_ce": 1.1469020286220508
+   "yani_barns": 0.6961695313743299,
+   "yani_ce": 1.1469020286232783
   },
   {
    "channel": "2n",
@@ -1654,8 +1662,8 @@
    "spectrum": "FNG-eurofer",
    "target": "Cr52",
    "uncertainty_barns": 0.0226,
-   "yani_barns": 0.32875592104147083,
-   "yani_ce": 1.0338236510738077
+   "yani_barns": 0.3287559210414707,
+   "yani_ce": 1.0338236510738072
   },
   {
    "channel": "p",
@@ -1676,8 +1684,8 @@
    "spectrum": "FNG-eurofer",
    "target": "Fe54",
    "uncertainty_barns": 0.017,
-   "yani_barns": 0.24004444376145262,
-   "yani_ce": 0.9757904217945229
+   "yani_barns": 0.2400444437614525,
+   "yani_ce": 0.9757904217945224
   },
   {
    "channel": "g",
@@ -1742,8 +1750,8 @@
    "spectrum": "FNG-eurofer",
    "target": "Ni58",
    "uncertainty_barns": 0.138,
-   "yani_barns": 0.49127129574386735,
-   "yani_ce": 1.032082554083755
+   "yani_barns": 0.4912712957438671,
+   "yani_ce": 1.0320825540837544
   },
   {
    "channel": "g",
@@ -1764,8 +1772,8 @@
    "spectrum": "FNG-eurofer",
    "target": "Ta181",
    "uncertainty_barns": 0.179,
-   "yani_barns": 1.1300509265224008,
-   "yani_ce": 0.9496226273297487
+   "yani_barns": 1.1300509265224155,
+   "yani_ce": 0.9496226273297609
   },
   {
    "channel": "2n",
@@ -1786,8 +1794,8 @@
    "spectrum": "FNG-eurofer",
    "target": "W182",
    "uncertainty_barns": 0.166,
-   "yani_barns": 1.664210390118309,
-   "yani_ce": 1.1557016598043812
+   "yani_barns": 1.664210390118306,
+   "yani_ce": 1.1557016598043792
   },
   {
    "channel": "a",
@@ -1808,8 +1816,8 @@
    "spectrum": "FNG-f82h",
    "target": "Al27",
    "uncertainty_barns": 0.00686,
-   "yani_barns": 0.09716480997367748,
-   "yani_ce": 1.4589310806858478
+   "yani_barns": 0.09716480997376549,
+   "yani_ce": 1.4589310806871694
   },
   {
    "channel": "a",
@@ -1830,8 +1838,8 @@
    "spectrum": "FNG-f82h",
    "target": "V51",
    "uncertainty_barns": 0.004,
-   "yani_barns": 0.014533361934160959,
-   "yani_ce": 0.8702611936623329
+   "yani_barns": 0.014533361934160965,
+   "yani_ce": 0.8702611936623332
   },
   {
    "channel": "2n",
@@ -1852,8 +1860,8 @@
    "spectrum": "FNG-f82h",
    "target": "Cr52",
    "uncertainty_barns": 0.0412,
-   "yani_barns": 0.3543887039510247,
-   "yani_ce": 1.0904267813877682
+   "yani_barns": 0.35438870395102473,
+   "yani_ce": 1.0904267813877684
   },
   {
    "channel": "p",
@@ -1874,8 +1882,8 @@
    "spectrum": "FNG-f82h",
    "target": "Fe54",
    "uncertainty_barns": 0.019,
-   "yani_barns": 0.26592050972430586,
-   "yani_ce": 0.9885520807595013
+   "yani_barns": 0.2659205097243057,
+   "yani_ce": 0.9885520807595006
   },
   {
    "channel": "p",
@@ -1918,8 +1926,8 @@
    "spectrum": "FNG-f82h",
    "target": "Fe58",
    "uncertainty_barns": 0.000514,
-   "yani_barns": 0.005197806832851357,
-   "yani_ce": 0.8691984670319994
+   "yani_barns": 0.005197806832851356,
+   "yani_ce": 0.8691984670319993
   },
   {
    "channel": "2n",
@@ -1940,8 +1948,8 @@
    "spectrum": "FNG-f82h",
    "target": "Ni58",
    "uncertainty_barns": 0.0101,
-   "yani_barns": 0.030931012616156425,
-   "yani_ce": 0.8474250031823679
+   "yani_barns": 0.030931012616156432,
+   "yani_ce": 0.847425003182368
   },
   {
    "channel": "np",
@@ -1984,8 +1992,8 @@
    "spectrum": "FNG-f82h",
    "target": "W183",
    "uncertainty_barns": 0.000271,
-   "yani_barns": 0.004678830552852463,
-   "yani_ce": 1.1274290488801115
+   "yani_barns": 0.0046788305528619924,
+   "yani_ce": 1.127429048882408
   },
   {
    "channel": "p",
@@ -2006,8 +2014,8 @@
    "spectrum": "FNG-f82h",
    "target": "W184",
    "uncertainty_barns": 0.000294,
-   "yani_barns": 0.002884657535964637,
-   "yani_ce": 1.4568977454366854
+   "yani_barns": 0.002884657535964636,
+   "yani_ce": 1.456897745436685
   },
   {
    "channel": "g",
@@ -2028,8 +2036,8 @@
    "spectrum": "FNG-f82h",
    "target": "W186",
    "uncertainty_barns": 0.0246,
-   "yani_barns": 0.2666715252292739,
-   "yani_ce": 0.766297486291017
+   "yani_barns": 0.26667152522927373,
+   "yani_ce": 0.7662974862910166
   },
   {
    "channel": "2n",
@@ -2072,8 +2080,8 @@
    "spectrum": "FNG-hafnium",
    "target": "Hf176",
    "uncertainty_barns": 0.196,
-   "yani_barns": 1.9576235336881462,
-   "yani_ce": 1.1186420192503692
+   "yani_barns": 1.9576235336881458,
+   "yani_ce": 1.118642019250369
   },
   {
    "channel": "p",
@@ -2200,8 +2208,8 @@
    "spectrum": "FNG-hafnium",
    "target": "Hf180",
    "uncertainty_barns": 0.000936,
-   "yani_barns": 0.0022821581232324705,
-   "yani_ce": 0.5897049414037391
+   "yani_barns": 0.0022821581232324714,
+   "yani_ce": 0.5897049414037393
   },
   {
    "channel": "p",
@@ -2222,8 +2230,8 @@
    "spectrum": "FNG-heat",
    "target": "Mg24",
    "uncertainty_barns": 0.0101,
-   "yani_barns": 0.15842706321965275,
-   "yani_ce": 0.8001366829275391
+   "yani_barns": 0.15842706321965264,
+   "yani_ce": 0.8001366829275385
   },
   {
    "channel": "p",
@@ -2266,8 +2274,8 @@
    "spectrum": "FNG-heat",
    "target": "Al27",
    "uncertainty_barns": 0.00116,
-   "yani_barns": 0.06171975683721161,
-   "yani_ce": 0.8524828292432542
+   "yani_barns": 0.06171975683721156,
+   "yani_ce": 0.8524828292432535
   },
   {
    "channel": "a",
@@ -2288,8 +2296,8 @@
    "spectrum": "FNG-heat",
    "target": "Al27",
    "uncertainty_barns": 0.0021,
-   "yani_barns": 0.1021772076039504,
-   "yani_ce": 1.021772076039504
+   "yani_barns": 0.10217720760402386,
+   "yani_ce": 1.0217720760402387
   },
   {
    "channel": "p",
@@ -2310,8 +2318,8 @@
    "spectrum": "FNG-heat",
    "target": "Ti48",
    "uncertainty_barns": 0.00615,
-   "yani_barns": 0.056128412251002166,
-   "yani_ce": 0.529513323122662
+   "yani_barns": 0.05612841225100218,
+   "yani_ce": 0.5295133231226621
   },
   {
    "channel": "p",
@@ -2354,8 +2362,8 @@
    "spectrum": "FNG-heat",
    "target": "Ti50",
    "uncertainty_barns": 0.000588,
-   "yani_barns": 0.013671531173891485,
-   "yani_ce": 0.7350285577361014
+   "yani_barns": 0.013671531173891477,
+   "yani_ce": 0.735028557736101
   },
   {
    "channel": "p",
@@ -2374,8 +2382,8 @@
    "spectrum": "FNG-heat",
    "target": "Ni60",
    "uncertainty_barns": 0.00236,
-   "yani_barns": 1.2881290696256405e-11,
-   "yani_ce": 2.940933948916988e-10
+   "yani_barns": 1.28812906962564e-11,
+   "yani_ce": 2.9409339489169863e-10
   },
   {
    "channel": "p",
@@ -2456,8 +2464,8 @@
    "spectrum": "FNG-heat",
    "target": "Zr90",
    "uncertainty_barns": 0.0861,
-   "yani_barns": 0.12138184257317361,
-   "yani_ce": 0.8201475849538757
+   "yani_barns": 0.121301710650392,
+   "yani_ce": 0.8196061530431892
   },
   {
    "channel": "p",
@@ -2518,8 +2526,8 @@
    "spectrum": "FNG-heat",
    "target": "Nb93",
    "uncertainty_barns": 0.00328,
-   "yani_barns": 0.009668086899368655,
-   "yani_ce": 0.7161545851384189
+   "yani_barns": 0.009668086899340109,
+   "yani_ce": 0.7161545851363044
   },
   {
    "channel": "2n",
@@ -2540,8 +2548,8 @@
    "spectrum": "FNG-heat",
    "target": "Mo92",
    "uncertainty_barns": 0.00716,
-   "yani_barns": 0.19543179384674686,
-   "yani_ce": 0.7080862095896625
+   "yani_barns": 0.19543179384674697,
+   "yani_ce": 0.7080862095896628
   },
   {
    "channel": "2n",
@@ -2580,8 +2588,8 @@
    "spectrum": "FNG-heat",
    "target": "Ag109",
    "uncertainty_barns": 0.025,
-   "yani_barns": 1.206487287522832,
-   "yani_ce": 1.2554498309290656
+   "yani_barns": 1.2064872875228325,
+   "yani_ce": 1.255449830929066
   },
   {
    "channel": "2n",
@@ -2600,8 +2608,8 @@
    "spectrum": "FNG-heat",
    "target": "Cd112",
    "uncertainty_barns": 0.0264,
-   "yani_barns": 1.4995131484333222e-19,
-   "yani_ce": 2.1954804515861233e-19
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "2n",
@@ -2620,8 +2628,8 @@
    "spectrum": "FNG-heat",
    "target": "Sn124",
    "uncertainty_barns": 0.0251,
-   "yani_barns": 1.4506250352339182e-11,
-   "yani_ce": 2.483946978140271e-11
+   "yani_barns": 1.4506250352339166e-11,
+   "yani_ce": 2.4839469781402682e-11
   },
   {
    "channel": "n",
@@ -2662,8 +2670,8 @@
    "spectrum": "FNG-heat",
    "target": "Hf180",
    "uncertainty_barns": 0.0003,
-   "yani_barns": 0.0023600940289859617,
-   "yani_ce": 0.6227161026348184
+   "yani_barns": 0.0023600940289859604,
+   "yani_ce": 0.622716102634818
   },
   {
    "channel": "2n",
@@ -2682,8 +2690,8 @@
    "spectrum": "FNG-heat",
    "target": "W186",
    "uncertainty_barns": 0.0935,
-   "yani_barns": 0.5732787913320614,
-   "yani_ce": 1.01645175768096
+   "yani_barns": 0.5735628693894798,
+   "yani_ce": 1.0169554421799287
   },
   {
    "channel": "p",
@@ -2744,8 +2752,8 @@
    "spectrum": "FNG-heat",
    "target": "Re187",
    "uncertainty_barns": 0.0525,
-   "yani_barns": 1.9252130865771686,
-   "yani_ce": 2.0180430676909524
+   "yani_barns": 1.9252130865771704,
+   "yani_ce": 2.018043067690954
   },
   {
    "channel": "n",
@@ -2764,8 +2772,8 @@
    "spectrum": "FNG-heat",
    "target": "Pb204",
    "uncertainty_barns": 0.00383,
-   "yani_barns": 0.06202195865104306,
-   "yani_ce": 0.7610056276201602
+   "yani_barns": 0.06202195865104485,
+   "yani_ce": 0.7610056276201822
   },
   {
    "channel": "2n",
@@ -2786,8 +2794,8 @@
    "spectrum": "FNG-tung",
    "target": "W182",
    "uncertainty_barns": 0.175,
-   "yani_barns": 1.6493831096321765,
-   "yani_ce": 1.2039292771037784
+   "yani_barns": 1.649383109632177,
+   "yani_ce": 1.2039292771037786
   },
   {
    "channel": "p",
@@ -2808,8 +2816,8 @@
    "spectrum": "FNG-tung",
    "target": "W182",
    "uncertainty_barns": 0.000619,
-   "yani_barns": 0.004508613281849547,
-   "yani_ce": 1.20874350719827
+   "yani_barns": 0.004508613281815358,
+   "yani_ce": 1.2087435071891042
   },
   {
    "channel": "p",
@@ -2852,8 +2860,8 @@
    "spectrum": "FNG-tung",
    "target": "W184",
    "uncertainty_barns": 5.39e-05,
-   "yani_barns": 0.0007493211137202226,
-   "yani_ce": 1.1950894955665434
+   "yani_barns": 0.0007493211137202211,
+   "yani_ce": 1.195089495566541
   },
   {
    "channel": "2n",
@@ -2872,8 +2880,8 @@
    "spectrum": "FNG-tung",
    "target": "W186",
    "uncertainty_barns": 0.093,
-   "yani_barns": 0.4811012401434464,
-   "yani_ce": 0.8425590895682075
+   "yani_barns": 0.4813651884650339,
+   "yani_ce": 0.8430213458231768
   },
   {
    "channel": "2n",
@@ -2894,8 +2902,8 @@
    "spectrum": "FNG-tung",
    "target": "W186",
    "uncertainty_barns": 0.165,
-   "yani_barns": 1.340462026308972,
-   "yani_ce": 1.000344795752964
+   "yani_barns": 1.340462026332952,
+   "yani_ce": 1.0003447957708598
   },
   {
    "channel": "g",
@@ -2916,8 +2924,8 @@
    "spectrum": "FNG-tung",
    "target": "W186",
    "uncertainty_barns": 0.0829,
-   "yani_barns": 1.0825776711310093,
-   "yani_ce": 0.8392074970007825
+   "yani_barns": 1.0825776711310091,
+   "yani_ce": 0.8392074970007822
   },
   {
    "channel": "p",
@@ -2960,8 +2968,8 @@
    "spectrum": "FNG-tung",
    "target": "W186",
    "uncertainty_barns": 8.43e-05,
-   "yani_barns": 0.0004971638267091108,
-   "yani_ce": 0.9327651533003954
+   "yani_barns": 0.0004971638267091079,
+   "yani_ce": 0.9327651533003899
   },
   {
    "channel": "a",
@@ -2982,8 +2990,8 @@
    "spectrum": "FNG-vanad",
    "target": "Al27",
    "uncertainty_barns": 0.00892,
-   "yani_barns": 0.08146434416392989,
-   "yani_ce": 0.8611452871451363
+   "yani_barns": 0.08146434416406341,
+   "yani_ce": 0.8611452871465476
   },
   {
    "channel": "p",
@@ -3004,8 +3012,8 @@
    "spectrum": "FNG-vanad",
    "target": "Ti46",
    "uncertainty_barns": 0.00629,
-   "yani_barns": 0.17131259671053375,
-   "yani_ce": 1.663229094277027
+   "yani_barns": 0.17131259671053378,
+   "yani_ce": 1.6632290942770271
   },
   {
    "channel": "a",
@@ -3026,8 +3034,8 @@
    "spectrum": "FNG-vanad",
    "target": "Ti50",
    "uncertainty_barns": 0.00205,
-   "yani_barns": 0.007839317913121237,
-   "yani_ce": 0.8530269764005698
+   "yani_barns": 0.007839317913116988,
+   "yani_ce": 0.8530269764001075
   },
   {
    "channel": "g",
@@ -3092,8 +3100,8 @@
    "spectrum": "FNG-vanad",
    "target": "V51",
    "uncertainty_barns": 0.000697,
-   "yani_barns": 0.012397432368035574,
-   "yani_ce": 0.9251815200026547
+   "yani_barns": 0.012397432368035578,
+   "yani_ce": 0.925181520002655
   },
   {
    "channel": "2n",
@@ -3136,8 +3144,8 @@
    "spectrum": "FNG-vanad",
    "target": "Cr52",
    "uncertainty_barns": 0.0227,
-   "yani_barns": 0.3054810869276508,
-   "yani_ce": 1.1068155323465607
+   "yani_barns": 0.3054810869276509,
+   "yani_ce": 1.1068155323465612
   },
   {
    "channel": "p",
@@ -3180,8 +3188,8 @@
    "spectrum": "FNG-vanad",
    "target": "Fe56",
    "uncertainty_barns": 0.0145,
-   "yani_barns": 0.0772804091494848,
-   "yani_ce": 0.8436725889681747
+   "yani_barns": 0.07728040914948478,
+   "yani_ce": 0.8436725889681744
   },
   {
    "channel": "np",
@@ -3202,8 +3210,8 @@
    "spectrum": "FNG-vanad",
    "target": "Ni58",
    "uncertainty_barns": 0.107,
-   "yani_barns": 0.4581481965091213,
-   "yani_ce": 0.8660646436845393
+   "yani_barns": 0.45814819650912114,
+   "yani_ce": 0.866064643684539
   },
   {
    "channel": "p",
@@ -3224,8 +3232,8 @@
    "spectrum": "FNG-vanad",
    "target": "Ni58",
    "uncertainty_barns": 0.0409,
-   "yani_barns": 0.2370752715683022,
-   "yani_ce": 0.8716002631187579
+   "yani_barns": 0.23707527156829714,
+   "yani_ce": 0.8716002631187394
   },
   {
    "channel": "a",
@@ -3246,8 +3254,8 @@
    "spectrum": "FNG-vanad",
    "target": "Cu63",
    "uncertainty_barns": 0.00893,
-   "yani_barns": 0.030373028711225304,
-   "yani_ce": 1.3559387817511297
+   "yani_barns": 0.030373028711225283,
+   "yani_ce": 1.3559387817511288
   },
   {
    "channel": "2n",
@@ -3308,8 +3316,8 @@
    "spectrum": "FNG-vanad",
    "target": "Mo100",
    "uncertainty_barns": 0.363,
-   "yani_barns": 1.087273124568672,
-   "yani_ce": 0.9707795755077427
+   "yani_barns": 1.0872731245686722,
+   "yani_ce": 0.970779575507743
   },
   {
    "channel": "2n",
@@ -3352,8 +3360,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "O16",
    "uncertainty_barns": 0.00221,
-   "yani_barns": 0.033346586749791636,
-   "yani_ce": 1.0552717325883427
+   "yani_barns": 0.03334658674979163,
+   "yani_ce": 1.0552717325883425
   },
   {
    "channel": "2n",
@@ -3418,8 +3426,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Na23",
    "uncertainty_barns": 0.000118,
-   "yani_barns": 0.00031621078703007917,
-   "yani_ce": 1.0979541216322193
+   "yani_barns": 0.0003162107870300781,
+   "yani_ce": 1.0979541216322155
   },
   {
    "channel": "p",
@@ -3440,8 +3448,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Na23",
    "uncertainty_barns": 0.00181,
-   "yani_barns": 0.037949509387305354,
-   "yani_ce": 1.679181831296697
+   "yani_barns": 0.037949509387305326,
+   "yani_ce": 1.679181831296696
   },
   {
    "channel": "p",
@@ -3462,8 +3470,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Mg24",
    "uncertainty_barns": 0.0187,
-   "yani_barns": 0.15460392091359124,
-   "yani_ce": 0.9910507750871234
+   "yani_barns": 0.15460392091359126,
+   "yani_ce": 0.9910507750871235
   },
   {
    "channel": "p",
@@ -3506,8 +3514,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Mg26",
    "uncertainty_barns": 0.00642,
-   "yani_barns": 0.0477835354670918,
-   "yani_ce": 0.8196146735350223
+   "yani_barns": 0.04778353546709173,
+   "yani_ce": 0.8196146735350212
   },
   {
    "channel": "p",
@@ -3550,8 +3558,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Si28",
    "uncertainty_barns": 0.0194,
-   "yani_barns": 0.22586845552134735,
-   "yani_ce": 1.1642703892852957
+   "yani_barns": 0.2258684555213473,
+   "yani_ce": 1.1642703892852952
   },
   {
    "channel": "p",
@@ -3572,8 +3580,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Si29",
    "uncertainty_barns": 0.0105,
-   "yani_barns": 0.11734913196264066,
-   "yani_ce": 1.0116304479537988
+   "yani_barns": 0.11734913196264064,
+   "yani_ce": 1.0116304479537985
   },
   {
    "channel": "a",
@@ -3594,8 +3602,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Si30",
    "uncertainty_barns": 0.00487,
-   "yani_barns": 0.06360530718386159,
-   "yani_ce": 1.1756988388883842
+   "yani_barns": 0.06360530718386158,
+   "yani_ce": 1.175698838888384
   },
   {
    "channel": "a",
@@ -3616,8 +3624,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "P31",
    "uncertainty_barns": 0.0179,
-   "yani_barns": 0.09841346703428726,
-   "yani_ce": 0.8786916699489934
+   "yani_barns": 0.09841346703428706,
+   "yani_ce": 0.8786916699489916
   },
   {
    "channel": "p",
@@ -3660,8 +3668,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "S34",
    "uncertainty_barns": 0.00836,
-   "yani_barns": 0.09808726317789548,
-   "yani_ce": 0.8242627157806344
+   "yani_barns": 0.09808726317789543,
+   "yani_ce": 0.8242627157806339
   },
   {
    "channel": "2n",
@@ -3724,8 +3732,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Cl37",
    "uncertainty_barns": 0.0018,
-   "yani_barns": 0.028385694213186582,
-   "yani_ce": 0.9430463193749695
+   "yani_barns": 0.028385694213186402,
+   "yani_ce": 0.9430463193749635
   },
   {
    "channel": "2n",
@@ -3766,8 +3774,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "K41",
    "uncertainty_barns": 0.0016,
-   "yani_barns": 0.028406936393196185,
-   "yani_ce": 1.0639302019923664
+   "yani_barns": 0.028406936393196202,
+   "yani_ce": 1.063930201992367
   },
   {
    "channel": "p",
@@ -3918,8 +3926,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Cr52",
    "uncertainty_barns": 0.00462,
-   "yani_barns": 0.09449942744044597,
-   "yani_ce": 1.4318095066734238
+   "yani_barns": 0.09449942744044595,
+   "yani_ce": 1.4318095066734235
   },
   {
    "channel": "g",
@@ -3984,8 +3992,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Mn55",
    "uncertainty_barns": 0.00123,
-   "yani_barns": 0.028617585887041698,
-   "yani_ce": 1.3892031984000823
+   "yani_barns": 0.02861758588704167,
+   "yani_ce": 1.389203198400081
   },
   {
    "channel": "p",
@@ -4028,8 +4036,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Co59",
    "uncertainty_barns": 0.00126,
-   "yani_barns": 0.027694405862460462,
-   "yani_ce": 1.098984359621447
+   "yani_barns": 0.027694405862460435,
+   "yani_ce": 1.098984359621446
   },
   {
    "channel": "p",
@@ -4048,8 +4056,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ni60",
    "uncertainty_barns": 0.00312,
-   "yani_barns": 5.744339075639005e-11,
-   "yani_ce": 9.220447954476734e-10
+   "yani_barns": 5.744339075639007e-11,
+   "yani_ce": 9.220447954476737e-10
   },
   {
    "channel": "p",
@@ -4176,8 +4184,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ga71",
    "uncertainty_barns": 0.056,
-   "yani_barns": 0.950685986573737,
-   "yani_ce": 1.017865081984729
+   "yani_barns": 0.9506859865737373,
+   "yani_ce": 1.0178650819847292
   },
   {
    "channel": "p",
@@ -4218,8 +4226,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ge76",
    "uncertainty_barns": 0.0374,
-   "yani_barns": 1.3829589620293829e-09,
-   "yani_ce": 2.5898107903171962e-09
+   "yani_barns": 1.3829589606074414e-09,
+   "yani_ce": 2.5898107876543844e-09
   },
   {
    "channel": "2n",
@@ -4240,8 +4248,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ge76",
    "uncertainty_barns": 0.0739,
-   "yani_barns": 0.9160017461833929,
-   "yani_ce": 0.8641525907390499
+   "yani_barns": 0.9160017461833937,
+   "yani_ce": 0.8641525907390506
   },
   {
    "channel": "p",
@@ -4260,8 +4268,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "As75",
    "uncertainty_barns": 0.000804,
-   "yani_barns": 3.064202591680895e-11,
-   "yani_ce": 3.064202591680895e-09
+   "yani_barns": 3.064202591680893e-11,
+   "yani_ce": 3.064202591680893e-09
   },
   {
    "channel": "p",
@@ -4282,8 +4290,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "As75",
    "uncertainty_barns": 0.00103,
-   "yani_barns": 0.01954139019893538,
-   "yani_ce": 1.1361273371474059
+   "yani_barns": 0.019541390198935363,
+   "yani_ce": 1.1361273371474048
   },
   {
    "channel": "2n",
@@ -4302,8 +4310,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Se78",
    "uncertainty_barns": 0.0897,
-   "yani_barns": 2.3928160242254337e-15,
-   "yani_ce": 3.4678493104716432e-15
+   "yani_barns": 2.3820989111030275e-15,
+   "yani_ce": 3.4523172624681562e-15
   },
   {
    "channel": "2n",
@@ -4324,8 +4332,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Se82",
    "uncertainty_barns": 0.0665,
-   "yani_barns": 1.1959226582161666,
-   "yani_ce": 1.2588659560170175
+   "yani_barns": 1.1959226582161682,
+   "yani_ce": 1.2588659560170192
   },
   {
    "channel": "2n",
@@ -4408,8 +4416,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Rb87",
    "uncertainty_barns": 0.0246,
-   "yani_barns": 1.6728653441190425e-18,
-   "yani_ce": 4.080159375900104e-18
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "p",
@@ -4450,8 +4458,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Y89",
    "uncertainty_barns": 0.0263,
-   "yani_barns": 0.36614865642280886,
-   "yani_ce": 0.9737996181457682
+   "yani_barns": 0.36606255536438254,
+   "yani_ce": 0.9735706259691025
   },
   {
    "channel": "2n",
@@ -4472,8 +4480,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Y89",
    "uncertainty_barns": 0.168,
-   "yani_barns": 0.8862368004987349,
-   "yani_ce": 1.0525377678132244
+   "yani_barns": 0.8862368004949188,
+   "yani_ce": 1.0525377678086922
   },
   {
    "channel": "a",
@@ -4492,8 +4500,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Y89",
    "uncertainty_barns": 9.83e-05,
-   "yani_barns": 3.631720160713226e-17,
-   "yani_ce": 2.2144635126300158e-14
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "2n",
@@ -4512,8 +4520,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Zr90",
    "uncertainty_barns": 0.00584,
-   "yani_barns": 0.11612039196619613,
-   "yani_ce": 0.9924819826170609
+   "yani_barns": 0.11605381281068829,
+   "yani_ce": 0.9919129300058828
   },
   {
    "channel": "p",
@@ -4534,8 +4542,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Zr94",
    "uncertainty_barns": 0.000396,
-   "yani_barns": 0.008162941829718447,
-   "yani_ce": 1.0306744734492987
+   "yani_barns": 0.008162941829718438,
+   "yani_ce": 1.0306744734492976
   },
   {
    "channel": "na",
@@ -4554,8 +4562,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Nb93",
    "uncertainty_barns": 0.000242,
-   "yani_barns": 5.2369817084280974e-11,
-   "yani_ce": 1.5179657125878543e-08
+   "yani_barns": 5.235750211843124e-11,
+   "yani_ce": 1.517608757055978e-08
   },
   {
    "channel": "g",
@@ -4574,8 +4582,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Nb93",
    "uncertainty_barns": 0.000358,
-   "yani_barns": 0.004712997035383943,
-   "yani_ce": 0.9223086174919654
+   "yani_barns": 0.004712997035369887,
+   "yani_ce": 0.9223086174892147
   },
   {
    "channel": "a",
@@ -4594,8 +4602,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Nb93",
    "uncertainty_barns": 0.000298,
-   "yani_barns": 9.311715374340968e-14,
-   "yani_ce": 1.873584582362368e-11
+   "yani_barns": 9.301335803892915e-14,
+   "yani_ce": 1.8714961376042084e-11
   },
   {
    "channel": "2n",
@@ -4638,8 +4646,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ru96",
    "uncertainty_barns": 0.0275,
-   "yani_barns": 0.5295441000000933,
-   "yani_ce": 0.9628074545456241
+   "yani_barns": 0.5295441000000931,
+   "yani_ce": 0.9628074545456238
   },
   {
    "channel": "p",
@@ -4700,8 +4708,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Rh103",
    "uncertainty_barns": 0.0365,
-   "yani_barns": 0.31861358409068047,
-   "yani_ce": 2.2596708091537625
+   "yani_barns": 0.3186119996379209,
+   "yani_ce": 2.2596595719001487
   },
   {
    "channel": "g",
@@ -4722,8 +4730,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Rh103",
    "uncertainty_barns": 0.00212,
-   "yani_barns": 0.059381415941252944,
-   "yani_ce": 2.23238405794184
+   "yani_barns": 0.059381415941248204,
+   "yani_ce": 2.232384057941662
   },
   {
    "channel": "2n",
@@ -4742,8 +4750,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Pd108",
    "uncertainty_barns": 0.018,
-   "yani_barns": 1.1401140621585203e-18,
-   "yani_ce": 3.1669835059958896e-18
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "2n",
@@ -4784,8 +4792,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Pd110",
    "uncertainty_barns": 0.0871,
-   "yani_barns": 1.3789435280856042,
-   "yani_ce": 0.9509955366107615
+   "yani_barns": 1.3789435280856048,
+   "yani_ce": 0.950995536610762
   },
   {
    "channel": "2n",
@@ -4824,8 +4832,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ag109",
    "uncertainty_barns": 0.0414,
-   "yani_barns": 1.1624831888402443,
-   "yani_ce": 1.9669766308633576
+   "yani_barns": 1.1624831888402436,
+   "yani_ce": 1.9669766308633565
   },
   {
    "channel": "2n",
@@ -4844,8 +4852,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Cd112",
    "uncertainty_barns": 0.0232,
-   "yani_barns": 2.5368892628140247e-19,
-   "yani_ce": 5.467433756064708e-19
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "2n",
@@ -4864,8 +4872,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "In115",
    "uncertainty_barns": 0.00529,
-   "yani_barns": 1.4904008390946346,
-   "yani_ce": 7.489451452736857
+   "yani_barns": 0.2626914244180736,
+   "yani_ce": 1.3200574091360482
   },
   {
    "channel": "g",
@@ -4886,8 +4894,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "In115",
    "uncertainty_barns": 0.00283,
-   "yani_barns": 0.18460176027338474,
-   "yani_ce": 2.6147558112377443
+   "yani_barns": 0.18460211718087158,
+   "yani_ce": 2.6147608665845836
   },
   {
    "channel": "p",
@@ -4946,8 +4954,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Sn124",
    "uncertainty_barns": 0.0241,
-   "yani_barns": 1.274138856150071e-11,
-   "yani_ce": 3.177403631296935e-11
+   "yani_barns": 1.2741388561500702e-11,
+   "yani_ce": 3.177403631296933e-11
   },
   {
    "channel": "2n",
@@ -4986,8 +4994,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Te130",
    "uncertainty_barns": 0.0451,
-   "yani_barns": 1.5185368837896114,
-   "yani_ce": 2.697223594652951
+   "yani_barns": 1.518536883789611,
+   "yani_ce": 2.6972235946529506
   },
   {
    "channel": "g",
@@ -5050,8 +5058,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ba138",
    "uncertainty_barns": 0.0532,
-   "yani_barns": 1.8870806560395318e-17,
-   "yani_ce": 2.8377152722398975e-17
+   "yani_barns": 1.813520725209028e-17,
+   "yani_ce": 2.727098834900794e-17
   },
   {
    "channel": "p",
@@ -5114,8 +5122,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ce140",
    "uncertainty_barns": 0.0489,
-   "yani_barns": 5.650022159902298e-19,
-   "yani_ce": 8.094587621636531e-19
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "a",
@@ -5134,8 +5142,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ce140",
    "uncertainty_barns": 0.000183,
-   "yani_barns": 2.4938019264517124e-15,
-   "yani_ce": 9.518327963556155e-13
+   "yani_barns": 2.504878765118846e-15,
+   "yani_ce": 9.560605973736052e-13
   },
   {
    "channel": "p",
@@ -5156,8 +5164,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ce142",
    "uncertainty_barns": 0.00166,
-   "yani_barns": 0.005036653428061199,
-   "yani_ce": 1.2436181303854812
+   "yani_barns": 0.0050366534280612005,
+   "yani_ce": 1.2436181303854816
   },
   {
    "channel": "2n",
@@ -5220,8 +5228,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Nd150",
    "uncertainty_barns": 0.124,
-   "yani_barns": 1.4704224065929068,
-   "yani_ce": 1.773730285395545
+   "yani_barns": 1.4704224065929075,
+   "yani_ce": 1.773730285395546
   },
   {
    "channel": "2n",
@@ -5262,8 +5270,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Sm144",
    "uncertainty_barns": 0.114,
-   "yani_barns": 1.0688876049447928,
-   "yani_ce": 1.027776543216147
+   "yani_barns": 1.068887604944793,
+   "yani_ce": 1.0277765432161472
   },
   {
    "channel": "2n",
@@ -5348,8 +5356,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Tb159",
    "uncertainty_barns": 0.565,
-   "yani_barns": 5.669819145083955e-11,
-   "yani_ce": 1.7499441805814675e-10
+   "yani_barns": 5.6698191450839604e-11,
+   "yani_ce": 1.7499441805814693e-10
   },
   {
    "channel": "p",
@@ -5370,8 +5378,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Tb159",
    "uncertainty_barns": 0.0393,
-   "yani_barns": 0.004687491712034799,
-   "yani_ce": 0.22977900549190192
+   "yani_barns": 0.004687491712034802,
+   "yani_ce": 0.22977900549190206
   },
   {
    "channel": "p",
@@ -5520,7 +5528,7 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Er166",
    "uncertainty_barns": 0.131,
-   "yani_barns": 1.794138933165649,
+   "yani_barns": 1.7941389331656492,
    "yani_ce": 5.068189076739122
   },
   {
@@ -5564,8 +5572,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Tm169",
    "uncertainty_barns": 0.496,
-   "yani_barns": 1.8515420504434066,
-   "yani_ce": 0.9351222476986902
+   "yani_barns": 1.8515420504434048,
+   "yani_ce": 0.9351222476986893
   },
   {
    "channel": "2n",
@@ -5586,8 +5594,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Yb168",
    "uncertainty_barns": 0.565,
-   "yani_barns": 1.7142729809407729,
-   "yani_ce": 1.1204398568240346
+   "yani_barns": 1.7142729809407755,
+   "yani_ce": 1.1204398568240364
   },
   {
    "channel": "p",
@@ -5628,8 +5636,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Lu175",
    "uncertainty_barns": 0.011,
-   "yani_barns": 0.06038024615627507,
-   "yani_ce": 1.1544980144603263
+   "yani_barns": 0.06038024615627512,
+   "yani_ce": 1.1544980144603274
   },
   {
    "channel": "n",
@@ -5648,8 +5656,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Hf180",
    "uncertainty_barns": 0.00144,
-   "yani_barns": 6.745332616709873e-11,
-   "yani_ce": 3.747407009283263e-09
+   "yani_barns": 6.745332616709871e-11,
+   "yani_ce": 3.747407009283262e-09
   },
   {
    "channel": "2n",
@@ -5690,8 +5698,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Hf180",
    "uncertainty_barns": 0.000211,
-   "yani_barns": 0.0022477632138557095,
-   "yani_ce": 0.6385690948453719
+   "yani_barns": 0.002247763213855709,
+   "yani_ce": 0.6385690948453718
   },
   {
    "channel": "2n",
@@ -5710,8 +5718,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ta181",
    "uncertainty_barns": 0.136,
-   "yani_barns": 1.1556856131617503,
-   "yani_ce": 1.1006529649159527
+   "yani_barns": 1.1556735710888937,
+   "yani_ce": 1.1006414962751367
   },
   {
    "channel": "2n",
@@ -5730,8 +5738,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "W186",
    "uncertainty_barns": 0.0418,
-   "yani_barns": 0.5559040674449269,
-   "yani_ce": 1.7264101473444935
+   "yani_barns": 0.5562216871092591,
+   "yani_ce": 1.727396543817575
   },
   {
    "channel": "p",
@@ -5772,8 +5780,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Re185",
    "uncertainty_barns": 0.000164,
-   "yani_barns": 3.850041700303449e-13,
-   "yani_ce": 2.81024941627989e-10
+   "yani_barns": 3.8500400381992675e-13,
+   "yani_ce": 2.810248203065159e-10
   },
   {
    "channel": "2n",
@@ -5792,8 +5800,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Re187",
    "uncertainty_barns": 0.128,
-   "yani_barns": 1.8708744548810985,
-   "yani_ce": 1.3175172217472526
+   "yani_barns": 1.8708744548810974,
+   "yani_ce": 1.3175172217472517
   },
   {
    "channel": "g",
@@ -5832,8 +5840,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Os192",
    "uncertainty_barns": 0.0314,
-   "yani_barns": 2.512997286976922e-09,
-   "yani_ce": 1.0384286309821993e-08
+   "yani_barns": 2.5126755909143866e-09,
+   "yani_ce": 1.0382956987249531e-08
   },
   {
    "channel": "2n",
@@ -5852,8 +5860,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ir193",
    "uncertainty_barns": 0.0281,
-   "yani_barns": 1.0571564355012982e-08,
-   "yani_ce": 5.6532429705951776e-08
+   "yani_barns": 1.0571888009026858e-08,
+   "yani_ce": 5.6534160476079454e-08
   },
   {
    "channel": "2n",
@@ -5872,8 +5880,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Pt198",
    "uncertainty_barns": 0.0647,
-   "yani_barns": 0.9684842571663258,
-   "yani_ce": 1.1971375243094262
+   "yani_barns": 0.9683993832211887,
+   "yani_ce": 1.1970326121399117
   },
   {
    "channel": "2n",
@@ -5932,8 +5940,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Hg200",
    "uncertainty_barns": 0.063,
-   "yani_barns": 1.5843944713032945e-08,
-   "yani_ce": 2.0132077144895735e-08
+   "yani_barns": 1.5843944713032952e-08,
+   "yani_ce": 2.0132077144895745e-08
   },
   {
    "channel": "2n",
@@ -5954,8 +5962,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Tl203",
    "uncertainty_barns": 0.197,
-   "yani_barns": 1.879784288665105,
-   "yani_ce": 1.3331803465709966
+   "yani_barns": 1.8797842886651035,
+   "yani_ce": 1.3331803465709955
   },
   {
    "channel": "g",
@@ -5976,8 +5984,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Tl205",
    "uncertainty_barns": 9.26e-05,
-   "yani_barns": 0.0024206114254186105,
-   "yani_ce": 1.308438608334384
+   "yani_barns": 0.0024206114254186114,
+   "yani_ce": 1.3084386083343844
   },
   {
    "channel": "p",
@@ -5998,8 +6006,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Tl205",
    "uncertainty_barns": 9.45e-05,
-   "yani_barns": 6.631458621781695e-20,
-   "yani_ce": 4.197125709988415e-17
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "n",
@@ -6018,8 +6026,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Pb204",
    "uncertainty_barns": 0.0175,
-   "yani_barns": 0.06438978848275852,
-   "yani_ce": 1.3997780104947504
+   "yani_barns": 0.0643897884827709,
+   "yani_ce": 1.3997780104950195
   },
   {
    "channel": "2n",
@@ -6038,8 +6046,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Pb204",
    "uncertainty_barns": 0.0838,
-   "yani_barns": 0.8277271894257794,
-   "yani_ce": 0.5912337067326996
+   "yani_barns": 0.8276389768407626,
+   "yani_ce": 0.5911706977434019
   },
   {
    "channel": "p",
@@ -6082,8 +6090,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Bi209",
    "uncertainty_barns": 0.0031,
-   "yani_barns": 0.0013124489889953228,
-   "yani_ce": 1.2040816412801127
+   "yani_barns": 0.001312448988995322,
+   "yani_ce": 1.2040816412801119
   },
   {
    "channel": "a",
@@ -6104,8 +6112,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Bi209",
    "uncertainty_barns": 5.21e-05,
-   "yani_barns": 0.0006063796916087855,
-   "yani_ce": 1.860060403707931
+   "yani_barns": 0.0006063796916087857,
+   "yani_ce": 1.8600604037079316
   },
   {
    "channel": "2n",
@@ -6126,8 +6134,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Na23",
    "uncertainty_barns": 0.00228,
-   "yani_barns": 0.029850447152996524,
-   "yani_ce": 0.7855380829735927
+   "yani_barns": 0.02985044715299651,
+   "yani_ce": 0.7855380829735924
   },
   {
    "channel": "g",
@@ -6148,8 +6156,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Na23",
    "uncertainty_barns": 3.26e-05,
-   "yani_barns": 0.00022143724997905452,
-   "yani_ce": 0.8822201194384643
+   "yani_barns": 0.00022143724997905363,
+   "yani_ce": 0.8822201194384608
   },
   {
    "channel": "a",
@@ -6170,8 +6178,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Al27",
    "uncertainty_barns": 0.0142,
-   "yani_barns": 0.10883278019912154,
-   "yani_ce": 0.9145611781438786
+   "yani_barns": 0.10883278019916807,
+   "yani_ce": 0.9145611781442696
   },
   {
    "channel": "p",
@@ -6192,8 +6200,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "S32",
    "uncertainty_barns": 0.0161,
-   "yani_barns": 0.21661881332411834,
-   "yani_ce": 0.9459336826380713
+   "yani_barns": 0.21661881332411845,
+   "yani_ce": 0.9459336826380718
   },
   {
    "channel": "pa",
@@ -6214,8 +6222,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "K39",
    "uncertainty_barns": 0.000716,
-   "yani_barns": 1.5826481109889833e-09,
-   "yani_ce": 1.3762157486860726e-06
+   "yani_barns": 1.5826480789884684e-09,
+   "yani_ce": 1.3762157208595378e-06
   },
   {
    "channel": "g",
@@ -6236,8 +6244,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "K41",
    "uncertainty_barns": 9.51e-05,
-   "yani_barns": 0.0011448460437032183,
-   "yani_ce": 1.4455126814434576
+   "yani_barns": 0.001144846043703218,
+   "yani_ce": 1.4455126814434571
   },
   {
    "channel": "p",
@@ -6258,8 +6266,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ca42",
    "uncertainty_barns": 0.0167,
-   "yani_barns": 0.17922522849254044,
-   "yani_ce": 0.8575369784332079
+   "yani_barns": 0.17922522849254052,
+   "yani_ce": 0.8575369784332083
   },
   {
    "channel": "2n",
@@ -6280,8 +6288,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ca48",
    "uncertainty_barns": 0.098,
-   "yani_barns": 0.9098020951898232,
-   "yani_ce": 0.9283694848875748
+   "yani_barns": 0.9098020951898229,
+   "yani_ce": 0.9283694848875744
   },
   {
    "channel": "p",
@@ -6412,8 +6420,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Mn55",
    "uncertainty_barns": 5.04e-05,
-   "yani_barns": 0.0008164945144333787,
-   "yani_ce": 1.134020158935248
+   "yani_barns": 0.0008164945144333782,
+   "yani_ce": 1.1340201589352474
   },
   {
    "channel": "p",
@@ -6434,8 +6442,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Fe54",
    "uncertainty_barns": 0.0368,
-   "yani_barns": 0.2941010290765355,
-   "yani_ce": 0.8805420032231601
+   "yani_barns": 0.29410102907653546,
+   "yani_ce": 0.88054200322316
   },
   {
    "channel": "p",
@@ -6520,8 +6528,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ni58",
    "uncertainty_barns": 0.00156,
-   "yani_barns": 0.03125224583988646,
-   "yani_ce": 1.001674546150207
+   "yani_barns": 0.031252245839886464,
+   "yani_ce": 1.0016745461502072
   },
   {
    "channel": "np",
@@ -6542,8 +6550,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ni58",
    "uncertainty_barns": 0.0327,
-   "yani_barns": 0.5786339373161841,
-   "yani_ce": 0.8847613720430949
+   "yani_barns": 0.5786339373161838,
+   "yani_ce": 0.8847613720430946
   },
   {
    "channel": "p",
@@ -6586,8 +6594,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Cu63",
    "uncertainty_barns": 0.00501,
-   "yani_barns": 0.0407475418067404,
-   "yani_ce": 0.8133241877592895
+   "yani_barns": 0.04074754180674037,
+   "yani_ce": 0.8133241877592888
   },
   {
    "channel": "2n",
@@ -6672,8 +6680,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Sr88",
    "uncertainty_barns": 0.0161,
-   "yani_barns": 3.3976911173864064e-18,
-   "yani_ce": 1.2677951930546292e-17
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "2n",
@@ -6694,8 +6702,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Y89",
    "uncertainty_barns": 0.0758,
-   "yani_barns": 0.9088125632596923,
-   "yani_ce": 0.8414931141293447
+   "yani_barns": 0.9088125632572391,
+   "yani_ce": 0.8414931141270732
   },
   {
    "channel": "2n",
@@ -6716,8 +6724,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Zr90",
    "uncertainty_barns": 0.0426,
-   "yani_barns": 0.7025120561434058,
-   "yani_ce": 0.9880619636334822
+   "yani_barns": 0.7025120561442058,
+   "yani_ce": 0.9880619636346073
   },
   {
    "channel": "2n",
@@ -6778,8 +6786,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Mo92",
    "uncertainty_barns": 0.0166,
-   "yani_barns": 2.2892305445619105e-12,
-   "yani_ce": 1.2374219159794112e-11
+   "yani_barns": 2.2892109773444393e-12,
+   "yani_ce": 1.2374113391051023e-11
   },
   {
    "channel": "p",
@@ -6798,8 +6806,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Mo92",
    "uncertainty_barns": 0.00308,
-   "yani_barns": 7.494563214543295e-12,
-   "yani_ce": 1.2186281649663893e-10
+   "yani_barns": 0.06088354038145779,
+   "yani_ce": 0.9899762663651673
   },
   {
    "channel": "p",
@@ -6818,8 +6826,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Mo95",
    "uncertainty_barns": 0.00207,
-   "yani_barns": 0.039959637253524666,
-   "yani_ce": 1.161617362021066
+   "yani_barns": 0.03995963725352469,
+   "yani_ce": 1.1616173620210666
   },
   {
    "channel": "a",
@@ -6840,8 +6848,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Mo98",
    "uncertainty_barns": 0.00142,
-   "yani_barns": 0.005823509952077493,
-   "yani_ce": 0.7795863389661972
+   "yani_barns": 0.005823509952077489,
+   "yani_ce": 0.7795863389661967
   },
   {
    "channel": "2n",
@@ -6882,8 +6890,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Sn118",
    "uncertainty_barns": 0.114,
-   "yani_barns": 1.3614538624450092e-14,
-   "yani_ce": 1.4331093288894835e-14
+   "yani_barns": 1.3613778548923659e-14,
+   "yani_ce": 1.4330293209393325e-14
   },
   {
    "channel": "2n",
@@ -6902,8 +6910,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Sn120",
    "uncertainty_barns": 0.101,
-   "yani_barns": 9.76508258227265e-13,
-   "yani_ce": 2.0343922046401357e-12
+   "yani_barns": 9.765080558755735e-13,
+   "yani_ce": 2.0343917830741116e-12
   },
   {
    "channel": "2n",
@@ -6942,8 +6950,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ba134",
    "uncertainty_barns": 0.101,
-   "yani_barns": 2.294472851729592e-18,
-   "yani_ce": 3.164790140316679e-18
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "2n",
@@ -6962,8 +6970,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ba136",
    "uncertainty_barns": 0.142,
-   "yani_barns": 1.2322058181742166e-18,
-   "yani_ce": 1.3039215007134568e-18
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "p",
@@ -7004,8 +7012,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ta181",
    "uncertainty_barns": 0.0757,
-   "yani_barns": 1.2413431040768301,
-   "yani_ce": 1.6398191599429723
+   "yani_barns": 1.241350987269141,
+   "yani_ce": 1.6398295736712563
   },
   {
    "channel": "g",
@@ -7026,8 +7034,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ta181",
    "uncertainty_barns": 0.00241,
-   "yani_barns": 0.005622324871481402,
-   "yani_ce": 0.5158096212368259
+   "yani_barns": 0.005622324871481421,
+   "yani_ce": 0.5158096212368276
   },
   {
    "channel": "p",
@@ -7114,8 +7122,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "W186",
    "uncertainty_barns": 0.206,
-   "yani_barns": 1.6709516148307695,
-   "yani_ce": 1.2108345035005577
+   "yani_barns": 1.6709516148440118,
+   "yani_ce": 1.2108345035101535
   },
   {
    "channel": "2n",
@@ -7174,8 +7182,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Re187",
    "uncertainty_barns": 0.16,
-   "yani_barns": 2.0080125355005043,
-   "yani_ce": 1.255007834687815
+   "yani_barns": 2.0080125355005047,
+   "yani_ce": 1.2550078346878153
   },
   {
    "channel": "2n",
@@ -7196,8 +7204,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Pb204",
    "uncertainty_barns": 0.107,
-   "yani_barns": 2.0474699642142205,
-   "yani_ce": 0.9612535043259252
+   "yani_barns": 2.0474699642142187,
+   "yani_ce": 0.9612535043259243
   },
   {
    "channel": "a",
@@ -7218,8 +7226,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Pb206",
    "uncertainty_barns": 0.001,
-   "yani_barns": 0.00057063334940053,
-   "yani_ce": 0.3634607321022484
+   "yani_barns": 0.0005706333494000381,
+   "yani_ce": 0.3634607321019351
   },
   {
    "channel": "2n",
@@ -7240,8 +7248,8 @@
    "spectrum": "TUD-CuCrZr",
    "target": "Cr52",
    "uncertainty_barns": 0.0353,
-   "yani_barns": 0.40489762170733473,
-   "yani_ce": 1.238219026627935
+   "yani_barns": 0.4048976217073346,
+   "yani_ce": 1.2382190266279345
   },
   {
    "channel": "2n",
@@ -7284,8 +7292,8 @@
    "spectrum": "TUD-CuCrZr",
    "target": "Cu63",
    "uncertainty_barns": 0.00334,
-   "yani_barns": 0.0412894534163246,
-   "yani_ce": 1.200274808614087
+   "yani_barns": 0.041289453416324576,
+   "yani_ce": 1.2002748086140864
   },
   {
    "channel": "2n",
@@ -7306,8 +7314,8 @@
    "spectrum": "TUD-CuCrZr",
    "target": "Cu65",
    "uncertainty_barns": 0.284,
-   "yani_barns": 0.9405918257338456,
-   "yani_ce": 1.1526860609483403
+   "yani_barns": 0.9405918257338461,
+   "yani_ce": 1.152686060948341
   },
   {
    "channel": "a",
@@ -7348,8 +7356,8 @@
    "spectrum": "TUD-CuCrZr",
    "target": "Cu65",
    "uncertainty_barns": 0.000136,
-   "yani_barns": 0.0034244931393384967,
-   "yani_ce": 2.2829954262256646
+   "yani_barns": 0.003424493139338493,
+   "yani_ce": 2.282995426225662
   },
   {
    "channel": "p",
@@ -7392,8 +7400,8 @@
    "spectrum": "TUD-CuCrZr",
    "target": "Zr90",
    "uncertainty_barns": 0.0691,
-   "yani_barns": 0.7647674050357154,
-   "yani_ce": 1.1397427794869082
+   "yani_barns": 0.7647674050359393,
+   "yani_ce": 1.139742779487242
   },
   {
    "channel": "g",
@@ -7436,8 +7444,8 @@
    "spectrum": "TUD-Er",
    "target": "La139",
    "uncertainty_barns": 0.000953,
-   "yani_barns": 0.004272008496867203,
-   "yani_ce": 1.0680021242168007
+   "yani_barns": 0.004272008496867199,
+   "yani_ce": 1.0680021242167999
   },
   {
    "channel": "a",
@@ -7458,8 +7466,8 @@
    "spectrum": "TUD-Er",
    "target": "La139",
    "uncertainty_barns": 0.00205,
-   "yani_barns": 0.0021633991721474147,
-   "yani_ce": 1.0553166693402023
+   "yani_barns": 0.0021633991721473574,
+   "yani_ce": 1.0553166693401743
   },
   {
    "channel": "2n",
@@ -7480,8 +7488,8 @@
    "spectrum": "TUD-Er",
    "target": "Er162",
    "uncertainty_barns": 0.119,
-   "yani_barns": 1.4612596967046674,
-   "yani_ce": 1.0290561244399066
+   "yani_barns": 1.4612596967046676,
+   "yani_ce": 1.0290561244399068
   },
   {
    "channel": "2n",
@@ -7502,8 +7510,8 @@
    "spectrum": "TUD-Er",
    "target": "Er164",
    "uncertainty_barns": 0.173,
-   "yani_barns": 1.352128230827362,
-   "yani_ce": 0.7348522993626968
+   "yani_barns": 1.3521282308273619,
+   "yani_ce": 0.7348522993626967
   },
   {
    "channel": "p",
@@ -7522,8 +7530,8 @@
    "spectrum": "TUD-Er",
    "target": "Er166",
    "uncertainty_barns": 0.00022,
-   "yani_barns": 0.00569448532392547,
-   "yani_ce": 1.6269958068358485
+   "yani_barns": 0.005694485323925473,
+   "yani_ce": 1.6269958068358494
   },
   {
    "channel": "p",
@@ -7544,8 +7552,8 @@
    "spectrum": "TUD-Er",
    "target": "Er167",
    "uncertainty_barns": 0.000161,
-   "yani_barns": 0.002896946463479669,
-   "yani_ce": 1.0093890116653899
+   "yani_barns": 0.002896946463479672,
+   "yani_ce": 1.0093890116653907
   },
   {
    "channel": "p",
@@ -7628,8 +7636,8 @@
    "spectrum": "TUD-Pb",
    "target": "Pb204",
    "uncertainty_barns": 0.00563,
-   "yani_barns": 0.0655015076761502,
-   "yani_ce": 1.0581826765129274
+   "yani_barns": 0.06550150767616832,
+   "yani_ce": 1.05818267651322
   },
   {
    "channel": "2n",
@@ -7650,8 +7658,8 @@
    "spectrum": "TUD-Pb",
    "target": "Pb204",
    "uncertainty_barns": 0.167,
-   "yani_barns": 1.8517063434788656,
-   "yani_ce": 0.954487805916941
+   "yani_barns": 1.8517063434788454,
+   "yani_ce": 0.9544878059169307
   },
   {
    "channel": "a",
@@ -7672,8 +7680,8 @@
    "spectrum": "TUD-Pb",
    "target": "Pb206",
    "uncertainty_barns": 5.42e-05,
-   "yani_barns": 0.0005492717341280379,
-   "yani_ce": 1.0941668010518686
+   "yani_barns": 0.0005492717341272766,
+   "yani_ce": 1.0941668010503518
   },
   {
    "channel": "p",
@@ -7714,8 +7722,8 @@
    "spectrum": "TUD-Ta",
    "target": "Ta181",
    "uncertainty_barns": 0.208,
-   "yani_barns": 1.1041746840246824,
-   "yani_ce": 1.3614977608195837
+   "yani_barns": 1.1041862389497166,
+   "yani_ce": 1.3615120085693175
   },
   {
    "channel": "p",
@@ -7736,8 +7744,8 @@
    "spectrum": "TUD-Ta",
    "target": "Ta181",
    "uncertainty_barns": 0.000385,
-   "yani_barns": 0.003197306343050065,
-   "yani_ce": 1.0875191643027433
+   "yani_barns": 0.0031973063430500628,
+   "yani_ce": 1.0875191643027424
   },
   {
    "channel": "a",
@@ -7756,8 +7764,8 @@
    "spectrum": "TUD-Ta",
    "target": "Ta181",
    "uncertainty_barns": 2.3e-05,
-   "yani_barns": 0.00021394833918332134,
-   "yani_ce": 0.9724924508332788
+   "yani_barns": 0.00021390133113805004,
+   "yani_ce": 0.9722787779002274
   },
   {
    "channel": "2n",
@@ -7778,8 +7786,8 @@
    "spectrum": "TUD-Y",
    "target": "Y89",
    "uncertainty_barns": 0.09,
-   "yani_barns": 0.8818058197029067,
-   "yani_ce": 1.1022572746286334
+   "yani_barns": 0.8818058196992915,
+   "yani_ce": 1.1022572746241144
   },
   {
    "channel": "g",
@@ -7798,11 +7806,11 @@
    "spectrum": "TUD-Y",
    "target": "Y89",
    "uncertainty_barns": 0.000196,
-   "yani_barns": 2.0852754299144602e-05,
-   "yani_ce": 0.05458836203964555
+   "yani_barns": 2.0852754299059096e-05,
+   "yani_ce": 0.05458836203942172
   }
  ],
  "uncertainty": null,
- "wall_seconds": 112.16960072517395,
- "yani_version": "0.18.0"
+ "wall_seconds": 44.13985586166382,
+ "yani_version": "0.21.0"
 }

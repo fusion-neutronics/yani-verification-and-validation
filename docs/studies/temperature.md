@@ -30,17 +30,17 @@ against the 294 K row.
 
 | temperature | W mean dev | W move | Ta mean dev | Ta move |
 | ---: | ---: | ---: | ---: | ---: |
-| 250 K  | 83.708% | 0.0030% | 9.180% | 0.0000% |
-| 294 K  | 83.707% | reference | 9.180% | reference |
-| 600 K  | 83.700% | 0.0166% | 9.180% | 0.0001% |
-| 900 K  | 83.715% | **0.4515%** | 9.180% | 0.0001% |
-| 1200 K | 83.636% | 0.3806% | 9.180% | 0.0002% |
-| 2500 K | 83.649% | 0.2079% | 9.181% | 0.0003% |
+| 250 K  | 83.657% | 0.0030% | 9.180% | 0.0000% |
+| 294 K  | 83.656% | reference | 9.180% | reference |
+| 600 K  | 83.649% | 0.0166% | 9.180% | 0.0001% |
+| 900 K  | 83.642% | 0.0332% | 9.180% | 0.0001% |
+| 1200 K | 83.637% | 0.0456% | 9.180% | 0.0002% |
+| 2500 K | 83.620% | **0.0881%** | 9.180% | 0.0003% |
 
 ## What it says
 
 **Temperature is not what is wrong with these foils.** Tungsten moves by at
-most 0.45% across a range from 250 K to 2500 K, and tantalum by 0.0003%, which
+most 0.09% across a range from 250 K to 2500 K, and tantalum by 0.0003%, which
 is round-off. Tungsten's 83.7% disagreement with the measurement is the same
 83.7% at every temperature, so whatever is behind it, Doppler broadening is
 not.
@@ -55,13 +55,17 @@ and 900 K the evaluations carry. Both are reported rather than interpolated,
 because the library is what it is and an interpolated row would look like
 evidence it is not.
 
-**The move is not monotonic in temperature, and a pure Doppler effect would
-be.** Tungsten reads 0.003%, 0.017%, 0.452%, 0.381%, 0.208% going up the
-range, peaking at 900 K rather than at 2500 K. Broadening is monotonic, so
-something other than temperature differs between those evaluated files. This
-is flagged rather than explained: it is under half a percent and well below
-anything that matters to the decay heat, but it is not the shape the mechanism
-predicts, and calling it Doppler would be reading a trend that is not there.
+**The move rises with temperature, as broadening does.** Tungsten reads
+0.003%, 0.017%, 0.033%, 0.046%, 0.088% going up the range, carried by W187
+from capture on W186.
+
+Under yani 0.18.0 it did not: 0.003%, 0.017%, 0.452%, 0.381%, 0.208%, peaking
+at 900 K, which this page flagged as not the shape Doppler broadening predicts.
+It was not Doppler. The peaks were W183m, a 5 s isomer, at the last measured
+times, where the 0.18.0 solver read it off the stable W183 bulk as a residue
+that changed from one temperature to the next. yani 0.19.0 solves the decay
+block by block (fusion-neutronics/core#212), and on the same data W183m drops
+to a hundredth of that residue there, leaving W187 as what moves.
 
 ## Reproducing it
 

@@ -3,91 +3,92 @@
  "combination": {
   "branching": "endf-b8.1",
   "cross_sections": "fendl-3.2d",
-  "data_versions": {
-   "branching": "2026-09-18",
-   "cross_sections": "2026-09-18",
-   "decay": "2026-09-18",
-   "fission_yields": "2026-09-18",
-   "reactions": "2026-09-18"
+  "data_releases": {
+   "endf-b8.1": {
+    "format_version": 2,
+    "manifest_sha256": "db76d01b1620f8ee62a18111e732cee5d9d0409e4f162c401216a983192f56bc",
+    "offline": false,
+    "release": "2026-10-12.1"
+   },
+   "fendl-3.2d": {
+    "format_version": 2,
+    "manifest_sha256": "c6f20bd9335d824deb8d0e0724a5184503f61bf5a1a726e948eaef7fa3beb1b5",
+    "offline": false,
+    "release": "2026-10-12.1"
+   }
   },
   "decay": "endf-b8.1",
   "fission_yields": "endf-b8.1",
+  "local_data_versions": {},
   "name": "fendl-3.2d",
   "note": "The FENDL cross sections, which is the library fusion neutronics usually transports with. FENDL publishes no chain, so the network comes from ENDF/B-VIII.1.",
   "reactions": "endf-b8.1"
  },
  "failures": {
-  "As-75(n,p)Ge-75 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'As75' is not available in 'fendl-3.2d'.",
-  "As-75(n,p)Ge-75m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'As75' is not available in 'fendl-3.2d'.",
-  "Dy-156(n,2n)Dy-155 @ FNG-Dy": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy156' is not available in 'fendl-3.2d'.",
-  "Dy-158(n,2n)Dy-157 @ FNG-Dy": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy158' is not available in 'fendl-3.2d'.",
-  "Dy-162(n,p)Tb-162 @ FNG-Dy": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy162' is not available in 'fendl-3.2d'.",
-  "Dy-162(n,p)Tb-162 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy162' is not available in 'fendl-3.2d'.",
-  "Dy-163(n,p)Tb-163 @ FNG-Dy": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy163' is not available in 'fendl-3.2d'.",
-  "Dy-164(n,g)Dy-165 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy164' is not available in 'fendl-3.2d'.",
-  "Dy-164(n,g)Dy-165g @ FNG-Dy": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy164' is not available in 'fendl-3.2d'.",
-  "Dy-164(n,g)Dy-165m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy164' is not available in 'fendl-3.2d'.",
-  "Dy-164(n,p)Tb-164 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy164' is not available in 'fendl-3.2d'.",
-  "Hg-200(n,2n)Hg-199m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Hg200' is not available in 'fendl-3.2d'.",
-  "Ho-165(n,2n)Ho-164 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ho165' is not available in 'fendl-3.2d'.",
-  "Ho-165(n,2n)Ho-164m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ho165' is not available in 'fendl-3.2d'.",
-  "In-115(n,2n)In-114g @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'In115' is not available in 'fendl-3.2d'.",
-  "In-115(n,g)In-116 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'In115' is not available in 'fendl-3.2d'.",
-  "Ir-193(n,2n)Ir-192m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ir193' is not available in 'fendl-3.2d'.",
-  "Nd-142(n,2n)Nd-141m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Nd142' is not available in 'fendl-3.2d'.",
-  "Nd-150(n,2n)Nd-149 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Nd150' is not available in 'fendl-3.2d'.",
-  "Os-192(n,2n)Os-191m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Os192' is not available in 'fendl-3.2d'.",
-  "Pd-108(n,2n)Pd-107m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Pd108' is not available in 'fendl-3.2d'.",
-  "Pd-110(n,2n)Pd-109 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Pd110' is not available in 'fendl-3.2d'.",
-  "Pd-110(n,2n)Pd-109m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Pd110' is not available in 'fendl-3.2d'.",
-  "Pr-141(n,2n)Pr-140 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Pr141' is not available in 'fendl-3.2d'.",
-  "Rb-85(n,2n)Rb-84 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Rb85' is not available in 'fendl-3.2d'.",
-  "Rb-87(n,2n)Rb-86m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Rb87' is not available in 'fendl-3.2d'.",
-  "Ru-100(n,p)Tc-100 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ru100' is not available in 'fendl-3.2d'.",
-  "Ru-102(n,p)Tc-102m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ru102' is not available in 'fendl-3.2d'.",
-  "Ru-96(n,2n)Ru-95 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ru96' is not available in 'fendl-3.2d'.",
-  "Se-78(n,2n)Se-77m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Se78' is not available in 'fendl-3.2d'.",
-  "Se-82(n,2n)Se-81 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Se82' is not available in 'fendl-3.2d'.",
-  "Sr-84(n,2n)Sr-83 @ JAEA-FNS-pos7": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Sr84' is not available in 'fendl-3.2d'.",
-  "Sr-86(n,2n)Sr-85 @ JAEA-FNS-pos7": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Sr86' is not available in 'fendl-3.2d'.",
-  "Sr-88(n,2n)Sr-87m @ JAEA-FNS-pos7": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Sr88' is not available in 'fendl-3.2d'.",
-  "Sr-88(n,p)Rb-88 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Sr88' is not available in 'fendl-3.2d'.",
-  "Tb-159(n,2n)Tb-158m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tb159' is not available in 'fendl-3.2d'.",
-  "Tb-159(n,p)Gd-159 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tb159' is not available in 'fendl-3.2d'.",
-  "Te-130(n,2n)Te-129g @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Te130' is not available in 'fendl-3.2d'.",
-  "Tl-203(n,2n)Tl-202 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tl203' is not available in 'fendl-3.2d'.",
-  "Tl-205(n,g)Tl-206 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tl205' is not available in 'fendl-3.2d'.",
-  "Tl-205(n,p)Hg-205 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tl205' is not available in 'fendl-3.2d'.",
-  "Tm-169(n,2n)Tm-168 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tm169' is not available in 'fendl-3.2d'.",
-  "Yb-168(n,2n)Yb-167 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Yb168' is not available in 'fendl-3.2d'.",
-  "Yb-174(n,p)Tm-174 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Yb174' is not available in 'fendl-3.2d'."
+  "As-75(n,p)Ge-75 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'As75' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "As-75(n,p)Ge-75m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'As75' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Cr-50(n,2n)Cr-49 @ FNG-Cr": "the branching cannot be applied to this spectrum without resting more than 0.1% of the material's neutron removal rate on values the evaluation does not give (0.317% clipped, 0.000% held): Cr50 (n,X) (fendl-3.2d): 0.317% of the material's removal, 0.317% of Cr50's, is production the evaluation gives above the reaction's transport total, as a negative value, or as more of a product than the target's nucleons allow. Nothing is clipped or extrapolated silently: use an evaluation that covers this spectrum consistently with the cross-section library, or leave the branching overlay out for these nuclides.",
+  "Cr-50(n,2n)Cr-49 @ FNG-vanad": "the branching cannot be applied to this spectrum without resting more than 0.1% of the material's neutron removal rate on values the evaluation does not give (0.255% clipped, 0.000% held): Cr50 (n,X) (fendl-3.2d): 0.255% of the material's removal, 0.255% of Cr50's, is production the evaluation gives above the reaction's transport total, as a negative value, or as more of a product than the target's nucleons allow. Nothing is clipped or extrapolated silently: use an evaluation that covers this spectrum consistently with the cross-section library, or leave the branching overlay out for these nuclides.",
+  "Cr-50(n,2n)Cr-49 @ JAEA-FNS-pos3": "the branching cannot be applied to this spectrum without resting more than 0.1% of the material's neutron removal rate on values the evaluation does not give (0.307% clipped, 0.000% held): Cr50 (n,X) (fendl-3.2d): 0.307% of the material's removal, 0.307% of Cr50's, is production the evaluation gives above the reaction's transport total, as a negative value, or as more of a product than the target's nucleons allow. Nothing is clipped or extrapolated silently: use an evaluation that covers this spectrum consistently with the cross-section library, or leave the branching overlay out for these nuclides.",
+  "Dy-156(n,2n)Dy-155 @ FNG-Dy": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy156' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Dy-158(n,2n)Dy-157 @ FNG-Dy": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy158' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Dy-162(n,p)Tb-162 @ FNG-Dy": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy162' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Dy-162(n,p)Tb-162 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy162' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Dy-163(n,p)Tb-163 @ FNG-Dy": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy163' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Dy-164(n,g)Dy-165 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy164' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Dy-164(n,g)Dy-165g @ FNG-Dy": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy164' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Dy-164(n,g)Dy-165m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy164' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Dy-164(n,p)Tb-164 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Dy164' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Fe-58(n,g)Fe-59 @ FNG-SiC": "2.591% of this material's neutron removal rate is MT=5 (n,anything) whose residual nuclei the chain does not model, above the 0.1% the solver carries without them: Fe58 (fendl-3.2d): 2.591% of the material's removal, 2.59% of its own; its evaluation gives MT=5's light particles but not its residuals, so the parent is removed at the MT=5 rate and the residuals are not made. The atoms MT=5 removes would leave the inventory unaccounted for. Use a reaction library whose evaluations give MT=5's residuals (MF=6 MT=5), or a reactions subsection converted with MT=5 carried.",
+  "Fe-58(n,g)Fe-59 @ FNG-eurofer": "2.553% of this material's neutron removal rate is MT=5 (n,anything) whose residual nuclei the chain does not model, above the 0.1% the solver carries without them: Fe58 (fendl-3.2d): 2.553% of the material's removal, 2.55% of its own; its evaluation gives MT=5's light particles but not its residuals, so the parent is removed at the MT=5 rate and the residuals are not made. The atoms MT=5 removes would leave the inventory unaccounted for. Use a reaction library whose evaluations give MT=5's residuals (MF=6 MT=5), or a reactions subsection converted with MT=5 carried.",
+  "Fe-58(n,g)Fe-59 @ FNG-f82h": "2.533% of this material's neutron removal rate is MT=5 (n,anything) whose residual nuclei the chain does not model, above the 0.1% the solver carries without them: Fe58 (fendl-3.2d): 2.533% of the material's removal, 2.53% of its own; its evaluation gives MT=5's light particles but not its residuals, so the parent is removed at the MT=5 rate and the residuals are not made. The atoms MT=5 removes would leave the inventory unaccounted for. Use a reaction library whose evaluations give MT=5's residuals (MF=6 MT=5), or a reactions subsection converted with MT=5 carried.",
+  "Ge-74(n,p)Ga-74 @ JAEA-FNS-pos3": "0.106% of this material's neutron removal rate is MT=5 (n,anything) whose residual nuclei the chain does not model, above the 0.1% the solver carries without them: Ge74 (fendl-3.2d): 0.106% of the material's removal, 0.11% of its own; the chain carries no (n,X) reaction for it: the reaction library has no MT=5 for it where the cross-section library does. The atoms MT=5 removes would leave the inventory unaccounted for. Use a reaction library whose evaluations give MT=5's residuals (MF=6 MT=5), or a reactions subsection converted with MT=5 carried.",
+  "Hg-200(n,2n)Hg-199m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Hg200' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Ho-165(n,2n)Ho-164 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ho165' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Ho-165(n,2n)Ho-164m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ho165' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "In-115(n,2n)In-114g @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'In115' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "In-115(n,g)In-116 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'In115' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Ir-193(n,2n)Ir-192m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ir193' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Nd-142(n,2n)Nd-141m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Nd142' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Nd-150(n,2n)Nd-149 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Nd150' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Os-192(n,2n)Os-191m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Os192' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Pb-204(n,2n)Pb-203 @ JAEA-FNS-pos7": "the branching cannot be applied to this spectrum without resting more than 0.1% of the material's neutron removal rate on values the evaluation does not give (0.000% clipped, 0.124% held): Pb204 (n,X) (fendl-3.2d): 0.124% of the material's removal, 0.124% of Pb204's, lies where the evaluation tabulates no split, and would rest on a fraction held from the edge of its range. Nothing is clipped or extrapolated silently: use an evaluation that covers this spectrum consistently with the cross-section library, or leave the branching overlay out for these nuclides.",
+  "Pb-204(n,2n)Pb-203 @ TUD-Pb": "the branching cannot be applied to this spectrum without resting more than 0.1% of the material's neutron removal rate on values the evaluation does not give (0.000% clipped, 0.129% held): Pb204 (n,X) (fendl-3.2d): 0.129% of the material's removal, 0.129% of Pb204's, lies where the evaluation tabulates no split, and would rest on a fraction held from the edge of its range. Nothing is clipped or extrapolated silently: use an evaluation that covers this spectrum consistently with the cross-section library, or leave the branching overlay out for these nuclides.",
+  "Pb-204(n,2n)Pb-203m @ JAEA-FNS-pos3": "the branching cannot be applied to this spectrum without resting more than 0.1% of the material's neutron removal rate on values the evaluation does not give (0.000% clipped, 0.129% held): Pb204 (n,X) (fendl-3.2d): 0.129% of the material's removal, 0.129% of Pb204's, lies where the evaluation tabulates no split, and would rest on a fraction held from the edge of its range. Nothing is clipped or extrapolated silently: use an evaluation that covers this spectrum consistently with the cross-section library, or leave the branching overlay out for these nuclides.",
+  "Pb-204(n,n)Pb-204m @ FNG-heat": "the branching cannot be applied to this spectrum without resting more than 0.1% of the material's neutron removal rate on values the evaluation does not give (0.000% clipped, 0.128% held): Pb204 (n,X) (fendl-3.2d): 0.128% of the material's removal, 0.128% of Pb204's, lies where the evaluation tabulates no split, and would rest on a fraction held from the edge of its range. Nothing is clipped or extrapolated silently: use an evaluation that covers this spectrum consistently with the cross-section library, or leave the branching overlay out for these nuclides.",
+  "Pb-204(n,n)Pb-204m @ JAEA-FNS-pos3": "the branching cannot be applied to this spectrum without resting more than 0.1% of the material's neutron removal rate on values the evaluation does not give (0.000% clipped, 0.129% held): Pb204 (n,X) (fendl-3.2d): 0.129% of the material's removal, 0.129% of Pb204's, lies where the evaluation tabulates no split, and would rest on a fraction held from the edge of its range. Nothing is clipped or extrapolated silently: use an evaluation that covers this spectrum consistently with the cross-section library, or leave the branching overlay out for these nuclides.",
+  "Pb-204(n,n)Pb-204m @ TUD-Pb": "the branching cannot be applied to this spectrum without resting more than 0.1% of the material's neutron removal rate on values the evaluation does not give (0.000% clipped, 0.129% held): Pb204 (n,X) (fendl-3.2d): 0.129% of the material's removal, 0.129% of Pb204's, lies where the evaluation tabulates no split, and would rest on a fraction held from the edge of its range. Nothing is clipped or extrapolated silently: use an evaluation that covers this spectrum consistently with the cross-section library, or leave the branching overlay out for these nuclides.",
+  "Pb-208(n,p)Tl-208 @ JAEA-FNS-pos3": "0.105% of this material's neutron removal rate is MT=5 (n,anything) whose residual nuclei the chain does not model, above the 0.1% the solver carries without them: Pb208 (fendl-3.2d): 0.105% of the material's removal, 0.11% of its own; the chain carries no (n,X) reaction for it: the reaction library has no MT=5 for it where the cross-section library does. The atoms MT=5 removes would leave the inventory unaccounted for. Use a reaction library whose evaluations give MT=5's residuals (MF=6 MT=5), or a reactions subsection converted with MT=5 carried.",
+  "Pb-208(n,p)Tl-208 @ TUD-Pb": "0.104% of this material's neutron removal rate is MT=5 (n,anything) whose residual nuclei the chain does not model, above the 0.1% the solver carries without them: Pb208 (fendl-3.2d): 0.104% of the material's removal, 0.10% of its own; the chain carries no (n,X) reaction for it: the reaction library has no MT=5 for it where the cross-section library does. The atoms MT=5 removes would leave the inventory unaccounted for. Use a reaction library whose evaluations give MT=5's residuals (MF=6 MT=5), or a reactions subsection converted with MT=5 carried.",
+  "Pd-108(n,2n)Pd-107m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Pd108' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Pd-110(n,2n)Pd-109 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Pd110' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Pd-110(n,2n)Pd-109m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Pd110' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Pr-141(n,2n)Pr-140 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Pr141' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Rb-85(n,2n)Rb-84 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Rb85' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Rb-87(n,2n)Rb-86m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Rb87' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Ru-100(n,p)Tc-100 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ru100' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Ru-102(n,p)Tc-102m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ru102' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Ru-96(n,2n)Ru-95 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Ru96' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Se-78(n,2n)Se-77m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Se78' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Se-82(n,2n)Se-81 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Se82' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Sr-84(n,2n)Sr-83 @ JAEA-FNS-pos7": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Sr84' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Sr-86(n,2n)Sr-85 @ JAEA-FNS-pos7": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Sr86' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Sr-88(n,2n)Sr-87m @ JAEA-FNS-pos7": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Sr88' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Sr-88(n,p)Rb-88 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Sr88' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Tb-159(n,2n)Tb-158m @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tb159' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Tb-159(n,p)Gd-159 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tb159' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Te-130(n,2n)Te-129g @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Te130' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Tl-203(n,2n)Tl-202 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tl203' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Tl-205(n,g)Tl-206 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tl205' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Tl-205(n,p)Hg-205 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tl205' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Tm-169(n,2n)Tm-168 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Tm169' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Yb-168(n,2n)Yb-167 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Yb168' is not available in 'fendl-3.2d' (release 2026-10-12.1).",
+  "Yb-174(n,p)Tm-174 @ JAEA-FNS-pos3": "cross sections could not be loaded for 1 nuclide(s) the material is made of, so it cannot activate:\n  Nuclide 'Yb174' is not available in 'fendl-3.2d' (release 2026-10-12.1)."
  },
  "group_structure": "published",
  "pulse_flux": 1e+21,
  "pulse_seconds": 0.0001,
  "results": [
-  {
-   "channel": "2n",
-   "fispact_barns": 0.0247,
-   "fispact_ce": 0.82,
-   "measured_barns": 0.0301,
-   "mt": 16,
-   "product_element": "Cr",
-   "product_mass": 49,
-   "product_note": "total over ground and isomeric states",
-   "product_state": "",
-   "products": [
-    "Cr49",
-    "Cr49_m1",
-    "Cr49_m2"
-   ],
-   "reaction": "Cr-50(n,2n)Cr-49",
-   "spectrum": "FNG-Cr",
-   "target": "Cr50",
-   "uncertainty_barns": 0.00582,
-   "yani_barns": 0.022763327444299052,
-   "yani_ce": 0.7562567257242211
-  },
   {
    "channel": "2n",
    "fispact_barns": 0.348,
@@ -107,8 +108,8 @@
    "spectrum": "FNG-Cr",
    "target": "Cr52",
    "uncertainty_barns": 0.0305,
-   "yani_barns": 0.3735654146130503,
-   "yani_ce": 1.1052231201569536
+   "yani_barns": 0.373565414623048,
+   "yani_ce": 1.1052231201865323
   },
   {
    "channel": "p",
@@ -129,8 +130,8 @@
    "spectrum": "FNG-Cr",
    "target": "Cr52",
    "uncertainty_barns": 0.00992,
-   "yani_barns": 0.07553447885549336,
-   "yani_ce": 1.0608775120153562
+   "yani_barns": 0.0755344788575437,
+   "yani_ce": 1.0608775120441531
   },
   {
    "channel": "2n",
@@ -151,8 +152,8 @@
    "spectrum": "FNG-CuCrZr",
    "target": "Cr52",
    "uncertainty_barns": 0.0369,
-   "yani_barns": 0.37200820911274285,
-   "yani_ce": 0.8052125738371056
+   "yani_barns": 0.37200820912246646,
+   "yani_ce": 0.8052125738581525
   },
   {
    "channel": "a",
@@ -173,8 +174,8 @@
    "spectrum": "FNG-CuCrZr",
    "target": "Cu63",
    "uncertainty_barns": 0.00316,
-   "yani_barns": 0.03470137389976877,
-   "yani_ce": 0.9886431310475432
+   "yani_barns": 0.03470137389976872,
+   "yani_ce": 0.9886431310475419
   },
   {
    "channel": "2n",
@@ -237,8 +238,8 @@
    "spectrum": "FNG-CuCrZr",
    "target": "Cu65",
    "uncertainty_barns": 0.000227,
-   "yani_barns": 0.0017786870601445594,
-   "yani_ce": 0.78356258156148
+   "yani_barns": 0.0017786870601445575,
+   "yani_ce": 0.7835625815614791
   },
   {
    "channel": "p",
@@ -281,8 +282,8 @@
    "spectrum": "FNG-CuCrZr",
    "target": "Zr90",
    "uncertainty_barns": 0.0647,
-   "yani_barns": 0.7200937944782196,
-   "yani_ce": 0.7793222883963415
+   "yani_barns": 0.7200937944791396,
+   "yani_ce": 0.7793222883973372
   },
   {
    "channel": "2n",
@@ -303,8 +304,8 @@
    "spectrum": "FNG-Mo",
    "target": "Mo92",
    "uncertainty_barns": 0.00283,
-   "yani_barns": 0.20729749987925744,
-   "yani_ce": 0.8821170207627976
+   "yani_barns": 0.20729749987925725,
+   "yani_ce": 0.8821170207627969
   },
   {
    "channel": "p",
@@ -323,8 +324,8 @@
    "spectrum": "FNG-Mo",
    "target": "Mo92",
    "uncertainty_barns": 0.00209,
-   "yani_barns": 0.0,
-   "yani_ce": 0.0
+   "yani_barns": 0.057240046981781145,
+   "yani_ce": 1.0426238065898206
   },
   {
    "channel": "a",
@@ -345,8 +346,8 @@
    "spectrum": "FNG-Mo",
    "target": "Mo92",
    "uncertainty_barns": 0.00233,
-   "yani_barns": 0.02584787490136255,
-   "yani_ce": 0.9644729440806922
+   "yani_barns": 0.025847874901048486,
+   "yani_ce": 0.9644729440689733
   },
   {
    "channel": "p",
@@ -429,7 +430,7 @@
    "spectrum": "FNG-Mo",
    "target": "Mo100",
    "uncertainty_barns": 0.0404,
-   "yani_barns": 1.3045653634464252,
+   "yani_barns": 1.304565363446425,
    "yani_ce": 1.0112909794158333
   },
   {
@@ -511,8 +512,8 @@
    "spectrum": "FNG-Re",
    "target": "Re187",
    "uncertainty_barns": 0.264,
-   "yani_barns": 1.8200071367898898,
-   "yani_ce": 0.9784984606397257
+   "yani_barns": 1.8200071367898905,
+   "yani_ce": 0.978498460639726
   },
   {
    "channel": "g",
@@ -531,8 +532,8 @@
    "spectrum": "FNG-Re",
    "target": "Re187",
    "uncertainty_barns": 0.00446,
-   "yani_barns": 0.005429243566172952,
-   "yani_ce": 0.7733965193978564
+   "yani_barns": 0.005429243566172953,
+   "yani_ce": 0.7733965193978566
   },
   {
    "channel": "g",
@@ -553,8 +554,8 @@
    "spectrum": "FNG-Re",
    "target": "Re187",
    "uncertainty_barns": 0.0693,
-   "yani_barns": 0.19744154382592882,
-   "yani_ce": 0.618939008858711
+   "yani_barns": 0.19744154382592893,
+   "yani_ce": 0.6189390088587113
   },
   {
    "channel": "p",
@@ -597,8 +598,8 @@
    "spectrum": "FNG-Re",
    "target": "Re187",
    "uncertainty_barns": 0.000159,
-   "yani_barns": 0.0007587479318732386,
-   "yani_ce": 1.0686590589763922
+   "yani_barns": 0.0007587479318732382,
+   "yani_ce": 1.0686590589763918
   },
   {
    "channel": "2n",
@@ -617,8 +618,8 @@
    "spectrum": "FNG-ScSmGd",
    "target": "Sc45",
    "uncertainty_barns": 0.000381,
-   "yani_barns": 0.3165094407157973,
-   "yani_ce": 2.6597431992924143
+   "yani_barns": 0.3165094407157972,
+   "yani_ce": 2.6597431992924134
   },
   {
    "channel": "2n",
@@ -659,8 +660,8 @@
    "spectrum": "FNG-ScSmGd",
    "target": "Sc45",
    "uncertainty_barns": 0.00413,
-   "yani_barns": 0.03924234061497948,
-   "yani_ce": 0.827897481328681
+   "yani_barns": 0.03924234061497945,
+   "yani_ce": 0.8278974813286805
   },
   {
    "channel": "p",
@@ -681,7 +682,7 @@
    "spectrum": "FNG-ScSmGd",
    "target": "Sm150",
    "uncertainty_barns": 0.000726,
-   "yani_barns": 0.006182969955079014,
+   "yani_barns": 0.006182969955079013,
    "yani_ce": 1.0219785049717378
   },
   {
@@ -703,8 +704,8 @@
    "spectrum": "FNG-ScSmGd",
    "target": "Sm152",
    "uncertainty_barns": 0.000306,
-   "yani_barns": 0.0026624929227348154,
-   "yani_ce": 1.0441148716607118
+   "yani_barns": 0.0026624929227348168,
+   "yani_ce": 1.0441148716607125
   },
   {
    "channel": "2n",
@@ -813,8 +814,8 @@
    "spectrum": "FNG-SiC",
    "target": "Si28",
    "uncertainty_barns": 0.00629,
-   "yani_barns": 0.22331128847636933,
-   "yani_ce": 1.0633870879827112
+   "yani_barns": 0.2233112884763691,
+   "yani_ce": 1.06338708798271
   },
   {
    "channel": "p",
@@ -835,8 +836,8 @@
    "spectrum": "FNG-SiC",
    "target": "Si29",
    "uncertainty_barns": 0.00579,
-   "yani_barns": 0.10981462804013746,
-   "yani_ce": 0.9466778279322194
+   "yani_barns": 0.10981462804013742,
+   "yani_ce": 0.9466778279322191
   },
   {
    "channel": "a",
@@ -857,8 +858,8 @@
    "spectrum": "FNG-SiC",
    "target": "Si30",
    "uncertainty_barns": 0.00219,
-   "yani_barns": 0.07812788365734462,
-   "yani_ce": 1.4282976902622417
+   "yani_barns": 0.07812788365734459,
+   "yani_ce": 1.428297690262241
   },
   {
    "channel": "a",
@@ -879,8 +880,8 @@
    "spectrum": "FNG-SiC",
    "target": "Fe54",
    "uncertainty_barns": 0.00411,
-   "yani_barns": 0.0023535924021866445,
-   "yani_ce": 0.028632510975506627
+   "yani_barns": 0.08007679702732613,
+   "yani_ce": 0.9741702801377875
   },
   {
    "channel": "p",
@@ -901,30 +902,8 @@
    "spectrum": "FNG-SiC",
    "target": "Fe56",
    "uncertainty_barns": 0.00479,
-   "yani_barns": 0.09274374169720832,
-   "yani_ce": 0.9680975124969554
-  },
-  {
-   "channel": "g",
-   "fispact_barns": 0.00146,
-   "fispact_ce": 1.16,
-   "measured_barns": 0.00126,
-   "mt": 102,
-   "product_element": "Fe",
-   "product_mass": 59,
-   "product_note": "total over ground and isomeric states",
-   "product_state": "",
-   "products": [
-    "Fe59",
-    "Fe59_m1",
-    "Fe59_m2"
-   ],
-   "reaction": "Fe-58(n,g)Fe-59",
-   "spectrum": "FNG-SiC",
-   "target": "Fe58",
-   "uncertainty_barns": 6.3e-05,
-   "yani_barns": 0.0017781807488920281,
-   "yani_ce": 1.4112545626127206
+   "yani_barns": 0.09274374219639538,
+   "yani_ce": 0.9680975177076762
   },
   {
    "channel": "a",
@@ -945,8 +924,8 @@
    "spectrum": "FNG-SiC",
    "target": "Cu63",
    "uncertainty_barns": 0.000994,
-   "yani_barns": 0.0338590751109162,
-   "yani_ce": 1.7014610608500602
+   "yani_barns": 0.03385907511091617,
+   "yani_ce": 1.7014610608500587
   },
   {
    "channel": "2n",
@@ -989,8 +968,8 @@
    "spectrum": "FNG-SiC",
    "target": "Cu65",
    "uncertainty_barns": 0.000125,
-   "yani_barns": 0.00180256376115977,
-   "yani_ce": 1.442051008927816
+   "yani_barns": 0.0018025637611597705,
+   "yani_ce": 1.4420510089278165
   },
   {
    "channel": "p",
@@ -1051,8 +1030,8 @@
    "spectrum": "FNG-SiC",
    "target": "Nb93",
    "uncertainty_barns": 0.000286,
-   "yani_barns": 4.024174101494136e-15,
-   "yani_ce": 8.454147272046503e-13
+   "yani_barns": 4.0241053455374445e-15,
+   "yani_ce": 8.454002826759336e-13
   },
   {
    "channel": "2n",
@@ -1095,8 +1074,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn114",
    "uncertainty_barns": 0.0937,
-   "yani_barns": 1.2157135935338517,
-   "yani_ce": 0.6266564915122947
+   "yani_barns": 1.2157135935338523,
+   "yani_ce": 0.6266564915122951
   },
   {
    "channel": "np",
@@ -1115,8 +1094,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn114",
    "uncertainty_barns": 0.000991,
-   "yani_barns": 2.5299912382143736e-11,
-   "yani_ce": 5.981066757007975e-09
+   "yani_barns": 2.5299912382143727e-11,
+   "yani_ce": 5.981066757007973e-09
   },
   {
    "channel": "p",
@@ -1199,8 +1178,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn117",
    "uncertainty_barns": 0.000655,
-   "yani_barns": 0.018239209872486912,
-   "yani_ce": 1.0076911531760724
+   "yani_barns": 0.01823920987248691,
+   "yani_ce": 1.0076911531760722
   },
   {
    "channel": "2n",
@@ -1219,8 +1198,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn118",
    "uncertainty_barns": 0.0327,
-   "yani_barns": 2.5091051082226087e-14,
-   "yani_ce": 1.900837203198946e-14
+   "yani_barns": 2.509015676141835e-14,
+   "yani_ce": 1.900769451622602e-14
   },
   {
    "channel": "a",
@@ -1239,8 +1218,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn118",
    "uncertainty_barns": 0.000237,
-   "yani_barns": 0.0017665043722930002,
-   "yani_ce": 1.436182416498374
+   "yani_barns": 0.0017665043722929995,
+   "yani_ce": 1.4361824164983736
   },
   {
    "channel": "a",
@@ -1259,8 +1238,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn120",
    "uncertainty_barns": 5.32e-05,
-   "yani_barns": 0.0007166090172105323,
-   "yani_ce": 1.8661693156524277
+   "yani_barns": 0.0007166090172105325,
+   "yani_ce": 1.8661693156524282
   },
   {
    "channel": "a",
@@ -1299,8 +1278,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn124",
    "uncertainty_barns": 0.896,
-   "yani_barns": 1.5295965516698282,
-   "yani_ce": 0.6921251365021848
+   "yani_barns": 1.5295965516698284,
+   "yani_ce": 0.6921251365021849
   },
   {
    "channel": "2n",
@@ -1319,8 +1298,8 @@
    "spectrum": "FNG-Sn",
    "target": "Sn124",
    "uncertainty_barns": 0.0171,
-   "yani_barns": 5.822779339278706e-11,
-   "yani_ce": 1.0397820248711974e-10
+   "yani_barns": 5.822779339278701e-11,
+   "yani_ce": 1.0397820248711965e-10
   },
   {
    "channel": "2n",
@@ -1339,8 +1318,8 @@
    "spectrum": "FNG-Ta",
    "target": "Ta181",
    "uncertainty_barns": 0.0232,
-   "yani_barns": 1.1031055926230058,
-   "yani_ce": 1.092183755072283
+   "yani_barns": 1.1030243979354668,
+   "yani_ce": 1.0921033642925413
   },
   {
    "channel": "g",
@@ -1359,8 +1338,8 @@
    "spectrum": "FNG-Ta",
    "target": "Ta181",
    "uncertainty_barns": 4.13e-05,
-   "yani_barns": 0.007542321027107688,
-   "yani_ce": 62.8526752258974
+   "yani_barns": 0.007542322408582615,
+   "yani_ce": 62.85268673818846
   },
   {
    "channel": "g",
@@ -1381,8 +1360,8 @@
    "spectrum": "FNG-Ta",
    "target": "Ta181",
    "uncertainty_barns": 0.0029,
-   "yani_barns": 0.028712419737861955,
-   "yani_ce": 0.6820052194266498
+   "yani_barns": 0.028712419737861962,
+   "yani_ce": 0.6820052194266499
   },
   {
    "channel": "p",
@@ -1423,8 +1402,8 @@
    "spectrum": "FNG-Ta",
    "target": "Ta181",
    "uncertainty_barns": 0.000404,
-   "yani_barns": 0.00011026306731198584,
-   "yani_ce": 0.1091713537742434
+   "yani_barns": 0.00011027405163591003,
+   "yani_ce": 0.10918222934248517
   },
   {
    "channel": "a",
@@ -1443,8 +1422,8 @@
    "spectrum": "FNG-Ta",
    "target": "Ta181",
    "uncertainty_barns": 2.77e-05,
-   "yani_barns": 5.132618008964961e-05,
-   "yani_ce": 0.22219125579934895
+   "yani_barns": 5.131519576577667e-05,
+   "yani_ce": 0.22214370461375182
   },
   {
    "channel": "n",
@@ -1463,8 +1442,8 @@
    "spectrum": "FNG-Y",
    "target": "Y89",
    "uncertainty_barns": 0.0199,
-   "yani_barns": 0.3493483937320599,
-   "yani_ce": 1.0554332136920237
+   "yani_barns": 0.3493483936987172,
+   "yani_ce": 1.0554332135912905
   },
   {
    "channel": "2n",
@@ -1485,8 +1464,8 @@
    "spectrum": "FNG-Y",
    "target": "Y89",
    "uncertainty_barns": 0.00891,
-   "yani_barns": 0.8971363292404668,
-   "yani_ce": 1.0068870137378976
+   "yani_barns": 0.8971363292404663,
+   "yani_ce": 1.0068870137378971
   },
   {
    "channel": "g",
@@ -1505,8 +1484,8 @@
    "spectrum": "FNG-Y",
    "target": "Y89",
    "uncertainty_barns": 1.07e-05,
-   "yani_barns": 2.5028106815528934e-05,
-   "yani_ce": 0.07010674178019309
+   "yani_barns": 2.502810681552894e-05,
+   "yani_ce": 0.0701067417801931
   },
   {
    "channel": "a",
@@ -1547,8 +1526,8 @@
    "spectrum": "FNG-Y",
    "target": "Y89",
    "uncertainty_barns": 0.00184,
-   "yani_barns": 0.005969039715041762,
-   "yani_ce": 0.42035490950998317
+   "yani_barns": 0.0059690397150417625,
+   "yani_ce": 0.4203549095099833
   },
   {
    "channel": "2n",
@@ -1569,8 +1548,8 @@
    "spectrum": "FNG-Y",
    "target": "Zr90",
    "uncertainty_barns": 0.0728,
-   "yani_barns": 0.7136588632050956,
-   "yani_ce": 1.175714766400487
+   "yani_barns": 0.7136588632059295,
+   "yani_ce": 1.1757147664018608
   },
   {
    "channel": "2n",
@@ -1591,8 +1570,8 @@
    "spectrum": "FNG-eurofer",
    "target": "Cr52",
    "uncertainty_barns": 0.0226,
-   "yani_barns": 0.32808093775164426,
-   "yani_ce": 1.0317010621120888
+   "yani_barns": 0.328080937759846,
+   "yani_ce": 1.0317010621378804
   },
   {
    "channel": "p",
@@ -1613,30 +1592,8 @@
    "spectrum": "FNG-eurofer",
    "target": "Fe54",
    "uncertainty_barns": 0.017,
-   "yani_barns": 0.23994633697966647,
-   "yani_ce": 0.9753916137384816
-  },
-  {
-   "channel": "g",
-   "fispact_barns": 0.0211,
-   "fispact_ce": 0.85,
-   "measured_barns": 0.0248,
-   "mt": 102,
-   "product_element": "Fe",
-   "product_mass": 59,
-   "product_note": "total over ground and isomeric states",
-   "product_state": "",
-   "products": [
-    "Fe59",
-    "Fe59_m1",
-    "Fe59_m2"
-   ],
-   "reaction": "Fe-58(n,g)Fe-59",
-   "spectrum": "FNG-eurofer",
-   "target": "Fe58",
-   "uncertainty_barns": 0.00427,
-   "yani_barns": 0.018121578394301605,
-   "yani_ce": 0.7307088062218389
+   "yani_barns": 0.23994634290618033,
+   "yani_ce": 0.9753916378300014
   },
   {
    "channel": "g",
@@ -1679,8 +1636,8 @@
    "spectrum": "FNG-eurofer",
    "target": "Ni58",
    "uncertainty_barns": 0.138,
-   "yani_barns": 0.5392436017847125,
-   "yani_ce": 1.132864709631749
+   "yani_barns": 0.5392436017847129,
+   "yani_ce": 1.1328647096317497
   },
   {
    "channel": "g",
@@ -1701,8 +1658,8 @@
    "spectrum": "FNG-eurofer",
    "target": "Ta181",
    "uncertainty_barns": 0.179,
-   "yani_barns": 1.1273544899132861,
-   "yani_ce": 0.9473567142128455
+   "yani_barns": 1.1273544899132855,
+   "yani_ce": 0.947356714212845
   },
   {
    "channel": "2n",
@@ -1723,8 +1680,8 @@
    "spectrum": "FNG-eurofer",
    "target": "W182",
    "uncertainty_barns": 0.166,
-   "yani_barns": 1.6765867066664026,
-   "yani_ce": 1.1642963240738908
+   "yani_barns": 1.6765867066692453,
+   "yani_ce": 1.1642963240758648
   },
   {
    "channel": "a",
@@ -1745,8 +1702,8 @@
    "spectrum": "FNG-f82h",
    "target": "Al27",
    "uncertainty_barns": 0.00686,
-   "yani_barns": 0.09796563417520628,
-   "yani_ce": 1.4709554680961903
+   "yani_barns": 0.09796563417529593,
+   "yani_ce": 1.4709554680975363
   },
   {
    "channel": "a",
@@ -1767,8 +1724,8 @@
    "spectrum": "FNG-f82h",
    "target": "V51",
    "uncertainty_barns": 0.004,
-   "yani_barns": 0.015606377575190086,
-   "yani_ce": 0.9345136272568914
+   "yani_barns": 0.015606377575190077,
+   "yani_ce": 0.9345136272568909
   },
   {
    "channel": "2n",
@@ -1789,8 +1746,8 @@
    "spectrum": "FNG-f82h",
    "target": "Cr52",
    "uncertainty_barns": 0.0412,
-   "yani_barns": 0.35318082318102084,
-   "yani_ce": 1.0867102251723717
+   "yani_barns": 0.35318082318881816,
+   "yani_ce": 1.0867102251963636
   },
   {
    "channel": "p",
@@ -1811,8 +1768,8 @@
    "spectrum": "FNG-f82h",
    "target": "Fe54",
    "uncertainty_barns": 0.019,
-   "yani_barns": 0.2660614064563539,
-   "yani_ce": 0.9890758604325424
+   "yani_barns": 0.2660614136501588,
+   "yani_ce": 0.9890758871753114
   },
   {
    "channel": "p",
@@ -1833,30 +1790,8 @@
    "spectrum": "FNG-f82h",
    "target": "Fe56",
    "uncertainty_barns": 0.00658,
-   "yani_barns": 0.09221939247215466,
-   "yani_ce": 0.9905412725258288
-  },
-  {
-   "channel": "g",
-   "fispact_barns": 0.00598,
-   "fispact_ce": 1.0,
-   "measured_barns": 0.00598,
-   "mt": 102,
-   "product_element": "Fe",
-   "product_mass": 59,
-   "product_note": "total over ground and isomeric states",
-   "product_state": "",
-   "products": [
-    "Fe59",
-    "Fe59_m1",
-    "Fe59_m2"
-   ],
-   "reaction": "Fe-58(n,g)Fe-59",
-   "spectrum": "FNG-f82h",
-   "target": "Fe58",
-   "uncertainty_barns": 0.000514,
-   "yani_barns": 0.005502650948663357,
-   "yani_ce": 0.9201757439236382
+   "yani_barns": 0.0922193930564154,
+   "yani_ce": 0.9905412788014543
   },
   {
    "channel": "2n",
@@ -1877,8 +1812,8 @@
    "spectrum": "FNG-f82h",
    "target": "Ni58",
    "uncertainty_barns": 0.0101,
-   "yani_barns": 0.032816097246926516,
-   "yani_ce": 0.8990711574500416
+   "yani_barns": 0.032816097246926544,
+   "yani_ce": 0.8990711574500424
   },
   {
    "channel": "np",
@@ -1899,8 +1834,8 @@
    "spectrum": "FNG-f82h",
    "target": "Ni58",
    "uncertainty_barns": 0.0479,
-   "yani_barns": 0.590069635142132,
-   "yani_ce": 1.1615543998860864
+   "yani_barns": 0.5900696351421323,
+   "yani_ce": 1.161554399886087
   },
   {
    "channel": "p",
@@ -1921,8 +1856,8 @@
    "spectrum": "FNG-f82h",
    "target": "W183",
    "uncertainty_barns": 0.000271,
-   "yani_barns": 0.0044324366884664415,
-   "yani_ce": 1.0680570333654076
+   "yani_barns": 0.004432436688484596,
+   "yani_ce": 1.0680570333697823
   },
   {
    "channel": "p",
@@ -1943,8 +1878,8 @@
    "spectrum": "FNG-f82h",
    "target": "W184",
    "uncertainty_barns": 0.000294,
-   "yani_barns": 0.0029342303656466943,
-   "yani_ce": 1.481934528104391
+   "yani_barns": 0.0029342303656503086,
+   "yani_ce": 1.4819345281062164
   },
   {
    "channel": "g",
@@ -1965,8 +1900,8 @@
    "spectrum": "FNG-f82h",
    "target": "W186",
    "uncertainty_barns": 0.0246,
-   "yani_barns": 0.2727600106860632,
-   "yani_ce": 0.7837931341553541
+   "yani_barns": 0.27276001068636174,
+   "yani_ce": 0.783793134156212
   },
   {
    "channel": "2n",
@@ -1987,8 +1922,8 @@
    "spectrum": "FNG-hafnium",
    "target": "Hf174",
    "uncertainty_barns": 0.373,
-   "yani_barns": 1.7611397437883363,
-   "yani_ce": 0.946849324617385
+   "yani_barns": 1.7611397437883365,
+   "yani_ce": 0.9468493246173851
   },
   {
    "channel": "2n",
@@ -2115,8 +2050,8 @@
    "spectrum": "FNG-hafnium",
    "target": "Hf180",
    "uncertainty_barns": 0.00151,
-   "yani_barns": 0.005052982069766253,
-   "yani_ce": 0.5445023782075703
+   "yani_barns": 0.0050529820697662545,
+   "yani_ce": 0.5445023782075705
   },
   {
    "channel": "p",
@@ -2159,8 +2094,8 @@
    "spectrum": "FNG-heat",
    "target": "Mg24",
    "uncertainty_barns": 0.0101,
-   "yani_barns": 0.16294092015472486,
-   "yani_ce": 0.822933940175378
+   "yani_barns": 0.1629409201547248,
+   "yani_ce": 0.8229339401753778
   },
   {
    "channel": "p",
@@ -2225,8 +2160,8 @@
    "spectrum": "FNG-heat",
    "target": "Al27",
    "uncertainty_barns": 0.0021,
-   "yani_barns": 0.10314598273101629,
-   "yani_ce": 1.0314598273101627
+   "yani_barns": 0.10314598273109116,
+   "yani_ce": 1.0314598273109115
   },
   {
    "channel": "p",
@@ -2393,8 +2328,8 @@
    "spectrum": "FNG-heat",
    "target": "Zr90",
    "uncertainty_barns": 0.0861,
-   "yani_barns": 0.12442891823755658,
-   "yani_ce": 0.8407359340375445
+   "yani_barns": 0.12434049535281028,
+   "yani_ce": 0.840138482113583
   },
   {
    "channel": "p",
@@ -2455,8 +2390,8 @@
    "spectrum": "FNG-heat",
    "target": "Nb93",
    "uncertainty_barns": 0.00328,
-   "yani_barns": 0.007015807032486982,
-   "yani_ce": 0.5196894098138505
+   "yani_barns": 0.007015807032479219,
+   "yani_ce": 0.5196894098132755
   },
   {
    "channel": "2n",
@@ -2477,8 +2412,8 @@
    "spectrum": "FNG-heat",
    "target": "Mo92",
    "uncertainty_barns": 0.00716,
-   "yani_barns": 0.20801223973651534,
-   "yani_ce": 0.7536675352772294
+   "yani_barns": 0.2080122397365154,
+   "yani_ce": 0.7536675352772296
   },
   {
    "channel": "2n",
@@ -2497,8 +2432,8 @@
    "spectrum": "FNG-heat",
    "target": "Ag107",
    "uncertainty_barns": 0.0251,
-   "yani_barns": 1.2823452511514981,
-   "yani_ce": 1.3261067747171646
+   "yani_barns": 1.2823452511514992,
+   "yani_ce": 1.3261067747171658
   },
   {
    "channel": "2n",
@@ -2517,8 +2452,8 @@
    "spectrum": "FNG-heat",
    "target": "Ag109",
    "uncertainty_barns": 0.025,
-   "yani_barns": 1.3081386878308428,
-   "yani_ce": 1.3612265221965065
+   "yani_barns": 1.3081386878308425,
+   "yani_ce": 1.3612265221965063
   },
   {
    "channel": "2n",
@@ -2537,8 +2472,8 @@
    "spectrum": "FNG-heat",
    "target": "Cd112",
    "uncertainty_barns": 0.0264,
-   "yani_barns": 1.5753468814611485e-19,
-   "yani_ce": 2.3065108074101735e-19
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "2n",
@@ -2557,8 +2492,8 @@
    "spectrum": "FNG-heat",
    "target": "Sn124",
    "uncertainty_barns": 0.0251,
-   "yani_barns": 5.8072157295690635e-11,
-   "yani_ce": 9.943862550631959e-11
+   "yani_barns": 5.807215729569067e-11,
+   "yani_ce": 9.943862550631964e-11
   },
   {
    "channel": "n",
@@ -2619,8 +2554,8 @@
    "spectrum": "FNG-heat",
    "target": "W186",
    "uncertainty_barns": 0.0935,
-   "yani_barns": 0.6286086204988494,
-   "yani_ce": 1.1145542916646267
+   "yani_barns": 0.6286582703142157,
+   "yani_ce": 1.1146423232521556
   },
   {
    "channel": "p",
@@ -2641,8 +2576,8 @@
    "spectrum": "FNG-heat",
    "target": "W186",
    "uncertainty_barns": 0.000148,
-   "yani_barns": 0.0018829037317301953,
-   "yani_ce": 0.6583579481574109
+   "yani_barns": 0.001882903731732597,
+   "yani_ce": 0.6583579481582507
   },
   {
    "channel": "2n",
@@ -2681,28 +2616,8 @@
    "spectrum": "FNG-heat",
    "target": "Re187",
    "uncertainty_barns": 0.0525,
-   "yani_barns": 1.8176169587969875,
-   "yani_ce": 1.905258866663509
-  },
-  {
-   "channel": "n",
-   "fispact_barns": 0.0913,
-   "fispact_ce": 1.12,
-   "measured_barns": 0.0815,
-   "mt": 4,
-   "product_element": "Pb",
-   "product_mass": 204,
-   "product_note": "first metastable state",
-   "product_state": "m",
-   "products": [
-    "Pb204_m1"
-   ],
-   "reaction": "Pb-204(n,n)Pb-204m",
-   "spectrum": "FNG-heat",
-   "target": "Pb204",
-   "uncertainty_barns": 0.00383,
-   "yani_barns": 0.062021958757441605,
-   "yani_ce": 0.7610056289256638
+   "yani_barns": 1.8176169587969868,
+   "yani_ce": 1.9052588666635082
   },
   {
    "channel": "2n",
@@ -2723,8 +2638,8 @@
    "spectrum": "FNG-tung",
    "target": "W182",
    "uncertainty_barns": 0.175,
-   "yani_barns": 1.6616683572947444,
-   "yani_ce": 1.212896611164047
+   "yani_barns": 1.6616683572975797,
+   "yani_ce": 1.2128966111661164
   },
   {
    "channel": "p",
@@ -2745,8 +2660,8 @@
    "spectrum": "FNG-tung",
    "target": "W182",
    "uncertainty_barns": 0.000619,
-   "yani_barns": 0.003784175698791914,
-   "yani_ce": 1.0145243160300037
+   "yani_barns": 0.003784175698798369,
+   "yani_ce": 1.0145243160317343
   },
   {
    "channel": "p",
@@ -2767,8 +2682,8 @@
    "spectrum": "FNG-tung",
    "target": "W184",
    "uncertainty_barns": 0.000228,
-   "yani_barns": 0.002786471485615515,
-   "yani_ce": 1.0594948614507662
+   "yani_barns": 0.0027864714856189955,
+   "yani_ce": 1.0594948614520896
   },
   {
    "channel": "a",
@@ -2789,8 +2704,8 @@
    "spectrum": "FNG-tung",
    "target": "W184",
    "uncertainty_barns": 5.39e-05,
-   "yani_barns": 0.0007065332545456027,
-   "yani_ce": 1.1268472959260012
+   "yani_barns": 0.0007065332547809633,
+   "yani_ce": 1.126847296301377
   },
   {
    "channel": "2n",
@@ -2809,8 +2724,8 @@
    "spectrum": "FNG-tung",
    "target": "W186",
    "uncertainty_barns": 0.093,
-   "yani_barns": 0.5265563819044446,
-   "yani_ce": 0.9221652923020047
+   "yani_barns": 0.5266103076652913,
+   "yani_ce": 0.9222597332141704
   },
   {
    "channel": "2n",
@@ -2831,8 +2746,8 @@
    "spectrum": "FNG-tung",
    "target": "W186",
    "uncertainty_barns": 0.165,
-   "yani_barns": 1.4671109048902227,
-   "yani_ce": 1.0948588842464348
+   "yani_barns": 1.4671109048918352,
+   "yani_ce": 1.094858884247638
   },
   {
    "channel": "g",
@@ -2853,8 +2768,8 @@
    "spectrum": "FNG-tung",
    "target": "W186",
    "uncertainty_barns": 0.0829,
-   "yani_barns": 1.1065105167442126,
-   "yani_ce": 0.8577600904993896
+   "yani_barns": 1.1065105167454279,
+   "yani_ce": 0.8577600905003316
   },
   {
    "channel": "p",
@@ -2875,8 +2790,8 @@
    "spectrum": "FNG-tung",
    "target": "W186",
    "uncertainty_barns": 0.000275,
-   "yani_barns": 0.0016036781576148347,
-   "yani_ce": 0.8715642160950188
+   "yani_barns": 0.001603678157616596,
+   "yani_ce": 0.8715642160959761
   },
   {
    "channel": "a",
@@ -2897,8 +2812,8 @@
    "spectrum": "FNG-tung",
    "target": "W186",
    "uncertainty_barns": 8.43e-05,
-   "yani_barns": 0.0005011226125339924,
-   "yani_ce": 0.9401925188255016
+   "yani_barns": 0.0005011226125345431,
+   "yani_ce": 0.9401925188265348
   },
   {
    "channel": "a",
@@ -2919,8 +2834,8 @@
    "spectrum": "FNG-vanad",
    "target": "Al27",
    "uncertainty_barns": 0.00892,
-   "yani_barns": 0.08221966625710583,
-   "yani_ce": 0.8691296644514358
+   "yani_barns": 0.08221966625724182,
+   "yani_ce": 0.8691296644528733
   },
   {
    "channel": "p",
@@ -2963,8 +2878,8 @@
    "spectrum": "FNG-vanad",
    "target": "Ti50",
    "uncertainty_barns": 0.00205,
-   "yani_barns": 0.006767089549347499,
-   "yani_ce": 0.7363535962293253
+   "yani_barns": 0.006767089549347502,
+   "yani_ce": 0.7363535962293255
   },
   {
    "channel": "g",
@@ -2985,8 +2900,8 @@
    "spectrum": "FNG-vanad",
    "target": "V51",
    "uncertainty_barns": 0.00398,
-   "yani_barns": 0.05654824965874646,
-   "yani_ce": 0.865976258173759
+   "yani_barns": 0.05654824965874647,
+   "yani_ce": 0.8659762581737591
   },
   {
    "channel": "p",
@@ -3029,30 +2944,8 @@
    "spectrum": "FNG-vanad",
    "target": "V51",
    "uncertainty_barns": 0.000697,
-   "yani_barns": 0.013370869385694768,
-   "yani_ce": 0.9978260735593111
-  },
-  {
-   "channel": "2n",
-   "fispact_barns": 0.0202,
-   "fispact_ce": 0.88,
-   "measured_barns": 0.0229,
-   "mt": 16,
-   "product_element": "Cr",
-   "product_mass": 49,
-   "product_note": "total over ground and isomeric states",
-   "product_state": "",
-   "products": [
-    "Cr49",
-    "Cr49_m1",
-    "Cr49_m2"
-   ],
-   "reaction": "Cr-50(n,2n)Cr-49",
-   "spectrum": "FNG-vanad",
-   "target": "Cr50",
-   "uncertainty_barns": 0.00429,
-   "yani_barns": 0.018656291383644517,
-   "yani_ce": 0.8146852132595859
+   "yani_barns": 0.013370869385694782,
+   "yani_ce": 0.9978260735593121
   },
   {
    "channel": "2n",
@@ -3073,8 +2966,8 @@
    "spectrum": "FNG-vanad",
    "target": "Cr52",
    "uncertainty_barns": 0.0227,
-   "yani_barns": 0.3047884581981077,
-   "yani_ce": 1.1043060079641582
+   "yani_barns": 0.3047884582049886,
+   "yani_ce": 1.1043060079890892
   },
   {
    "channel": "p",
@@ -3095,8 +2988,8 @@
    "spectrum": "FNG-vanad",
    "target": "Fe54",
    "uncertainty_barns": 0.0742,
-   "yani_barns": 0.2297694962820122,
-   "yani_ce": 0.9416782634508697
+   "yani_barns": 0.22976950157249254,
+   "yani_ce": 0.9416782851331662
   },
   {
    "channel": "p",
@@ -3117,8 +3010,8 @@
    "spectrum": "FNG-vanad",
    "target": "Fe56",
    "uncertainty_barns": 0.0145,
-   "yani_barns": 0.07736733639539176,
-   "yani_ce": 0.8446215763689057
+   "yani_barns": 0.07736733716996817,
+   "yani_ce": 0.8446215848249801
   },
   {
    "channel": "np",
@@ -3183,8 +3076,8 @@
    "spectrum": "FNG-vanad",
    "target": "Cu63",
    "uncertainty_barns": 0.00893,
-   "yani_barns": 0.02829412265997632,
-   "yani_ce": 1.2631304758918
+   "yani_barns": 0.02829412265997631,
+   "yani_ce": 1.2631304758917996
   },
   {
    "channel": "2n",
@@ -3289,8 +3182,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "O16",
    "uncertainty_barns": 0.00221,
-   "yani_barns": 0.03361760890066627,
-   "yani_ce": 1.0638483829324767
+   "yani_barns": 0.03361760890066625,
+   "yani_ce": 1.063848382932476
   },
   {
    "channel": "2n",
@@ -3355,8 +3248,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Na23",
    "uncertainty_barns": 0.000118,
-   "yani_barns": 0.0002884385882972614,
-   "yani_ce": 1.0015228760321577
+   "yani_barns": 0.00028843858829726026,
+   "yani_ce": 1.0015228760321537
   },
   {
    "channel": "p",
@@ -3399,8 +3292,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Mg24",
    "uncertainty_barns": 0.0187,
-   "yani_barns": 0.15880413527810533,
-   "yani_ce": 1.0179752261417008
+   "yani_barns": 0.15880413527810527,
+   "yani_ce": 1.0179752261417006
   },
   {
    "channel": "p",
@@ -3421,8 +3314,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Mg25",
    "uncertainty_barns": 0.00675,
-   "yani_barns": 0.043025975857280824,
-   "yani_ce": 0.700748792463857
+   "yani_barns": 0.0430259758572808,
+   "yani_ce": 0.7007487924638567
   },
   {
    "channel": "a",
@@ -3443,8 +3336,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Mg26",
    "uncertainty_barns": 0.00642,
-   "yani_barns": 0.06578516544094172,
-   "yani_ce": 1.1283904878377653
+   "yani_barns": 0.06578516544094165,
+   "yani_ce": 1.1283904878377642
   },
   {
    "channel": "p",
@@ -3487,8 +3380,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Si28",
    "uncertainty_barns": 0.0194,
-   "yani_barns": 0.22963954911525156,
-   "yani_ce": 1.1837090160579977
+   "yani_barns": 0.22963954911525122,
+   "yani_ce": 1.183709016057996
   },
   {
    "channel": "p",
@@ -3553,8 +3446,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "P31",
    "uncertainty_barns": 0.0179,
-   "yani_barns": 0.10560194955512003,
-   "yani_ce": 0.942874549599286
+   "yani_barns": 0.10560194955511985,
+   "yani_ce": 0.9428745495992844
   },
   {
    "channel": "p",
@@ -3597,8 +3490,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "S34",
    "uncertainty_barns": 0.00836,
-   "yani_barns": 0.11269098854087459,
-   "yani_ce": 0.9469830969821394
+   "yani_barns": 0.11269098854087455,
+   "yani_ce": 0.9469830969821391
   },
   {
    "channel": "2n",
@@ -3661,8 +3554,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Cl37",
    "uncertainty_barns": 0.0018,
-   "yani_barns": 0.028549579417658705,
-   "yani_ce": 0.9484910105534454
+   "yani_barns": 0.028549579417658524,
+   "yani_ce": 0.9484910105534394
   },
   {
    "channel": "2n",
@@ -3703,8 +3596,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "K41",
    "uncertainty_barns": 0.0016,
-   "yani_barns": 0.027497536081005983,
-   "yani_ce": 1.0298702652062166
+   "yani_barns": 0.027497536081005993,
+   "yani_ce": 1.0298702652062168
   },
   {
    "channel": "p",
@@ -3815,28 +3708,6 @@
    "yani_ce": 1.0445204304911115
   },
   {
-   "channel": "2n",
-   "fispact_barns": 0.0244,
-   "fispact_ce": 0.51,
-   "measured_barns": 0.0478,
-   "mt": 16,
-   "product_element": "Cr",
-   "product_mass": 49,
-   "product_note": "total over ground and isomeric states",
-   "product_state": "",
-   "products": [
-    "Cr49",
-    "Cr49_m1",
-    "Cr49_m2"
-   ],
-   "reaction": "Cr-50(n,2n)Cr-49",
-   "spectrum": "JAEA-FNS-pos3",
-   "target": "Cr50",
-   "uncertainty_barns": 0.00287,
-   "yani_barns": 0.02267414603447621,
-   "yani_ce": 0.4743545195497115
-  },
-  {
    "channel": "p",
    "fispact_barns": 0.0759,
    "fispact_ce": 1.15,
@@ -3855,8 +3726,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Cr52",
    "uncertainty_barns": 0.00462,
-   "yani_barns": 0.07576255285540011,
-   "yani_ce": 1.1479174675060622
+   "yani_barns": 0.07576255285736257,
+   "yani_ce": 1.1479174675357964
   },
   {
    "channel": "g",
@@ -3877,8 +3748,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Mn55",
    "uncertainty_barns": 0.00028,
-   "yani_barns": 0.004401827809031398,
-   "yani_ce": 1.1004569522578496
+   "yani_barns": 0.0044018278248061735,
+   "yani_ce": 1.1004569562015434
   },
   {
    "channel": "p",
@@ -3899,8 +3770,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Mn55",
    "uncertainty_barns": 0.00147,
-   "yani_barns": 0.03733682960148196,
-   "yani_ce": 1.5239522286319167
+   "yani_barns": 0.037336829738124265,
+   "yani_ce": 1.5239522342091536
   },
   {
    "channel": "a",
@@ -3921,8 +3792,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Mn55",
    "uncertainty_barns": 0.00123,
-   "yani_barns": 0.000890087306261804,
-   "yani_ce": 0.04320812166319437
+   "yani_barns": 0.021614568260079323,
+   "yani_ce": 1.0492508864116177
   },
   {
    "channel": "p",
@@ -3943,8 +3814,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Fe56",
    "uncertainty_barns": 0.00434,
-   "yani_barns": 0.09453753411865676,
-   "yani_ce": 1.087888770065095
+   "yani_barns": 0.09453753463167301,
+   "yani_ce": 1.087888775968619
   },
   {
    "channel": "a",
@@ -3965,8 +3836,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Co59",
    "uncertainty_barns": 0.00126,
-   "yani_barns": 0.026334648010087666,
-   "yani_ce": 1.0450257146860185
+   "yani_barns": 0.02633464801040407,
+   "yani_ce": 1.0450257146985742
   },
   {
    "channel": "p",
@@ -4113,30 +3984,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ga71",
    "uncertainty_barns": 0.056,
-   "yani_barns": 0.8654451364192491,
-   "yani_ce": 0.9266007884574401
-  },
-  {
-   "channel": "p",
-   "fispact_barns": 0.0138,
-   "fispact_ce": 1.05,
-   "measured_barns": 0.0131,
-   "mt": 103,
-   "product_element": "Ga",
-   "product_mass": 74,
-   "product_note": "total over ground and isomeric states",
-   "product_state": "",
-   "products": [
-    "Ga74",
-    "Ga74_m1",
-    "Ga74_m2"
-   ],
-   "reaction": "Ge-74(n,p)Ga-74",
-   "spectrum": "JAEA-FNS-pos3",
-   "target": "Ge74",
-   "uncertainty_barns": 0.000786,
-   "yani_barns": 0.00987873028471561,
-   "yani_ce": 0.7541015484515732
+   "yani_barns": 0.8654451364192489,
+   "yani_ce": 0.9266007884574399
   },
   {
    "channel": "2n",
@@ -4199,8 +4048,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Br79",
    "uncertainty_barns": 0.0911,
-   "yani_barns": 0.8500240095851902,
-   "yani_ce": 1.0265990453927418
+   "yani_barns": 0.8500240095851899,
+   "yani_ce": 1.0265990453927414
   },
   {
    "channel": "2n",
@@ -4239,8 +4088,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Y89",
    "uncertainty_barns": 0.0263,
-   "yani_barns": 0.36614865662501983,
-   "yani_ce": 0.9737996186835634
+   "yani_barns": 0.36614865660294094,
+   "yani_ce": 0.9737996186248429
   },
   {
    "channel": "2n",
@@ -4261,8 +4110,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Y89",
    "uncertainty_barns": 0.168,
-   "yani_barns": 0.9039919026769524,
-   "yani_ce": 1.0736245875023187
+   "yani_barns": 0.9039919026769517,
+   "yani_ce": 1.073624587502318
   },
   {
    "channel": "a",
@@ -4301,8 +4150,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Zr90",
    "uncertainty_barns": 0.00584,
-   "yani_barns": 0.11902535522503963,
-   "yani_ce": 1.017310728419142
+   "yani_barns": 0.11894368247701331,
+   "yani_ce": 1.0166126707437035
   },
   {
    "channel": "p",
@@ -4343,8 +4192,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Nb93",
    "uncertainty_barns": 0.000242,
-   "yani_barns": 5.771552699728246e-11,
-   "yani_ce": 1.672913826008187e-08
+   "yani_barns": 5.771552699281159e-11,
+   "yani_ce": 1.6729138258785967e-08
   },
   {
    "channel": "g",
@@ -4363,8 +4212,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Nb93",
    "uncertainty_barns": 0.000358,
-   "yani_barns": 0.004994938013700362,
-   "yani_ce": 0.9774829772407754
+   "yani_barns": 0.004994938013694769,
+   "yani_ce": 0.9774829772396809
   },
   {
    "channel": "a",
@@ -4383,8 +4232,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Nb93",
    "uncertainty_barns": 0.000298,
-   "yani_barns": 4.003218974088111e-15,
-   "yani_ce": 8.054766547460989e-13
+   "yani_barns": 4.003149370823506e-15,
+   "yani_ce": 8.054626500650918e-13
   },
   {
    "channel": "2n",
@@ -4405,8 +4254,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Mo92",
    "uncertainty_barns": 0.0108,
-   "yani_barns": 0.19800522388081584,
-   "yani_ce": 0.9209545296782132
+   "yani_barns": 0.19800522388081593,
+   "yani_ce": 0.9209545296782137
   },
   {
    "channel": "n",
@@ -4425,8 +4274,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Rh103",
    "uncertainty_barns": 0.0365,
-   "yani_barns": 0.3186135884356415,
-   "yani_ce": 2.2596708399690892
+   "yani_barns": 0.3185634274271452,
+   "yani_ce": 2.2593150881357817
   },
   {
    "channel": "g",
@@ -4447,8 +4296,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Rh103",
    "uncertainty_barns": 0.00212,
-   "yani_barns": 0.06366119841630967,
-   "yani_ce": 2.3932781359514914
+   "yani_barns": 0.06366119841615,
+   "yani_ce": 2.393278135945489
   },
   {
    "channel": "2n",
@@ -4467,8 +4316,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ag107",
    "uncertainty_barns": 0.0348,
-   "yani_barns": 1.2351516570460557,
-   "yani_ce": 1.7746431854109996
+   "yani_barns": 1.2351516570460561,
+   "yani_ce": 1.7746431854110003
   },
   {
    "channel": "2n",
@@ -4507,8 +4356,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Cd112",
    "uncertainty_barns": 0.0232,
-   "yani_barns": 2.7780813756172794e-19,
-   "yani_ce": 5.987244344002757e-19
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "p",
@@ -4567,8 +4416,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Sn124",
    "uncertainty_barns": 0.0241,
-   "yani_barns": 5.2501365726679e-11,
-   "yani_ce": 1.3092609906902492e-10
+   "yani_barns": 5.250136572667897e-11,
+   "yani_ce": 1.3092609906902485e-10
   },
   {
    "channel": "2n",
@@ -4609,8 +4458,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "I127",
    "uncertainty_barns": 0.00116,
-   "yani_barns": 0.0338244015052626,
-   "yani_ce": 1.7525596634851086
+   "yani_barns": 0.03382440150526261,
+   "yani_ce": 1.7525596634851095
   },
   {
    "channel": "2n",
@@ -4631,8 +4480,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Cs133",
    "uncertainty_barns": 0.0898,
-   "yani_barns": 1.44396058665278,
-   "yani_ce": 1.289250523797125
+   "yani_barns": 1.443960586652779,
+   "yani_ce": 1.289250523797124
   },
   {
    "channel": "2n",
@@ -4651,8 +4500,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ba138",
    "uncertainty_barns": 0.0532,
-   "yani_barns": 5.68728613804587e-17,
-   "yani_ce": 8.552309982023865e-17
+   "yani_barns": 5.644454683447022e-17,
+   "yani_ce": 8.487901779619581e-17
   },
   {
    "channel": "p",
@@ -4735,8 +4584,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ce140",
    "uncertainty_barns": 0.000183,
-   "yani_barns": 7.0968791754812584e-15,
-   "yani_ce": 2.708732509725671e-12
+   "yani_barns": 7.0968792002443674e-15,
+   "yani_ce": 2.7087325191772395e-12
   },
   {
    "channel": "p",
@@ -4821,8 +4670,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Gd160",
    "uncertainty_barns": 0.239,
-   "yani_barns": 1.6117549113154912,
-   "yani_ce": 1.2791705645361042
+   "yani_barns": 1.6117549113154923,
+   "yani_ce": 1.279170564536105
   },
   {
    "channel": "g",
@@ -4843,8 +4692,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Gd160",
    "uncertainty_barns": 0.000643,
-   "yani_barns": 0.0073869480590125335,
-   "yani_ce": 1.954219063230829
+   "yani_barns": 0.007386948059012527,
+   "yani_ce": 1.9542190632308272
   },
   {
    "channel": "p",
@@ -4929,8 +4778,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Lu175",
    "uncertainty_barns": 0.011,
-   "yani_barns": 0.06143333473440722,
-   "yani_ce": 1.174633551327098
+   "yani_barns": 0.0614333347344072,
+   "yani_ce": 1.1746335513270976
   },
   {
    "channel": "n",
@@ -5011,8 +4860,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Ta181",
    "uncertainty_barns": 0.136,
-   "yani_barns": 1.0972903295779692,
-   "yani_ce": 1.0450384091218754
+   "yani_barns": 1.0970580471471185,
+   "yani_ce": 1.0448171877591605
   },
   {
    "channel": "2n",
@@ -5031,8 +4880,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "W186",
    "uncertainty_barns": 0.0418,
-   "yani_barns": 0.6107280809836986,
-   "yani_ce": 1.8966710589555855
+   "yani_barns": 0.6108133935868991,
+   "yani_ce": 1.8969360049282582
   },
   {
    "channel": "p",
@@ -5053,8 +4902,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "W186",
    "uncertainty_barns": 0.000163,
-   "yani_barns": 0.001793341180648341,
-   "yani_ce": 1.4232866513082072
+   "yani_barns": 0.0017933411806504967,
+   "yani_ce": 1.423286651309918
   },
   {
    "channel": "p",
@@ -5073,8 +4922,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Re185",
    "uncertainty_barns": 0.000164,
-   "yani_barns": 6.414488255054788e-13,
-   "yani_ce": 4.682108215368459e-10
+   "yani_barns": 6.414488061231736e-13,
+   "yani_ce": 4.682108073891778e-10
   },
   {
    "channel": "2n",
@@ -5133,8 +4982,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Pt198",
    "uncertainty_barns": 0.0647,
-   "yani_barns": 0.8752268225378239,
-   "yani_ce": 1.0818625742123904
+   "yani_barns": 0.8749676231977432,
+   "yani_ce": 1.0815421794780509
   },
   {
    "channel": "2n",
@@ -5177,68 +5026,6 @@
    "yani_ce": 0.0
   },
   {
-   "channel": "n",
-   "fispact_barns": 0.0925,
-   "fispact_ce": 2.01,
-   "measured_barns": 0.046,
-   "mt": 4,
-   "product_element": "Pb",
-   "product_mass": 204,
-   "product_note": "first metastable state",
-   "product_state": "m",
-   "products": [
-    "Pb204_m1"
-   ],
-   "reaction": "Pb-204(n,n)Pb-204m",
-   "spectrum": "JAEA-FNS-pos3",
-   "target": "Pb204",
-   "uncertainty_barns": 0.0175,
-   "yani_barns": 0.06438978856921755,
-   "yani_ce": 1.3997780123742947
-  },
-  {
-   "channel": "2n",
-   "fispact_barns": 1.01,
-   "fispact_ce": 0.72,
-   "measured_barns": 1.4,
-   "mt": 16,
-   "product_element": "Pb",
-   "product_mass": 203,
-   "product_note": "first metastable state",
-   "product_state": "m",
-   "products": [
-    "Pb203_m1"
-   ],
-   "reaction": "Pb-204(n,2n)Pb-203m",
-   "spectrum": "JAEA-FNS-pos3",
-   "target": "Pb204",
-   "uncertainty_barns": 0.0838,
-   "yani_barns": 0.8513898232170757,
-   "yani_ce": 0.6081355880121969
-  },
-  {
-   "channel": "p",
-   "fispact_barns": 0.000739,
-   "fispact_ce": 0.74,
-   "measured_barns": 0.000998,
-   "mt": 103,
-   "product_element": "Tl",
-   "product_mass": 208,
-   "product_note": "total over ground and isomeric states",
-   "product_state": "",
-   "products": [
-    "Tl208",
-    "Tl208_m1",
-    "Tl208_m2"
-   ],
-   "reaction": "Pb-208(n,p)Tl-208",
-   "spectrum": "JAEA-FNS-pos3",
-   "target": "Pb208",
-   "uncertainty_barns": 5.99e-05,
-   "yani_barns": 0.0004219127091841496,
-   "yani_ce": 0.4227582256354204
-  },
-  {
    "channel": "p",
    "fispact_barns": 0.00214,
    "fispact_ce": 1.96,
@@ -5257,8 +5044,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Bi209",
    "uncertainty_barns": 0.0031,
-   "yani_barns": 0.00789351065572576,
-   "yani_ce": 7.241752895161247
+   "yani_barns": 0.007906052582049683,
+   "yani_ce": 7.253259249586865
   },
   {
    "channel": "a",
@@ -5279,8 +5066,8 @@
    "spectrum": "JAEA-FNS-pos3",
    "target": "Bi209",
    "uncertainty_barns": 5.21e-05,
-   "yani_barns": 0.0020975008719322564,
-   "yani_ce": 6.434051754393424
+   "yani_barns": 0.002098329118998704,
+   "yani_ce": 6.436592389566576
   },
   {
    "channel": "2n",
@@ -5301,8 +5088,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Na23",
    "uncertainty_barns": 0.00228,
-   "yani_barns": 0.027359410277366228,
-   "yani_ce": 0.7199844809833218
+   "yani_barns": 0.027359410277366245,
+   "yani_ce": 0.7199844809833222
   },
   {
    "channel": "g",
@@ -5323,8 +5110,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Na23",
    "uncertainty_barns": 3.26e-05,
-   "yani_barns": 0.0001960159240588594,
-   "yani_ce": 0.7809399364894797
+   "yani_barns": 0.00019601592405885855,
+   "yani_ce": 0.7809399364894763
   },
   {
    "channel": "a",
@@ -5345,8 +5132,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Al27",
    "uncertainty_barns": 0.0142,
-   "yani_barns": 0.10951797480526433,
-   "yani_ce": 0.9203191160106247
+   "yani_barns": 0.10951797480531189,
+   "yani_ce": 0.9203191160110243
   },
   {
    "channel": "p",
@@ -5389,8 +5176,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "K39",
    "uncertainty_barns": 0.000716,
-   "yani_barns": 6.803059968716845e-10,
-   "yani_ce": 5.915704320623343e-07
+   "yani_barns": 6.803059968450636e-10,
+   "yani_ce": 5.915704320391857e-07
   },
   {
    "channel": "g",
@@ -5411,8 +5198,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "K41",
    "uncertainty_barns": 9.51e-05,
-   "yani_barns": 0.0008914264955038458,
-   "yani_ce": 1.1255385044240478
+   "yani_barns": 0.0008914264955038456,
+   "yani_ce": 1.1255385044240476
   },
   {
    "channel": "p",
@@ -5521,8 +5308,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "V51",
    "uncertainty_barns": 0.000955,
-   "yani_barns": 0.016605763913836665,
-   "yani_ce": 1.044387667536897
+   "yani_barns": 0.016605763913836655,
+   "yani_ce": 1.0443876675368964
   },
   {
    "channel": "2n",
@@ -5543,8 +5330,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Cr52",
    "uncertainty_barns": 0.0202,
-   "yani_barns": 0.3666720314231743,
-   "yani_ce": 1.0880475709886477
+   "yani_barns": 0.36667203142905935,
+   "yani_ce": 1.0880475710061108
   },
   {
    "channel": "2n",
@@ -5565,8 +5352,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Mn55",
    "uncertainty_barns": 0.0366,
-   "yani_barns": 0.6951292940864184,
-   "yani_ce": 0.9496301831781673
+   "yani_barns": 0.6951292965774407,
+   "yani_ce": 0.9496301865812031
   },
   {
    "channel": "g",
@@ -5587,8 +5374,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Mn55",
    "uncertainty_barns": 5.04e-05,
-   "yani_barns": 0.0008139514040913098,
-   "yani_ce": 1.1304880612379302
+   "yani_barns": 0.000813951407008135,
+   "yani_ce": 1.1304880652890763
   },
   {
    "channel": "p",
@@ -5609,8 +5396,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Fe54",
    "uncertainty_barns": 0.0368,
-   "yani_barns": 0.29470145207449927,
-   "yani_ce": 0.8823396768697582
+   "yani_barns": 0.2947014606164767,
+   "yani_ce": 0.8823397024445409
   },
   {
    "channel": "p",
@@ -5631,8 +5418,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Fe56",
    "uncertainty_barns": 0.00603,
-   "yani_barns": 0.10314816161867892,
-   "yani_ce": 0.8524641456089167
+   "yani_barns": 0.1031481621294743,
+   "yani_ce": 0.8524641498303661
   },
   {
    "channel": "2n",
@@ -5695,8 +5482,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ni58",
    "uncertainty_barns": 0.00156,
-   "yani_barns": 0.033125865073233736,
-   "yani_ce": 1.0617264446549275
+   "yani_barns": 0.0331258650732337,
+   "yani_ce": 1.0617264446549264
   },
   {
    "channel": "np",
@@ -5717,8 +5504,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ni58",
    "uncertainty_barns": 0.0327,
-   "yani_barns": 0.6325976056584879,
-   "yani_ce": 0.9672746263891252
+   "yani_barns": 0.6325976056584869,
+   "yani_ce": 0.9672746263891236
   },
   {
    "channel": "p",
@@ -5739,8 +5526,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ni58",
    "uncertainty_barns": 0.0146,
-   "yani_barns": 0.30923624654843,
-   "yani_ce": 1.0626675139121307
+   "yani_barns": 0.3092362465484298,
+   "yani_ce": 1.06266751391213
   },
   {
    "channel": "a",
@@ -5761,8 +5548,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Cu63",
    "uncertainty_barns": 0.00501,
-   "yani_barns": 0.03785150598247878,
-   "yani_ce": 0.7555190814866024
+   "yani_barns": 0.037851505982478745,
+   "yani_ce": 0.7555190814866017
   },
   {
    "channel": "2n",
@@ -5827,8 +5614,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Zr90",
    "uncertainty_barns": 0.0426,
-   "yani_barns": 0.719380881564892,
-   "yani_ce": 1.0117874564907061
+   "yani_barns": 0.719380881565757,
+   "yani_ce": 1.0117874564919227
   },
   {
    "channel": "2n",
@@ -5849,8 +5636,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Zr96",
    "uncertainty_barns": 0.0742,
-   "yani_barns": 1.4488436071107482,
-   "yani_ce": 0.978948383182938
+   "yani_barns": 1.4488436071107489,
+   "yani_ce": 0.9789483831829384
   },
   {
    "channel": "2n",
@@ -5889,8 +5676,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Mo92",
    "uncertainty_barns": 0.0166,
-   "yani_barns": 2.3483710197463423e-12,
-   "yani_ce": 1.2693897404034282e-11
+   "yani_barns": 2.348371019746343e-12,
+   "yani_ce": 1.2693897404034287e-11
   },
   {
    "channel": "p",
@@ -5909,8 +5696,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Mo92",
    "uncertainty_barns": 0.00308,
-   "yani_barns": 0.0,
-   "yani_ce": 0.0
+   "yani_barns": 0.06088242117769244,
+   "yani_ce": 0.9899580679299584
   },
   {
    "channel": "p",
@@ -5929,8 +5716,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Mo95",
    "uncertainty_barns": 0.00207,
-   "yani_barns": 0.042732969415126075,
-   "yani_ce": 1.242237482997851
+   "yani_barns": 0.0427329694151261,
+   "yani_ce": 1.2422374829978517
   },
   {
    "channel": "a",
@@ -5993,8 +5780,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Sn118",
    "uncertainty_barns": 0.114,
-   "yani_barns": 1.785477604578519e-14,
-   "yani_ce": 1.8794501100826517e-14
+   "yani_barns": 1.785424024595317e-14,
+   "yani_ce": 1.879393710100334e-14
   },
   {
    "channel": "2n",
@@ -6013,8 +5800,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Sn120",
    "uncertainty_barns": 0.101,
-   "yani_barns": 1.4628520603669762e-12,
-   "yani_ce": 3.0476084590978672e-12
+   "yani_barns": 1.4628518254034396e-12,
+   "yani_ce": 3.047607969590499e-12
   },
   {
    "channel": "2n",
@@ -6033,8 +5820,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Sn124",
    "uncertainty_barns": 0.146,
-   "yani_barns": 1.5664764482632938,
-   "yani_ce": 1.506227354099321
+   "yani_barns": 1.5664764482632945,
+   "yani_ce": 1.5062273540993216
   },
   {
    "channel": "2n",
@@ -6073,8 +5860,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ba136",
    "uncertainty_barns": 0.142,
-   "yani_barns": 2.2823990396389335e-18,
-   "yani_ce": 2.4152370789829984e-18
+   "yani_barns": 0.0,
+   "yani_ce": 0.0
   },
   {
    "channel": "p",
@@ -6095,8 +5882,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ba136",
    "uncertainty_barns": 0.00261,
-   "yani_barns": 0.005827230168708914,
-   "yani_ce": 1.1584950633616131
+   "yani_barns": 0.0058272301687089115,
+   "yani_ce": 1.1584950633616127
   },
   {
    "channel": "2n",
@@ -6115,8 +5902,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "Ta181",
    "uncertainty_barns": 0.0757,
-   "yani_barns": 1.1806043306137226,
-   "yani_ce": 1.5595829994897261
+   "yani_barns": 1.1805654959765781,
+   "yani_ce": 1.559531698780156
   },
   {
    "channel": "g",
@@ -6181,8 +5968,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "W182",
    "uncertainty_barns": 0.235,
-   "yani_barns": 2.0353810173825364,
-   "yani_ce": 1.2964210301799595
+   "yani_barns": 2.035381017385587,
+   "yani_ce": 1.2964210301819024
   },
   {
    "channel": "p",
@@ -6203,8 +5990,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "W184",
    "uncertainty_barns": 0.000159,
-   "yani_barns": 0.002977231366882241,
-   "yani_ce": 1.3115556682300622
+   "yani_barns": 0.002977231366885567,
+   "yani_ce": 1.3115556682315272
   },
   {
    "channel": "2n",
@@ -6225,8 +6012,8 @@
    "spectrum": "JAEA-FNS-pos7",
    "target": "W186",
    "uncertainty_barns": 0.206,
-   "yani_barns": 1.8627854835962565,
-   "yani_ce": 1.3498445533306207
+   "yani_barns": 1.862785483598146,
+   "yani_ce": 1.34984455333199
   },
   {
    "channel": "2n",
@@ -6289,28 +6076,6 @@
    "yani_ce": 1.1969476543980246
   },
   {
-   "channel": "2n",
-   "fispact_barns": 2.0,
-   "fispact_ce": 0.94,
-   "measured_barns": 2.13,
-   "mt": 16,
-   "product_element": "Pb",
-   "product_mass": 203,
-   "product_note": "total over ground and isomeric states",
-   "product_state": "",
-   "products": [
-    "Pb203",
-    "Pb203_m1",
-    "Pb203_m2"
-   ],
-   "reaction": "Pb-204(n,2n)Pb-203",
-   "spectrum": "JAEA-FNS-pos7",
-   "target": "Pb204",
-   "uncertainty_barns": 0.107,
-   "yani_barns": 2.110266293891521,
-   "yani_ce": 0.9907353492448456
-  },
-  {
    "channel": "a",
    "fispact_barns": 0.000534,
    "fispact_ce": 0.34,
@@ -6351,8 +6116,8 @@
    "spectrum": "TUD-CuCrZr",
    "target": "Cr52",
    "uncertainty_barns": 0.0353,
-   "yani_barns": 0.4045986009903652,
-   "yani_ce": 1.2373045901846031
+   "yani_barns": 0.40459860099721384,
+   "yani_ce": 1.2373045902055468
   },
   {
    "channel": "2n",
@@ -6395,8 +6160,8 @@
    "spectrum": "TUD-CuCrZr",
    "target": "Cu63",
    "uncertainty_barns": 0.00334,
-   "yani_barns": 0.03836067706233588,
-   "yani_ce": 1.1151359611144152
+   "yani_barns": 0.03836067706233585,
+   "yani_ce": 1.1151359611144143
   },
   {
    "channel": "2n",
@@ -6459,8 +6224,8 @@
    "spectrum": "TUD-CuCrZr",
    "target": "Cu65",
    "uncertainty_barns": 0.000136,
-   "yani_barns": 0.0016355789680490593,
-   "yani_ce": 1.0903859786993728
+   "yani_barns": 0.0016355789680490586,
+   "yani_ce": 1.0903859786993724
   },
   {
    "channel": "p",
@@ -6503,8 +6268,8 @@
    "spectrum": "TUD-CuCrZr",
    "target": "Zr90",
    "uncertainty_barns": 0.0691,
-   "yani_barns": 0.7830567953753437,
-   "yani_ce": 1.1669996950452215
+   "yani_barns": 0.7830567953755613,
+   "yani_ce": 1.166999695045546
   },
   {
    "channel": "g",
@@ -6525,8 +6290,8 @@
    "spectrum": "TUD-Er",
    "target": "La139",
    "uncertainty_barns": 0.000156,
-   "yani_barns": 0.002511998349804107,
-   "yani_ce": 1.012902560404882
+   "yani_barns": 0.002511998349804105,
+   "yani_ce": 1.0129025604048811
   },
   {
    "channel": "p",
@@ -6569,8 +6334,8 @@
    "spectrum": "TUD-Er",
    "target": "La139",
    "uncertainty_barns": 0.00205,
-   "yani_barns": 0.002043719192552229,
-   "yani_ce": 0.9969361914888922
+   "yani_barns": 0.0020437191925522223,
+   "yani_ce": 0.9969361914888888
   },
   {
    "channel": "2n",
@@ -6719,50 +6484,8 @@
    "spectrum": "TUD-Er",
    "target": "Er170",
    "uncertainty_barns": 3.97e-05,
-   "yani_barns": 0.00032050440036184014,
-   "yani_ce": 1.8964757417860365
-  },
-  {
-   "channel": "n",
-   "fispact_barns": 0.0929,
-   "fispact_ce": 1.5,
-   "measured_barns": 0.0619,
-   "mt": 4,
-   "product_element": "Pb",
-   "product_mass": 204,
-   "product_note": "first metastable state",
-   "product_state": "m",
-   "products": [
-    "Pb204_m1"
-   ],
-   "reaction": "Pb-204(n,n)Pb-204m",
-   "spectrum": "TUD-Pb",
-   "target": "Pb204",
-   "uncertainty_barns": 0.00563,
-   "yani_barns": 0.06550150776258519,
-   "yani_ce": 1.0581826779092922
-  },
-  {
-   "channel": "2n",
-   "fispact_barns": 1.84,
-   "fispact_ce": 0.95,
-   "measured_barns": 1.94,
-   "mt": 16,
-   "product_element": "Pb",
-   "product_mass": 203,
-   "product_note": "total over ground and isomeric states",
-   "product_state": "",
-   "products": [
-    "Pb203",
-    "Pb203_m1",
-    "Pb203_m2"
-   ],
-   "reaction": "Pb-204(n,2n)Pb-203",
-   "spectrum": "TUD-Pb",
-   "target": "Pb204",
-   "uncertainty_barns": 0.167,
-   "yani_barns": 1.906481665001393,
-   "yani_ce": 0.9827225077326768
+   "yani_barns": 0.0003205044003618402,
+   "yani_ce": 1.8964757417860367
   },
   {
    "channel": "a",
@@ -6783,30 +6506,8 @@
    "spectrum": "TUD-Pb",
    "target": "Pb206",
    "uncertainty_barns": 5.42e-05,
-   "yani_barns": 0.0003825089377581879,
-   "yani_ce": 0.7619699955342388
-  },
-  {
-   "channel": "p",
-   "fispact_barns": 0.000612,
-   "fispact_ce": 0.73,
-   "measured_barns": 0.000838,
-   "mt": 103,
-   "product_element": "Tl",
-   "product_mass": 208,
-   "product_note": "total over ground and isomeric states",
-   "product_state": "",
-   "products": [
-    "Tl208",
-    "Tl208_m1",
-    "Tl208_m2"
-   ],
-   "reaction": "Pb-208(n,p)Tl-208",
-   "spectrum": "TUD-Pb",
-   "target": "Pb208",
-   "uncertainty_barns": 8.88e-05,
-   "yani_barns": 0.00034167961294511996,
-   "yani_ce": 0.4077322350180429
+   "yani_barns": 0.00038250893775818777,
+   "yani_ce": 0.7619699955342386
   },
   {
    "channel": "2n",
@@ -6825,8 +6526,8 @@
    "spectrum": "TUD-Ta",
    "target": "Ta181",
    "uncertainty_barns": 0.208,
-   "yani_barns": 1.0491525538866369,
-   "yani_ce": 1.293652964101895
+   "yani_barns": 1.048878877174887,
+   "yani_ce": 1.29331550823044
   },
   {
    "channel": "p",
@@ -6867,8 +6568,8 @@
    "spectrum": "TUD-Ta",
    "target": "Ta181",
    "uncertainty_barns": 2.3e-05,
-   "yani_barns": 4.467913403255641e-05,
-   "yani_ce": 0.20308697287525643
+   "yani_barns": 4.467133316460133e-05,
+   "yani_ce": 0.2030515143845515
   },
   {
    "channel": "2n",
@@ -6889,8 +6590,8 @@
    "spectrum": "TUD-Y",
    "target": "Y89",
    "uncertainty_barns": 0.09,
-   "yani_barns": 0.8948866288380662,
-   "yani_ce": 1.1186082860475828
+   "yani_barns": 0.8948866288380651,
+   "yani_ce": 1.1186082860475814
   },
   {
    "channel": "g",
@@ -6909,11 +6610,11 @@
    "spectrum": "TUD-Y",
    "target": "Y89",
    "uncertainty_barns": 0.000196,
-   "yani_barns": 2.2689040701451543e-05,
-   "yani_ce": 0.05939539450641765
+   "yani_barns": 2.2689040701451526e-05,
+   "yani_ce": 0.059395394506417606
   }
  ],
  "uncertainty": null,
- "wall_seconds": 53.16355895996094,
- "yani_version": "0.18.0"
+ "wall_seconds": 95.30427265167236,
+ "yani_version": "0.21.0"
 }

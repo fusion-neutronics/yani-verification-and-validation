@@ -28,9 +28,11 @@ would test the data and skip the code.
 
 !!! note "Some libraries do not cover every case"
 
-    These ran every one of the 365 reactions and had some refused, because the library publishes no evaluation for an element the case needs. That is a gap in the library rather than a gap in this page.
+    These ran every one of the 365 reactions and had some refused: the library publishes no evaluation for an element the case needs, or yani will not solve the case on values the evaluation does not give, such as MT=5 removal whose residual nuclei it does not name. Each refusal is in the result file with its reason. That is a gap in the library rather than a gap in this page.
 
-    * `fendl-3.2d` -- 44 refused, 321 scored
+    * `endf-b8.1` -- 21 refused, 344 scored
+    * `jeff-4.0` -- 6 refused, 359 scored
+    * `fendl-3.2d` -- 59 refused, 306 scored
     * `fendl-3.2d+tendl-2025-chain` -- 44 refused, 321 scored
 
 ## yani against FISPACT-II, same library
@@ -60,15 +62,15 @@ These are the ones where the branching fraction is the answer rather than a corr
 | --- | ---: | ---: | ---: | ---: |
 | `tendl-2017+decay-2012` | 365 | 1.021 | 148 | 238 |
 | `tendl-2017` | 365 | 1.021 | 148 | 238 |
-| `tendl-2025` | 365 | 1.007 | 124 | 204 |
-| `endf-b8.1` | 365 (24 zero) | 0.954 | 102 | 169 |
-| `jeff-4.0` | 365 (3 zero) | 0.988 | 118 | 205 |
-| `fendl-3.2d` | 321 (28 zero) | 0.975 | 102 | 150 |
+| `tendl-2025` | 365 | 1.007 | 124 | 205 |
+| `endf-b8.1` | 344 (36 zero) | 0.963 | 99 | 160 |
+| `jeff-4.0` | 359 (3 zero) | 0.991 | 120 | 205 |
+| `fendl-3.2d` | 306 (29 zero) | 0.983 | 102 | 149 |
 | `tendl-2017+jeff-decay` | 365 | 1.021 | 148 | 238 |
-| `tendl-2025+jeff-decay` | 365 | 1.007 | 124 | 204 |
-| `tendl-2025-xs+endf-chain` | 365 (24 zero) | 0.965 | 102 | 175 |
-| `tendl-2017-xs+endf-branching` | 365 (46 zero) | 0.977 | 121 | 186 |
-| `fendl-3.2d+tendl-2025-chain` | 321 | 0.999 | 121 | 178 |
+| `tendl-2025+jeff-decay` | 365 | 1.007 | 124 | 205 |
+| `tendl-2025-xs+endf-chain` | 365 (36 zero) | 0.967 | 104 | 177 |
+| `tendl-2017-xs+endf-branching` | 365 (46 zero) | 0.980 | 123 | 188 |
+| `fendl-3.2d+tendl-2025-chain` | 321 | 1.001 | 119 | 176 |
 
 ## Every reaction
 
@@ -328,7 +330,7 @@ These are the ones where the branching fraction is the answer rather than a corr
 | S-34(n,p)P-34 | JAEA-FNS-pos3 | 1.910e-02 | 7.314e-02 | 3.83 | 3.82 |
 | Sb-121(n,2n)Sb-120g | JAEA-FNS-pos3 | 7.770e-01 | 9.626e-01 | 1.24 | 1.24 |
 | Sc-45(n,2n)Sc-44g | JAEA-FNS-pos3 | 1.690e-01 | 1.604e-01 | 0.95 | 0.95 |
-| Se-78(n,2n)Se-77m | JAEA-FNS-pos3 | 6.900e-01 | 6.016e-01 | 0.87 | 0.87 |
+| Se-78(n,2n)Se-77m | JAEA-FNS-pos3 | 6.900e-01 | 6.015e-01 | 0.87 | 0.87 |
 | Se-82(n,2n)Se-81 | JAEA-FNS-pos3 | 9.500e-01 | 1.072e+00 | 1.13 | 1.13 |
 | Si-28(n,p)Al-28 | JAEA-FNS-pos3 | 1.940e-01 | 2.158e-01 | 1.11 | 1.11 |
 | Si-29(n,p)Al-29 | JAEA-FNS-pos3 | 1.160e-01 | 1.213e-01 | 1.05 | 1.04 |
@@ -446,4 +448,4 @@ These are the ones where the branching fraction is the answer rather than a corr
 python benchmarks/effective_cross_sections/run.py
 ```
 
-yani 0.18.0. Measurements from the IAEA CoNDERC 'Effective RR' dataset, fields from CoNDERC 'Spectra', distilled by `benchmarks/effective_cross_sections/build_data.py`.
+yani 0.21.0. Measurements from the IAEA CoNDERC 'Effective RR' dataset, fields from CoNDERC 'Spectra', distilled by `benchmarks/effective_cross_sections/build_data.py`.
