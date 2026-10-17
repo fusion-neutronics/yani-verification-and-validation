@@ -307,7 +307,8 @@ def main():
     parser.add_argument("--uncertainty", action="store_true",
                         help="propagate cross-section covariance onto the curve")
     parser.add_argument("--samples", type=int,
-                        help="fixed replica count (default: until the sigmas settle)")
+                        help="fixed replica count (default: adaptive, until each "
+                             "sigma is known to 5%%, at least 128 replicas)")
     parser.add_argument("--seed", type=int, default=42,
                         help="covariance sampling seed (default: 42)")
     parser.add_argument("--output", type=pathlib.Path, default=HERE / "results",

@@ -62,6 +62,13 @@ from common import libraries  # noqa: E402
 FNS_MINUTES_PER_SOLVE = 0.75
 ECS_MINUTES_PER_SOLVE = 0.5
 
+# What an adaptive uncertainty run (no --samples) stands in as. yani adds
+# replicas 64 at a time until every tracked sigma's standard error is within
+# 5% of it, never fewer than 128: about 201 for a Gaussian output, so 256 once
+# rounded up to a whole batch, and more for a skewed one. 256 is what
+# Fe-56(n,p)Mn-56 in the JAEA-FNS position 3 field took on yani 0.21.0.
+ADAPTIVE_REPLICAS = 256
+
 
 def python():
     return sys.executable or "python3"
@@ -123,10 +130,11 @@ def estimate(args):
     experiments = 132 if not args.experiment else 73 * len(args.experiment)
     # One solve per replica rather than one per case, so the replica count
     # multiplies straight through. Adaptive sampling has no number to use, so
-    # 100 stands in for it, which is the point of saying so in --plan.
+    # ADAPTIVE_REPLICAS stands in for it, which is the point of saying so in
+    # --plan.
     replicas = 1
     if args.uncertainty:
-        replicas = args.samples or 100
+        replicas = args.samples or ADAPTIVE_REPLICAS
     fns = (experiments * combinations * replicas
            * FNS_MINUTES_PER_SOLVE / max(1, args.workers))
     ecs = (365 * combinations * replicas
@@ -220,7 +228,7 @@ def main():
               f"seed {args.seed}")
         if not args.samples:
             print("  no --samples, so each case picks its own replica count and "
-                  "the estimate below assumes 100")
+                  f"the estimate below assumes {ADAPTIVE_REPLICAS}")
     if minutes:
         print(f"rough estimate {minutes / 60:.1f} h of solving, resumable "
               f"throughout\n")
