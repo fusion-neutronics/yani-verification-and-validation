@@ -74,11 +74,9 @@ def ecs(monkeypatch, tmp_path):
     """The runner wired to the stand-in, a two-reaction archive and an output."""
     run = _runner()
     monkeypatch.setattr(run.yani, "Material", _Material)
-    # The library settings and their provenance are not under test, and
-    # neither should touch yani's process state or its cache from here.
+    # The library settings are not under test, and setting them would change
+    # yani's process state for the tests after this one.
     monkeypatch.setattr(libraries, "apply", lambda combination, yani: None)
-    monkeypatch.setattr(libraries, "as_dict",
-                        lambda combination: {"name": combination.name})
     _Material.failing = set()
 
     data = tmp_path / "rr_data.json"
