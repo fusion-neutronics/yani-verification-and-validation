@@ -96,8 +96,14 @@ class CoverageUnknown(RuntimeError):
     """
 
 
-# A 404 is the library answering. Anything else is the network failing to ask.
-_ABSENT_MARKERS = ("404", "not found")
+# The release manifest answering. yani reads a library's manifest before any
+# file it lists, and refuses a nuclide the manifest does not list with "Nuclide
+# 'Os190' is not available in 'fendl-3.2d' (release ...)". That is the one
+# answer that is about the library. Anything else, a 404 included, is the data
+# failing to arrive: a library not yet published in the release layout
+# (".../latest.json answers 404"), or a file the manifest lists and the origin
+# does not serve ("404, but the release manifest lists ...").
+_ABSENT_MARKERS = ("is not available in",)
 
 
 @functools.lru_cache(maxsize=None)
@@ -118,14 +124,19 @@ def _is_available(nuclide, library):
     Twenty of 132 experiments failed that way in one run, and nothing in the
     output said they had.
 
-    So a 404 answers False, and everything else retries and then raises.
+    So the release manifest not listing the nuclide answers False, and
+    everything else retries and then raises. A 404 is no longer an answer:
+    since yani 0.21.0 the manifest says what a release holds, and a 404 is the
+    origin not serving what it promised, which is how a library not yet
+    published in the release layout would otherwise read as "tendl-2017
+    publishes no evaluation for Fe".
     """
     last = None
     for attempt in range(_COVERAGE_ATTEMPTS):
         try:
             yani.Nuclide(nuclide).read_nuclear_data(library)
             return True
-        except Exception as exc:  # noqa: BLE001 - re-raised below unless it is a 404
+        except Exception as exc:  # noqa: BLE001 - re-raised below unless the manifest answered
             message = str(exc).lower()
             if any(marker in message for marker in _ABSENT_MARKERS):
                 return False
