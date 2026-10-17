@@ -99,9 +99,12 @@ def coverage_note(documents, expected_cases, unit, command):
     if refused:
         lines += ['!!! note "Some libraries do not cover every case"', ""]
         lines += [f"    These ran every one of the {expected_cases} {unit} and "
-                  f"had some refused, because the library publishes no "
-                  f"evaluation for an element the case needs. That is a gap in "
-                  f"the library rather than a gap in this page.", ""]
+                  f"had some refused: the library publishes no evaluation for "
+                  f"an element the case needs, or yani will not solve the case "
+                  f"on values the evaluation does not give, such as MT=5 "
+                  f"removal whose residual nuclei it does not name. Each "
+                  f"refusal is in the result file with its reason. That is a "
+                  f"gap in the library rather than a gap in this page.", ""]
         for name, count in refused:
             lines += [f"    * `{name}` -- {count} refused, "
                       f"{expected_cases - count} scored"]
