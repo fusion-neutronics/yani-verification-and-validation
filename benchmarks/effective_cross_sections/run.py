@@ -390,10 +390,10 @@ def main():
     save()
     elapsed = time.time() - started
     # `is not None` and not truthiness: a C/E of exactly 0.0 is a result, and
-    # dropping it hides the failures that matter most. Every one of the 24
-    # zeros on endf-b8.1 is an isomeric-state measurement the library has no
-    # branching route to, which is precisely what this benchmark exists to
-    # test.
+    # dropping it hides the failures that matter most. 35 of the 36 zeros on
+    # endf-b8.1 are isomeric-state measurements the library has no branching
+    # route to, which is precisely what this benchmark exists to test; the
+    # 36th, Tl-205(n,p)Hg-205, has no route at all.
     scored = [row for row in results if row["yani_ce"] is not None]
     produced_nothing = [row for row in scored if row["yani_ce"] == 0.0]
     yani_ce = np.array([row["yani_ce"] for row in scored])

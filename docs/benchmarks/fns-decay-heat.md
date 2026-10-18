@@ -20,9 +20,10 @@ spectrum each foil actually saw, so that spectrum is the input.
 
 !!! note "Some libraries do not cover every case"
 
-    These ran every one of the 132 experiments and had some refused, because the library publishes no evaluation for an element the case needs. That is a gap in the library rather than a gap in this page.
+    These ran every one of the 132 experiments and had some refused: the library publishes no evaluation for an element the case needs, or yani will not solve the case on values the evaluation does not give, such as MT=5 removal whose residual nuclei it does not name. Each refusal is in the result file with its reason. That is a gap in the library rather than a gap in this page.
 
     * `tendl-2025` -- 3 refused, 129 scored
+    * `endf-b8.1` -- 4 refused, 128 scored
     * `fendl-3.2d` -- 22 refused, 110 scored
     * `tendl-2025+jeff-decay` -- 3 refused, 129 scored
     * `tendl-2025-xs+endf-chain` -- 3 refused, 129 scored
@@ -33,7 +34,7 @@ spectrum each foil actually saw, so that spectrum is the input.
 ![yani against FISPACT-II mean deviation](figures/fns-summary.png#only-light)
 ![yani against FISPACT-II mean deviation](figures/fns-summary-dark.png#only-dark)
 
-On the 130 experiments the archive publishes a FISPACT-II curve for, both codes reading TENDL-2017 cross sections and UKAEA's decay_2012 decay data, yani is closer to the measurement on **6**, FISPACT-II on **14**, and **110** are tied within 0.25 percentage points.
+On the 130 experiments the archive publishes a FISPACT-II curve for, both codes reading TENDL-2017 cross sections and UKAEA's decay_2012 decay data, yani is closer to the measurement on **6**, FISPACT-II on **13**, and **111** are tied within 0.25 percentage points.
 
 The tie band is not a courtesy. The two codes agree on the heat curves to a median 0.019%, which is far below the 0 to 0.8% error introduced by the two being stepped to slightly different times, so a difference of a few hundredths of a point is not something this benchmark can resolve. Counted without a band, every experiment produces a verdict and almost none of them means anything.
 
@@ -53,14 +54,14 @@ The row above is the comparison. These are the answer to a different question: g
 | `tendl-2017+decay-2012` | tendl-2017 | tendl-2017 | tendl-2017 | ukaea-decay-2012 | 132 | 10.6% |
 | `tendl-2017` | tendl-2017 | tendl-2017 | tendl-2017 | endf-b8.1 | 132 | 10.1% |
 | `tendl-2025` | tendl-2025 | tendl-2025 | tendl-2025 | endf-b8.1 | 129 | 15.2% |
-| `endf-b8.1` | endf-b8.1 | endf-b8.1 | endf-b8.1 | endf-b8.1 | 132 | 28.1% |
-| `jeff-4.0` | jeff-4.0 | jeff-4.0 | jeff-4.0 | jeff-4.0 | 132 | 15.9% |
-| `fendl-3.2d` | fendl-3.2d | endf-b8.1 | endf-b8.1 | endf-b8.1 | 110 | 23.7% |
+| `endf-b8.1` | endf-b8.1 | endf-b8.1 | endf-b8.1 | endf-b8.1 | 128 | 27.3% |
+| `jeff-4.0` | jeff-4.0 | jeff-4.0 | jeff-4.0 | jeff-4.0 | 132 | 15.5% |
+| `fendl-3.2d` | fendl-3.2d | endf-b8.1 | endf-b8.1 | endf-b8.1 | 110 | 20.9% |
 | `tendl-2017+jeff-decay` | tendl-2017 | tendl-2017 | tendl-2017 | jeff-4.0 | 132 | 10.4% |
 | `tendl-2025+jeff-decay` | tendl-2025 | tendl-2025 | tendl-2025 | jeff-4.0 | 129 | 15.2% |
 | `tendl-2025-xs+endf-chain` | tendl-2025 | endf-b8.1 | endf-b8.1 | endf-b8.1 | 129 | 25.9% |
 | `tendl-2017-xs+endf-branching` | tendl-2017 | tendl-2017 | endf-b8.1 | endf-b8.1 | 132 | 24.3% |
-| `fendl-3.2d+tendl-2025-chain` | fendl-3.2d | tendl-2025 | tendl-2025 | endf-b8.1 | 110 | 12.6% |
+| `fendl-3.2d+tendl-2025-chain` | fendl-3.2d | tendl-2025 | tendl-2025 | endf-b8.1 | 110 | 15.6% |
 
 **`tendl-2017+decay-2012`** -- Exactly what FISPACT-II was run with for the published CoNDERC results: TENDL-2017 cross sections, reaction topology and branching, and UKAEA's decay_2012 decay library. On this line a difference between yani and FISPACT-II is a difference between two codes, and there is almost none: the median deviation between the two heat curves is 0.01%.
 
@@ -160,9 +161,9 @@ Measurement uncertainty 6.8% (median). Heat carried by N16, Ge75, Ge75_m1.
 
 | line | mean deviation | median C/E | max deviation |
 | --- | ---: | ---: | ---: |
-| yani, `tendl-2017+decay-2012` | 29.7% | 1.284 | 74.0% |
+| yani, `tendl-2017+decay-2012` | 29.7% | 1.284 | 73.9% |
 | FISPACT-II, `tendl-2017+decay-2012` | 29.3% | 1.283 | 73.0% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 23.7% | 0.787 | 72.7% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 23.7% | 0.787 | 72.6% |
 
 Measurement uncertainty 6.0% (median). Heat carried by Au196_m1, Au196_m2, Au196.
 
@@ -253,7 +254,7 @@ Measurement uncertainty 37.7% (median). Heat carried by Tl206_m1, Tl206, Pb209.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 2.8% | 1.000 | 11.9% |
 | FISPACT-II, `tendl-2017+decay-2012` | 2.8% | 1.001 | 11.9% |
-| yani, `tendl-2017+jeff-decay` | 2.8% | 1.000 | 11.8% |
+| yani, `tendl-2017+jeff-decay` | 2.8% | 1.000 | 11.7% |
 
 Measurement uncertainty 11.3% (median). Heat carried by Br78, Br80, N16.
 
@@ -331,7 +332,7 @@ Measurement uncertainty 6.9% (median). Heat carried by Ce139_m1, N16, Ba137_m1.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 12.1% | 1.048 | 36.8% |
 | FISPACT-II, `tendl-2017+decay-2012` | 12.1% | 1.048 | 36.8% |
-| yani, `tendl-2017+jeff-decay` | 12.1% | 1.049 | 36.8% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 9.6% | 0.929 | 19.1% |
 
 Measurement uncertainty 6.0% (median). Heat carried by S37, Cl34_m1, Cl34.
 
@@ -395,7 +396,7 @@ Measurement uncertainty 6.0% (median). Heat carried by V52, V53, V54.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 24.4% | 0.962 | 89.5% |
 | FISPACT-II, `tendl-2017+decay-2012` | 24.4% | 0.961 | 89.5% |
-| yani, `tendl-2017-xs+endf-branching` | 24.2% | 0.968 | 89.4% |
+| yani, `tendl-2017` | 24.2% | 0.968 | 89.4% |
 
 Measurement uncertainty 5.5% (median). Heat carried by Cr51, V49, V48.
 
@@ -408,7 +409,7 @@ Measurement uncertainty 5.5% (median). Heat carried by Cr51, V49, V48.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 17.5% | 1.147 | 42.4% |
 | FISPACT-II, `tendl-2017+decay-2012` | 17.5% | 1.147 | 42.4% |
-| yani, `endf-b8.1` | 16.2% | 1.125 | 46.1% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 16.2% | 1.125 | 45.7% |
 
 Measurement uncertainty 6.3% (median). Heat carried by V52, V53, V54.
 
@@ -564,7 +565,7 @@ Measurement uncertainty 6.3% (median). Heat carried by Mn56, Mn54, Cr51.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 7.3% | 1.072 | 8.9% |
 | FISPACT-II, `tendl-2017+decay-2012` | 7.3% | 1.072 | 8.9% |
-| yani, `jeff-4.0` | 4.7% | 1.053 | 7.4% |
+| yani, `jeff-4.0` | 5.1% | 1.057 | 7.8% |
 
 Measurement uncertainty 5.4% (median). Heat carried by Mn56, Mn57, Fe53.
 
@@ -694,7 +695,7 @@ Measurement uncertainty 5.0% (median). Heat carried by V52, Mn56, Co62.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 2.9% | 1.007 | 6.3% |
 | FISPACT-II, `tendl-2017+decay-2012` | 2.9% | 1.003 | 6.3% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 2.7% | 1.025 | 7.9% |
+| yani, `tendl-2017` | 2.8% | 1.004 | 6.2% |
 
 Measurement uncertainty 5.2% (median). Heat carried by Ni57, Co58, Co57.
 
@@ -733,7 +734,7 @@ Measurement uncertainty 6.7% (median). Heat carried by Ir192_m1, Ir190, Ir194.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 8.5% | 1.093 | 11.0% |
 | FISPACT-II, `tendl-2017+decay-2012` | 8.5% | 1.093 | 11.0% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 5.7% | 1.070 | 8.1% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 5.6% | 1.069 | 8.0% |
 
 Measurement uncertainty 5.0% (median). Heat carried by K38, Cl38, Ar41.
 
@@ -759,7 +760,7 @@ Measurement uncertainty 22.9% (median). Heat carried by K42, Ar41, S35.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 8.7% | 1.080 | 14.1% |
 | FISPACT-II, `tendl-2017+decay-2012` | 8.7% | 1.080 | 14.1% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 5.9% | 1.056 | 9.6% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 5.9% | 1.055 | 9.6% |
 
 Measurement uncertainty 6.2% (median). Heat carried by K38, N16, Cl38.
 
@@ -824,7 +825,7 @@ Measurement uncertainty 6.0% (median). Heat carried by V52, Cr55, Mn56.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 3.9% | 0.966 | 10.3% |
 | FISPACT-II, `tendl-2017+decay-2012` | 3.8% | 0.966 | 10.3% |
-| yani, `tendl-2025` | 1.5% | 1.002 | 7.2% |
+| yani, `tendl-2025-xs+endf-chain` | 1.5% | 1.002 | 7.2% |
 
 Measurement uncertainty 5.4% (median). Heat carried by Mn54, Mn56, H3.
 
@@ -837,7 +838,7 @@ Measurement uncertainty 5.4% (median). Heat carried by Mn54, Mn56, H3.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 12.1% | 1.141 | 15.0% |
 | FISPACT-II, `tendl-2017+decay-2012` | 12.1% | 1.141 | 15.0% |
-| yani, `tendl-2017-xs+endf-branching` | 11.8% | 1.136 | 15.0% |
+| yani, `tendl-2017` | 11.8% | 1.136 | 15.0% |
 
 Measurement uncertainty 5.8% (median). Heat carried by V52, Cr55, Mn56.
 
@@ -850,7 +851,7 @@ Measurement uncertainty 5.8% (median). Heat carried by V52, Cr55, Mn56.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 10.9% | 0.887 | 12.2% |
 | FISPACT-II, `tendl-2017+decay-2012` | 9.9% | 0.897 | 11.1% |
-| yani, `endf-b8.1` | 7.6% | 0.946 | 19.2% |
+| yani, `endf-b8.1` | 7.5% | 0.946 | 19.2% |
 
 Measurement uncertainty 5.0% (median). Heat carried by Mo91, Mo91_m1, Nb98_m1.
 
@@ -941,7 +942,7 @@ Measurement uncertainty 5.0% (median). Heat carried by Nb92_m1, Y90_m1, Nb94_m1.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 7.2% | 0.932 | 13.3% |
 | FISPACT-II, `tendl-2017+decay-2012` | 7.2% | 0.932 | 13.3% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 4.2% | 1.045 | 5.0% |
+| yani, `jeff-4.0` | 7.0% | 0.933 | 13.3% |
 
 Measurement uncertainty 5.6% (median). Heat carried by Nb92_m1, Y90, Y90_m1.
 
@@ -954,7 +955,7 @@ Measurement uncertainty 5.6% (median). Heat carried by Nb92_m1, Y90, Y90_m1.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 8.7% | 0.934 | 18.3% |
 | FISPACT-II, `tendl-2017+decay-2012` | 8.7% | 0.934 | 18.3% |
-| yani, `jeff-4.0` | 8.6% | 0.968 | 16.2% |
+| yani, `jeff-4.0` | 8.5% | 0.957 | 17.3% |
 
 Measurement uncertainty 7.0% (median). Heat carried by Nb92_m1, Y90_m1, Nb94_m1.
 
@@ -1045,7 +1046,7 @@ Measurement uncertainty 5.1% (median). Heat carried by Ni57, Co58, Co57.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 5.0% | 1.027 | 14.7% |
 | FISPACT-II, `tendl-2017+decay-2012` | 5.0% | 1.027 | 14.7% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 4.2% | 0.996 | 15.7% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 4.2% | 0.996 | 15.5% |
 
 Measurement uncertainty 5.5% (median). Heat carried by V52, V53, Co62.
 
@@ -1095,9 +1096,9 @@ Measurement uncertainty 5.0% (median). Heat carried by Tl208, Pb204_m1, Tl207.
 
 | line | mean deviation | median C/E | max deviation |
 | --- | ---: | ---: | ---: |
-| yani, `tendl-2017+decay-2012` | 30.7% | 0.902 | 95.5% |
+| yani, `tendl-2017+decay-2012` | 30.7% | 0.901 | 95.5% |
 | FISPACT-II, `tendl-2017+decay-2012` | 30.7% | 0.899 | 95.5% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 25.7% | 0.972 | 96.3% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 25.4% | 0.975 | 96.1% |
 
 Measurement uncertainty 5.3% (median). Heat carried by Pb203, Pb209, Hg203.
 
@@ -1110,7 +1111,7 @@ Measurement uncertainty 5.3% (median). Heat carried by Pb203, Pb209, Hg203.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 30.2% | 0.939 | 88.9% |
 | FISPACT-II, `tendl-2017+decay-2012` | 30.2% | 0.939 | 88.9% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 19.1% | 0.950 | 37.8% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 22.3% | 0.985 | 52.8% |
 
 Measurement uncertainty 6.3% (median). Heat carried by Tl208, Pb204_m1, Tl207.
 
@@ -1149,7 +1150,7 @@ Measurement uncertainty 8.4% (median). Heat carried by Pr140, N16, Ce139_m1.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 22.1% | 1.258 | 28.0% |
 | FISPACT-II, `tendl-2017+decay-2012` | 19.3% | 1.229 | 25.1% |
-| yani, `fendl-3.2d` | 11.6% | 1.124 | 15.8% |
+| yani, `fendl-3.2d` | 11.7% | 1.125 | 15.8% |
 
 Measurement uncertainty 8.4% (median). Heat carried by Pt197_m1, Pt197, Pt199.
 
@@ -1279,7 +1280,7 @@ Measurement uncertainty 7.8% (median). Heat carried by Si31, P32, P34.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 6.9% | 0.932 | 7.6% |
 | FISPACT-II, `tendl-2017+decay-2012` | 6.9% | 0.932 | 7.6% |
-| yani, `tendl-2025` | 5.4% | 1.027 | 7.4% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 2.5% | 1.012 | 5.9% |
 
 Measurement uncertainty 5.0% (median). Heat carried by V52, Mn56, Al28.
 
@@ -1292,7 +1293,7 @@ Measurement uncertainty 5.0% (median). Heat carried by V52, Mn56, Al28.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 7.1% | 0.939 | 14.2% |
 | FISPACT-II, `tendl-2017+decay-2012` | 7.0% | 0.939 | 14.7% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 5.7% | 0.956 | 14.9% |
+| yani, `fendl-3.2d` | 5.6% | 0.962 | 14.9% |
 
 Measurement uncertainty 5.2% (median). Heat carried by Mn56, Ni57, Co58.
 
@@ -1305,7 +1306,7 @@ Measurement uncertainty 5.2% (median). Heat carried by Mn56, Ni57, Co58.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 3.0% | 1.030 | 4.0% |
 | FISPACT-II, `tendl-2017+decay-2012` | 3.0% | 1.030 | 4.0% |
-| yani, `endf-b8.1` | 0.7% | 1.001 | 3.0% |
+| yani, `endf-b8.1` | 1.7% | 1.016 | 3.4% |
 
 Measurement uncertainty 5.5% (median). Heat carried by V52, Mn56, Al28.
 
@@ -1318,7 +1319,7 @@ Measurement uncertainty 5.5% (median). Heat carried by V52, Mn56, Al28.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 5.8% | 0.936 | 8.3% |
 | FISPACT-II, `tendl-2017+decay-2012` | 5.8% | 0.937 | 8.3% |
-| yani, `tendl-2017` | 6.0% | 0.934 | 8.5% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 2.0% | 1.016 | 4.6% |
 
 Measurement uncertainty 5.0% (median). Heat carried by V52, Mn56, Al28.
 
@@ -1331,7 +1332,7 @@ Measurement uncertainty 5.0% (median). Heat carried by V52, Mn56, Al28.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 6.7% | 0.939 | 12.6% |
 | FISPACT-II, `tendl-2017+decay-2012` | 6.9% | 0.939 | 13.2% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 5.5% | 0.957 | 13.3% |
+| yani, `fendl-3.2d` | 5.8% | 0.952 | 13.3% |
 
 Measurement uncertainty 5.1% (median). Heat carried by Mn56, Ni57, Co58.
 
@@ -1344,7 +1345,7 @@ Measurement uncertainty 5.1% (median). Heat carried by Mn56, Ni57, Co58.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 5.7% | 1.065 | 8.3% |
 | FISPACT-II, `tendl-2017+decay-2012` | 5.7% | 1.065 | 8.3% |
-| yani, `endf-b8.1` | 3.4% | 1.040 | 5.7% |
+| yani, `fendl-3.2d` | 4.5% | 1.052 | 7.4% |
 
 Measurement uncertainty 5.5% (median). Heat carried by V52, Mn56, Al28.
 
@@ -1448,7 +1449,7 @@ Measurement uncertainty 12.4% (median). Heat carried by Sn117_m1, In111, Sn121.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 19.8% | 1.170 | 45.2% |
 | FISPACT-II, `tendl-2017+decay-2012` | 19.8% | 1.170 | 45.3% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 31.7% | 1.226 | 57.7% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 31.6% | 1.226 | 57.7% |
 
 Measurement uncertainty 6.6% (median). Heat carried by In118_m1, Sn123_m1, N16.
 
@@ -1669,7 +1670,7 @@ Measurement uncertainty 5.4% (median). Heat carried by Ti51, V52, Sc48.
 | --- | ---: | ---: | ---: |
 | yani, `tendl-2017+decay-2012` | 36.5% | 1.417 | 66.2% |
 | FISPACT-II, `tendl-2017+decay-2012` | 36.3% | 1.416 | 65.8% |
-| yani, `tendl-2017-xs+endf-branching` | 29.1% | 1.276 | 73.6% |
+| yani, `tendl-2017-xs+endf-branching` | 29.1% | 1.275 | 73.6% |
 
 Measurement uncertainty 19.0% (median). Heat carried by W185_m1, Ta186, W187.
 
@@ -1693,9 +1694,9 @@ Measurement uncertainty 14.7% (median). Heat carried by W185, W181, Ta184.
 
 | line | mean deviation | median C/E | max deviation |
 | --- | ---: | ---: | ---: |
-| yani, `tendl-2017+decay-2012` | 83.7% | 1.889 | 122.4% |
+| yani, `tendl-2017+decay-2012` | 83.7% | 1.889 | 122.0% |
 | FISPACT-II, `tendl-2017+decay-2012` | 83.5% | 1.889 | 121.5% |
-| yani, `tendl-2017-xs+endf-branching` | 72.1% | 1.711 | 130.1% |
+| yani, `tendl-2017-xs+endf-branching` | 72.1% | 1.711 | 130.0% |
 
 Measurement uncertainty 13.1% (median). Heat carried by W185_m1, Ta186, W187.
 
@@ -1770,9 +1771,9 @@ Measurement uncertainty 5.2% (median). Heat carried by Zn63, Cu66, Cu68.
 
 | line | mean deviation | median C/E | max deviation |
 | --- | ---: | ---: | ---: |
-| yani, `tendl-2017+decay-2012` | 2.1% | 1.016 | 5.0% |
+| yani, `tendl-2017+decay-2012` | 2.0% | 1.016 | 4.6% |
 | FISPACT-II, `tendl-2017+decay-2012` | 2.0% | 1.016 | 4.6% |
-| yani, `fendl-3.2d+tendl-2025-chain` | 2.0% | 1.009 | 7.4% |
+| yani, `fendl-3.2d+tendl-2025-chain` | 1.2% | 1.007 | 3.7% |
 
 Measurement uncertainty 5.0% (median). Heat carried by Zr89_m1, Y94, Y89_m1.
 
@@ -1796,9 +1797,9 @@ Measurement uncertainty 5.5% (median). Heat carried by Y89_m1, Zr89, Y90.
 
 | line | mean deviation | median C/E | max deviation |
 | --- | ---: | ---: | ---: |
-| yani, `tendl-2017+decay-2012` | 12.7% | 1.124 | 24.4% |
+| yani, `tendl-2017+decay-2012` | 11.6% | 1.119 | 12.8% |
 | FISPACT-II, `tendl-2017+decay-2012` | 11.5% | 1.119 | 12.7% |
-| yani, `fendl-3.2d` | 2.4% | 1.023 | 6.5% |
+| yani, `tendl-2017-xs+endf-branching` | 2.6% | 0.991 | 9.8% |
 
 Measurement uncertainty 5.2% (median). Heat carried by Zr89_m1, Y94, Y89_m1.
 
@@ -1808,4 +1809,4 @@ Measurement uncertainty 5.2% (median). Heat carried by Zr89_m1, Y94, Y89_m1.
 python benchmarks/fns_decay_heat/sweep.py
 ```
 
-yani 0.18.0. Benchmark data from the IAEA CoNDERC archive, distilled by `benchmarks/fns_decay_heat/build_data.py`.
+yani 0.21.0. Benchmark data from the IAEA CoNDERC archive, distilled by `benchmarks/fns_decay_heat/build_data.py`.

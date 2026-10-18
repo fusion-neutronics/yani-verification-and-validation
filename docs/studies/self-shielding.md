@@ -28,19 +28,19 @@ because they should not move at all.
 
 | foil | strongest `would_shield` | dilute mean dev | move at 100 µm | move at 1000 µm | mean dev at 1000 µm |
 | --- | --- | ---: | ---: | ---: | ---: |
-| W  | W180 0.962  | 83.7% | 10.49% | **11.36%** | 78.8% |
-| Nb | Nb93 0.784  | 8.7%  | 1.04%  | **4.08%**  | 10.2% |
-| Au | Au197 0.818 | 29.7% | 0.85%  | 0.91%  | 28.7% |
-| Co | Co59 0.857  | 10.2% | 0.80%  | 0.80%  | 9.6%  |
-| Ta | Ta181 0.581 | 9.2%  | 0.29%  | 0.48%  | 9.5%  |
-| In | In113 0.832 | 3863% | 0.17%  | 0.16%  | 3857% |
+| W  | W180 0.962  | 83.7% | 10.52% | **12.04%** | 78.7% |
+| Nb | Nb93 0.784  | 8.7%  | 1.13%  | **4.42%**  | 10.4% |
+| Au | Au197 0.818 | 29.7% | 0.85%  | 0.91%  | 28.6% |
+| Co | Co59 0.857  | 10.2% | 0.81%  | 0.81%  | 9.6%  |
+| Ta | Ta181 0.581 | 9.2%  | 0.07%  | 0.12%  | 9.3%  |
+| In | In113 0.832 | 3863% | 0.15%  | 0.15%  | 3858% |
 | Al | none 0.000  | 7.2%  | 0.00%  | 0.03%  | 7.2%  |
 | Ti | none 0.000  | 3.2%  | 0.00%  | 0.00%  | 3.2%  |
 
 ## What it says
 
 **Only two foils move by more than their measurement uncertainty.** Tungsten at
-11.4% and niobium at 4.1%. For the other four absorbers the correction is under
+12.0% and niobium at 4.4%. For the other four absorbers the correction is under
 1% even at a millimetre, which is thicker than any of these foils can be. So on
 this benchmark, in this field, self-shielding is not what separates yani from
 the measurement, and the dilute rows on the other pages can be read as they
@@ -55,9 +55,9 @@ to move.
 **`would_shield` picks the right nuclides and does not rank them.** This is the
 useful part. The screen is what a dilute run reports about the correction it
 skipped, and its ordering is W (0.962), Co (0.857), In (0.832), Au (0.818),
-Nb (0.784), Ta (0.581). The actual ordering of the effect is W (11.4%),
-Nb (4.1%), Au (0.9%), Co (0.8%), Ta (0.5%), In (0.2%). Indium is flagged third
-hardest and moves least of all.
+Nb (0.784), Ta (0.581). The actual ordering of the effect is W (12.0%),
+Nb (4.4%), Au (0.9%), Co (0.8%), In (0.15%), Ta (0.12%). Indium is flagged
+third hardest and moves less than every other absorber but tantalum.
 
 That is exactly what yani's own documentation says the number is: *"a screen
 rather than a bound, since it carries no geometry, so it says which answers to
@@ -71,21 +71,26 @@ depends on how much flux sits on them and how much of the decay heat comes
 through them, and in a 14 MeV field most of the activation runs through
 threshold reactions well above the resonance region.
 
-**Shielding does not simply improve agreement.** It moves W from 83.7% to 78.8%
-and Au from 29.7% to 28.7%, and moves Nb the other way, from 8.7% to 10.2%.
+**Shielding does not simply improve agreement.** It moves W from 83.7% to 78.7%
+and Au from 29.7% to 28.6%, and moves Nb the other way, from 8.7% to 10.4%.
 With the geometry assumed rather than known, none of those is evidence about
 the correction. They are the reason the assumed geometry cannot be tuned until
 the agreement looks best, and this page does not.
 
 ## Cost
 
-A shielded solve is expensive. The slowing-down solve runs per nuclide per
-group over the whole reachable network, which on a 14 MeV foil is a few
-thousand nuclides: 807 s against 15 s for the same foil dilute, on a cold
-cache. It also needs a wider slice of nuclear data than an activation-only run,
-since it wants total and elastic cross sections as well.
+A shielded solve costs more than a dilute one. The slowing-down solve runs per
+nuclide per group, and it needs a wider slice of nuclear data than an
+activation-only run, since it wants total and elastic cross sections as well.
+Under yani 0.18.0 it ran over the whole reachable network, a few thousand
+nuclides, and took 807 s against 15 s for the same foil dilute on a cold cache.
+yani 0.21.0 loads cross sections only for the products a solve populates
+(fusion-neutronics/core#342), so it shields 11 to 38 nuclides on these foils,
+and in the run behind this page a shielded solve took 2 to 10 s against 2 to
+4 s dilute.
 
-That is why the default is two thicknesses rather than a fine sweep.
+The default of two thicknesses rather than a fine sweep dates from that
+earlier cost.
 
 ## Reproducing it
 
