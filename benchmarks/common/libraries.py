@@ -77,8 +77,8 @@ COMBINATIONS = [
         fission_yields="endf-b8.1"),
     _combination(
         "tendl-2017", "tendl-2017", "tendl-2017", "tendl-2017", "endf-b8.1",
-        "The same neutron library with the decay data yani users get by "
-        "default, ENDF/B-VIII.1. Against the line above this isolates the "
+        "The same neutron library with the decay data yani's documentation "
+        "uses, ENDF/B-VIII.1. Against the line above this isolates the "
         "decay data: it is what moves the Sn, Ta and Ho foils, and where "
         "ENDF/B-VIII.1 carries a Q/3 placeholder record (Sn111, Cd105, "
         "Co62m) the placeholder is what moves them."),

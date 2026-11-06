@@ -33,7 +33,8 @@ takes the partials as given), Pt and Mo (yani's newer natural abundances) and
 Hf (a 1.08 s isomer that FISPACT-II's nuclide index leaves out).
 
 The `tendl-2017` line is the same neutron data with ENDF/B-VIII.1 decay data,
-which is what a yani user gets by default. Set against the comparison line it
+the decay library yani's documentation uses (yani has no default decay data:
+it is always chosen). Set against the comparison line it
 isolates the decay data, and that is what moves the foils where the two codes
 were thought to disagree: Ta180's mean energy is 102.5 keV in ENDF/B-VIII.1 and
 110.0 keV in decay_2012, Ho164's 175.5 against 212.4 keV (ENSDF sides with
