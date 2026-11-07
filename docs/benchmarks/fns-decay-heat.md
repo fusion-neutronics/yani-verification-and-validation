@@ -43,7 +43,7 @@ The tie band is not a courtesy. The two codes agree on the heat curves to a medi
 | yani, tendl-2017+decay-2012 | 130 | 10.6% | 62 | 83 |
 | FISPACT-II, tendl-2017+decay-2012 | 130 | 10.7% | 63 | 84 |
 
-Both rows are the same experiments with the same data: TENDL-2017 cross sections, reaction topology and isomeric branching, and UKAEA's decay_2012 decay library, fetched from UKAEA's own distribution and converted locally. What separates the rows is the code, and the two agree on the heat of every experiment to a median 0.01%; the residuals are TENDL-2017 isomer partials that do not sum to the total (Ir), natural abundances (Pt, Mo) and a short-lived isomer FISPACT-II's nuclide index leaves out (Hf). The `tendl-2017` line below is the same neutron data with ENDF/B-VIII.1 decay data, which is what yani users get by default. See the methodology page.
+Both rows are the same experiments with the same data: TENDL-2017 cross sections, reaction topology and isomeric branching, and UKAEA's decay_2012 decay library, fetched from UKAEA's own distribution and converted locally. What separates the rows is the code, and the two agree on the heat of every experiment to a median 0.01%; the residuals are TENDL-2017 isomer partials that do not sum to the total (Ir), natural abundances (Pt, Mo) and a short-lived isomer FISPACT-II's nuclide index leaves out (Hf). The `tendl-2017` line below is the same neutron data with ENDF/B-VIII.1 decay data, the decay library yani's documentation uses. See the methodology page.
 
 ## Every nuclear-data combination
 
@@ -65,7 +65,7 @@ The row above is the comparison. These are the answer to a different question: g
 
 **`tendl-2017+decay-2012`** -- Exactly what FISPACT-II was run with for the published CoNDERC results: TENDL-2017 cross sections, reaction topology and branching, and UKAEA's decay_2012 decay library. On this line a difference between yani and FISPACT-II is a difference between two codes, and there is almost none: the median deviation between the two heat curves is 0.01%.
 
-**`tendl-2017`** -- The same neutron library with the decay data yani users get by default, ENDF/B-VIII.1. Against the line above this isolates the decay data: it is what moves the Sn, Ta and Ho foils, and where ENDF/B-VIII.1 carries a Q/3 placeholder record (Sn111, Cd105, Co62m) the placeholder is what moves them.
+**`tendl-2017`** -- The same neutron library with the decay data yani's documentation uses, ENDF/B-VIII.1. Against the line above this isolates the decay data: it is what moves the Sn, Ta and Ho foils, and where ENDF/B-VIII.1 carries a Q/3 placeholder record (Sn111, Cd105, Co62m) the placeholder is what moves them.
 
 **`tendl-2025`** -- The current TENDL, everything else held fixed. The difference from tendl-2017 is eight years of evaluation work and nothing else.
 

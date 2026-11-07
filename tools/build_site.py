@@ -408,8 +408,8 @@ def fns_page(documents):
                   "isomer partials that do not sum to the total (Ir), natural "
                   "abundances (Pt, Mo) and a short-lived isomer FISPACT-II's "
                   "nuclide index leaves out (Hf). The `tendl-2017` line below is "
-                  "the same neutron data with ENDF/B-VIII.1 decay data, which is "
-                  "what yani users get by default. See the methodology page.", ""]
+                  "the same neutron data with ENDF/B-VIII.1 decay data, the decay "
+                  "library yani's documentation uses. See the methodology page.", ""]
 
     # --- every combination --------------------------------------------------
     lines += ["## Every nuclear-data combination", "",
