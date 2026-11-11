@@ -7,11 +7,10 @@
 # ENDF yourself is supported and does need NJOY, but nothing on this site takes
 # that path, so reproducing a page needs no external binary.
 #
-# 0.21.0 is the floor: it is the first release that reads the published
-# libraries in their release layout and has yani.cache_dir(), and the code here
-# relies on both. A floor rather than an exact pin, so the nightly regression
-# check still meets each new release the day it is out.
-yani>=0.21.0
+# 0.24.0 is the minimum release used for validation. A floor rather than an
+# exact pin lets the nightly regression check meet each new release as it
+# becomes available.
+yani>=0.24.0
 
 # The C/E figures. Brings numpy, which all the scoring arithmetic uses, so numpy
 # is not listed separately.
